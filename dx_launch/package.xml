@@ -36,6 +36,8 @@
   <exec_depend>dx_config</exec_depend>
   <exec_depend>dx_controllers</exec_depend>
   <exec_depend>dx_robot</exec_depend>
+  <exec_depend>sr_ur_arm_calibration_loader</exec_depend>
+  <exec_depend>ur_description</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
