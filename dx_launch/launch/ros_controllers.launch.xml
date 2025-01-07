@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (C) 2024 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
+ Unauthorized copying of the content in this file, via any medium is strictly prohibited.
+-->
+<launch>
+  <arg name="robot_namespace" default=""/>
+
+  <!-- Load joint controller configurations from YAML file to parameter server -->
+  <rosparam file="$(find dx_config)/controllers/$(arg robot_namespace)ros_controllers.yaml" command="load"/>
+
+  <!-- none, effort, position or trajectory -->
+  <arg name="control_type" default="trajectory"/>
+
+  <arg if="$(eval control_type == 'none')" name="controller_list" default=""/>
+  <arg if="$(eval control_type == 'effort')" name="controller_list" default="f0_effort_controller f1_effort_controller f2_effort_controller"/>
+  <arg if="$(eval control_type == 'position')" name="controller_list" default="f0_position_controller f1_position_controller f2_position_controller"/>
+  <arg if="$(eval control_type == 'trajectory')" name="controller_list" default="trajectory_controller"/>
+
+  <!-- Load the controllers -->
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" respawn="false"
+    output="screen" args="$(arg controller_list)"/>
+
+</launch>

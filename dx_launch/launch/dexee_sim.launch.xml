@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (C) 2024 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
+ Unauthorized copying of the content in this file, via any medium is strictly prohibited.
+-->
+<launch>
+  <arg name="moveit" default="true"/>
+  <arg name="side"/>
+  <arg name="robot_state_pub_frequency" default="250"/>
+  <arg name="joint_state_pub_frequency" default="125"/>
+
+  <!-- none, effort, position or trajectory -->
+  <arg if="$(arg moveit)" name="control_type" default="trajectory"/>
+  <arg unless="$(arg moveit)" name="control_type" default="position"/>
+
+
+  <!-- Given the published joint states, publish tf for the robot links -->
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+    <param name="publish_frequency" type="double" value="$(arg robot_state_pub_frequency)"/>
+    <param name="tf_prefix" type="string" value="" />
+  </node>
+
+  <include file="$(find ros_ethercat_model)/launch/joint_state_publisher.launch" >
+    <arg name="publish_rate" value="$(arg joint_state_pub_frequency)"/>
+  </include>
+
+  <!-- Spawn controllers -->
+  <include file="$(find dx_launch)/launch/ros_controllers.launch.xml">
+    <arg name="control_type" value="$(arg control_type)"/>
+    <arg name="robot_namespace" value="$(arg side)_hand_"/>
+  </include>
+
+</launch>
