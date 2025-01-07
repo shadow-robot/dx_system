@@ -15,8 +15,6 @@
 
   <!-- HAND SPECIFIC CONFIG-->
   <arg name="hand_type"/>
-  <arg name="hand_version"/>
-  <arg name="fingers"/>
 
   <!-- <arg unless="$(arg arm)" name="robot_description" value="'$(find sr_description)/robots/sr_hand.urdf.xacro'"/>
   <arg unless="$(arg arm)" name="load_robot_description_command" value="xacro $(arg robot_description)
@@ -33,22 +31,26 @@
   <arg name="arm_prefix" value="$(arg side_letter)a"/>
 
   <!-- Hand-only description, needed for srdf generation -->
-  <arg if="$(eval arm and hand)" name="hand_description" value="'$(find sr_description)/robots/sr_hand.urdf.xacro'"/>
+  <!-- TODO We need to make this depend on the hand_type -->
+  <arg if="$(arg hand)" name="hand_description" value="'$(find dx_robot)/description/robot/0x02000105.urdf.xacro'"/>
 
   <arg if="$(eval arm and hand)" name="robot_description" value="'$(find dx_launch)/description/dexee_ur.urdf.xacro'"/>
-  <arg if="$(eval arm and not hand)" name="robot_description" value="'$(find sr_multi_description)/urdf/sr_ur.urdf.xacro'"/>
+  <arg if="$(eval arm and not hand)" name="robot_description" value="'$(find dx_launch)/description/ur.urdf.xacro'"/>
+  <arg if="$(arg arm)" name="arm_description" value="'$(find dx_launch)/description/ur.urdf.xacro'"/>
 
 
-  <arg if="$(arg arm)" name="load_robot_description_command" value="xacro $(arg robot_description) arm_model:=$(arg arm_model) hand_type:=$(arg hand_type) hand_version:=$(arg hand_version) side:=$(arg side)
-                                                                    fingers:=$(arg fingers) initial_z:=$(arg initial_z) initial_y:=$(arg initial_y) initial_yaw:=$(arg initial_yaw)"/>
+  <arg if="$(arg arm)" name="load_robot_description_command" value="xacro $(arg robot_description) arm_model:=$(arg arm_model) hand_type:=$(arg hand_type) side:=$(arg side)
+                                                                    initial_z:=$(arg initial_z) initial_y:=$(arg initial_y) initial_yaw:=$(arg initial_yaw)"/>
   <arg if="$(eval arm and hand)" name="load_hand_description_command" value="xacro $(arg hand_description)
-                                                                             hand_type:=$(arg hand_type) hand_version:=$(arg hand_version) side:=$(arg side)
-                                                                             fingers:=$(arg fingers) mounting_plate:=$(arg arm)"/>
+                                                                             prefix:=$(arg side_letter)h_"/>
+
+  <arg if="$(arg arm)" name="load_arm_description_command" value="xacro $(arg arm_description) arm_model:=$(arg arm_model) hand_type:=$(arg hand_type) side:=$(arg side)
+                                                                    initial_z:=$(arg initial_z) initial_y:=$(arg initial_y) initial_yaw:=$(arg initial_yaw)"/>
 
   <!-- LOAD THE DESCRIPTION -->
   <param if="$(eval arm and hand)" name="$(arg side)_hand_description" command="$(arg load_hand_description_command)"/>
   <param if="$(arg sim)" name="robot_description" command="$(arg load_robot_description_command)"/>
-  <param name="$(arg side)_hand_version" value="$(arg hand_version)" />
+  <param name="$(arg side)_hand_type" value="$(arg hand_type)" />
   
   <group unless="$(arg sim)">
     <node if="$(arg arm)" name="construct_robot_description" pkg="sr_robot_launch" type="construct_robot_description" output="screen">
@@ -59,4 +61,8 @@
 
     <param unless="$(arg arm)" name="robot_description" command="$(arg load_robot_description_command)"/>
   </group>
+
+  <!-- LOAD DESCRIPTIONS FOR GAZEBO -->
+  <param if="$(eval sim and hand)" name="$(arg side_letter)h_robot_description" command="$(arg load_hand_description_command)"/>
+  <param if="$(eval sim and arm)" name="$(arg side_letter)a_robot_description" command="$(arg load_arm_description_command)"/>
 </launch>

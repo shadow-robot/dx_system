@@ -19,10 +19,8 @@
   <xacro:arg name="kinematics_config" default="$(find ur_description)/config/$(arg arm_model)/default_kinematics.yaml"/>
   <xacro:include filename="$(find ur_description)/urdf/inc/$(arg arm_model)_macro.xacro"/>
 
-  <xacro:arg name="hand_type" default="dexee"/>
-  <xacro:arg name="hand_version" default="0x02000105"/>
+  <xacro:arg name="hand_type" default="0x02000105"/>
   <xacro:arg name="side" default="right"/>
-  <!-- <xacro:arg name="fingers" default="all"/> -->
 
   <xacro:if value="${'$(arg side)' == 'right'}">
       <xacro:arg name="arm_prefix" default="ra" />
@@ -46,7 +44,7 @@
       <xacro:ur5_robot prefix="$(arg arm_prefix)_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config)"/>
   </xacro:if>
 
-  <xacro:include filename="$(find dx_robot)/description/robot/0x02000105.xacro" />
+  <xacro:include filename="$(find dx_robot)/description/robot/$(arg hand_type).xacro" />
 
   <xacro:e3_r3_hand prefix="$(arg hand_prefix)_" />
 <!-- TODO Do something for the mounting plate (as it is shown below for hand E)
