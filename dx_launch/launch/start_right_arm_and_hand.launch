@@ -79,7 +79,7 @@
   <!-- Simulated robot launch-->
   <group if="$(arg sim)">
     <param name="/use_sim_time" value="true"/>
-    
+
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
       <arg name="world_name" default="$(arg world)"/>
       <arg name="gui" default="$(arg gui)"/>
@@ -140,20 +140,20 @@
       <arg name="two" value="$(eval 'F2' in arg('distals'))"/>
     </include>
 
-    <include file="$(find dx_robot)/launch/real.launch.xml">
+    <include file="$(find dx_launch)/launch/dexee_real.launch.xml">
       <arg name="debug" value="$(arg debug)"/>
       <arg name="hand_type" value="$(arg hand_type)"/>
       <arg name="ethercat_port" value="$(arg ethercat_port)"/>
-      <arg name="urdf_file" value="$(arg urdf_file)"/>
       <arg name="robot_config" value="$(arg robot_config)"/>
       <arg name="log_user" value="$(arg log_user)"/>
       <arg name="controller_output" value="$(arg controller_output)"/>
       <arg name="controller_start_delay" value="$(arg controller_start_delay)"/>
       <arg name="state_controller_start_delay" value="$(arg state_controller_start_delay)"/>
-      <arg name="snapshot_group" value="$(arg snapshot_group)"/>
       <arg name="start_control" value="$(arg start_control)"/>
       <arg name="control_mode" value="$(arg control_mode)"/>
     </include>
+
+    <include file="$(find dx_moveit_config)/launch/planning_context.launch"/>
 
     <!-- Start move_group only if robot controll is started-->
     <include if="$(eval arg('moveit') and arg('start_control'))" file="$(find dx_moveit_config)/launch/move_group.launch"/>
@@ -164,5 +164,12 @@
       <rosparam command="load" file="$(find dx_moveit_config)/config/kinematics.yaml"/>
     </node>
   </group>
+
+  <node pkg="sr_logging_common" name="check_log_size" type="check_log_size.py" output="screen" required="True"/>
+
+  <include file="$(find dx_robot)/launch/snapshot_recorder.launch.xml">
+    <!-- Different snapshot groups can be defined from snapshot_recording_params.yaml-->
+    <arg name="snapshot_group" value="$(arg snapshot_group)"/>
+  </include>
 
 </launch>
