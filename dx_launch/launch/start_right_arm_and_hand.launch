@@ -12,7 +12,7 @@
   <arg name="hand_type" default="0x02000105"/>
   <arg name="ethercat_port" default="$(optenv ETHERCAT_PORT enp1s0)"/>
   <arg name="urdf_file" default="$(find dx_robot)/description/robot/right_hand_and_UR10e.urdf.xacro"/>
-  <arg name="robot_config" default="$(find dx_robot)/config/$(arg hand_type).yaml" />
+  <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
   <arg name="log_user" default="user"/>
   <arg name="controller_output" default="log"/>
   <arg name="controller_start_delay" default="5"/>

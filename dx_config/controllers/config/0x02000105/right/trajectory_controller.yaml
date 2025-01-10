@@ -41,17 +41,17 @@ trajectory_controller_position_layer:
   refresh_command_time: True
   type: dx_controllers/FingerPositionController
   param_namespace: /dx_finger
-  finger_names: [F0, F1, F2]
+  finger_names: [rh_F0, rh_F1, rh_F2]
   publish_individual_controller_states: false
   subscribe_command_topics: false
   fingers:
-    F0:
+    rh_F0:
       actuators:
-        - F0_A0
-        - F0_A1
-        - F0_A2
-        - F0_A3
-        - F0_A4
+        - rh_F0_A0
+        - rh_F0_A1
+        - rh_F0_A2
+        - rh_F0_A3
+        - rh_F0_A4
       joints:
         - rh_F0_J0
         - rh_F0_J1
@@ -105,13 +105,13 @@ trajectory_controller_position_layer:
           i_clamp_min: -0.1
           i_clamp_max: -0.1
           antiwindup: true
-    F1:
+    rh_F1:
       actuators:
-        - F1_A0
-        - F1_A1
-        - F1_A2
-        - F1_A3
-        - F1_A4
+        - rh_F1_A0
+        - rh_F1_A1
+        - rh_F1_A2
+        - rh_F1_A3
+        - rh_F1_A4
       joints:
         - rh_F1_J0
         - rh_F1_J1
@@ -165,13 +165,13 @@ trajectory_controller_position_layer:
           i_clamp_min: -0.1
           i_clamp_max: -0.1
           antiwindup: true
-    F2:
+    rh_F2:
       actuators:
-        - F2_A0
-        - F2_A1
-        - F2_A2
-        - F2_A3
-        - F2_A4
+        - rh_F2_A0
+        - rh_F2_A1
+        - rh_F2_A2
+        - rh_F2_A3
+        - rh_F2_A4
       joints:
         - rh_F2_J0
         - rh_F2_J1

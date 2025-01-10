@@ -9,7 +9,7 @@ ethercat_robot_hw:
     robot_descriptions_ns: robot_descriptions
     fingers_per_hand: 3
 
-dx_finger/F0:
+dx_finger/rh_F0:
   dof_per_finger: 5
   joints_per_finger: 4
   pulley_radius_by_tendon:
@@ -25,7 +25,7 @@ dx_finger/F0:
   phalanx_lengths: [0.03, 0.05, 0.035, 0.35]
   magnetic_tactile_sensors: [MTPROX, MTMID]
 
-dx_finger/F1:
+dx_finger/rh_F1:
   dof_per_finger: 5
   joints_per_finger: 4
   pulley_radius_by_tendon:
@@ -41,7 +41,7 @@ dx_finger/F1:
   phalanx_lengths: [0.05, 0.035, 0.025, 0.01]
   magnetic_tactile_sensors: [MTPROX, MTMID]
 
-dx_finger/F2:
+dx_finger/rh_F2:
   dof_per_finger: 5
   joints_per_finger: 4
   pulley_radius_by_tendon:
@@ -60,30 +60,30 @@ dx_finger/F2:
 
 fan_subdevices:
   required:
-   - F0_A0
-   - F0_A1
-   - F0_A2
-   - F0_A3
-   - F0_A4
-   - F0_J0
-   - F0_J1
-   - F0_J2
-   - F0_J3
-   - F1_A0
-   - F1_A1
-   - F1_A2
-   - F1_A3
-   - F1_A4
-   - F1_J0
-   - F1_J1
-   - F1_J2
-   - F1_J3
-   - F2_A0
-   - F2_A1
-   - F2_A2
-   - F2_A3
-   - F2_A4
-   - F2_J0
-   - F2_J1
-   - F2_J2
-   - F2_J3
+   - rh_F0_A0
+   - rh_F0_A1
+   - rh_F0_A2
+   - rh_F0_A3
+   - rh_F0_A4
+   - rh_F0_J0
+   - rh_F0_J1
+   - rh_F0_J2
+   - rh_F0_J3
+   - rh_F1_A0
+   - rh_F1_A1
+   - rh_F1_A2
+   - rh_F1_A3
+   - rh_F1_A4
+   - rh_F1_J0
+   - rh_F1_J1
+   - rh_F1_J2
+   - rh_F1_J3
+   - rh_F2_A0
+   - rh_F2_A1
+   - rh_F2_A2
+   - rh_F2_A3
+   - rh_F2_A4
+   - rh_F2_J0
+   - rh_F2_J1
+   - rh_F2_J2
+   - rh_F2_J3

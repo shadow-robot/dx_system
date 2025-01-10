@@ -7,7 +7,7 @@
   <arg name="debug" default="false"/>
   <arg name="hand_type" default="0x02000105"/>
   <arg name="ethercat_port" default="$(optenv ETHERCAT_PORT enp1s0)"/>
-  <arg name="robot_config" default="$(find dx_robot)/config/$(arg hand_type).yaml" />
+  <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
   <arg name="bootload_mode" default="false"/>
   <arg name="serial_mode" default="false"/>
   <arg name="log_user" default="user"/>

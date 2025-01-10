@@ -3,13 +3,13 @@
 
 F0_npo_controller:
   type: dx_controllers/FingerNpoController
-  finger: F0
+  finger: rh_F0
   actuators:
-    - F0_A0
-    - F0_A1
-    - F0_A2
-    - F0_A3
-    - F0_A4
+    - rh_F0_A0
+    - rh_F0_A1
+    - rh_F0_A2
+    - rh_F0_A3
+    - rh_F0_A4
   joints:
     - rh_F0_J0
     - rh_F0_J1
@@ -18,13 +18,13 @@ F0_npo_controller:
 
 F1_npo_controller:
   type: dx_controllers/FingerNpoController
-  finger: F1
+  finger: rh_F1
   actuators:
-    - F1_A0
-    - F1_A1
-    - F1_A2
-    - F1_A3
-    - F1_A4
+    - rh_F1_A0
+    - rh_F1_A1
+    - rh_F1_A2
+    - rh_F1_A3
+    - rh_F1_A4
   joints:
     - rh_F1_J0
     - rh_F1_J1
@@ -33,13 +33,13 @@ F1_npo_controller:
 
 F2_npo_controller:
   type: dx_controllers/FingerNpoController
-  finger: F2
+  finger: rh_F2
   actuators:
-    - F2_A0
-    - F2_A1
-    - F2_A2
-    - F2_A3
-    - F2_A4
+    - rh_F2_A0
+    - rh_F2_A1
+    - rh_F2_A2
+    - rh_F2_A3
+    - rh_F2_A4
   joints:
     - rh_F2_J0
     - rh_F2_J1
