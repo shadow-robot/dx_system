@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (C) 2024 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
+ Unauthorized copying of the content in this file, via any medium is strictly prohibited.
+-->
+<launch>
+<arg name="hand_type"/>
+<arg name="output" default="screen"/>
+<arg name="side"/>
+
+<rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/trajectory_controller.yaml"/>
+<node name="spawn_trajectory_controller"
+      pkg="controller_manager" type="spawner" respawn="false"
+      output="$(arg output)"
+      args="trajectory_controller trajectory_controller_position_layer"/>
+</launch>

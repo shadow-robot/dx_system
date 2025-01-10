@@ -126,32 +126,35 @@
   <!-- Real robot launch-->
   <group unless="$(arg sim)">
 
-    <rosparam command="load" file="$(find dx_controllers)/config/$(arg hand_type)/position_controller.yaml"/>
-    <rosparam command="load" file="$(find dx_controllers)/config/$(arg hand_type)/joint_effort_controller.yaml"/>
-    <rosparam command="load" file="$(find dx_controllers)/config/$(arg hand_type)/actuator_effort_controller.yaml"/>
+    <group if="$(arg hand)" ns="$(arg side)_hand">
 
-    <rosparam command="load" file="$(find dx_controllers)/config/$(arg hand_type)/actuator_pwm_controller.yaml"/>
-    <rosparam command="load" file="$(find dx_controllers)/config/$(arg hand_type)/trajectory_controller.yaml"/>
+      <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/position_controller.yaml"/>
+      <rosparam command="load" file="$(find dx_config)/config/$(arg hand_type)/joint_effort_controller.yaml"/>
+      <rosparam command="load" file="$(find dx_controllers)/config/$(arg hand_type)/actuator_effort_controller.yaml"/>
 
-    <include if="$(arg start_distal_cameras)" file="$(find usb_cam)/launch/all.launch">
-      <arg name="viewer" value="$(arg view_distal_cameras)"/>
-      <arg name="zero" value="$(eval 'F0' in arg('distals'))"/>
-      <arg name="one" value="$(eval 'F1' in arg('distals'))"/>
-      <arg name="two" value="$(eval 'F2' in arg('distals'))"/>
-    </include>
+      <rosparam command="load" file="$(find dx_controllers)/config/$(arg hand_type)/actuator_pwm_controller.yaml"/>
+      <rosparam command="load" file="$(find dx_controllers)/config/$(arg hand_type)/trajectory_controller.yaml"/>
 
-    <include file="$(find dx_launch)/launch/dexee_real.launch.xml">
-      <arg name="debug" value="$(arg debug)"/>
-      <arg name="hand_type" value="$(arg hand_type)"/>
-      <arg name="ethercat_port" value="$(arg ethercat_port)"/>
-      <arg name="robot_config" value="$(arg robot_config)"/>
-      <arg name="log_user" value="$(arg log_user)"/>
-      <arg name="controller_output" value="$(arg controller_output)"/>
-      <arg name="controller_start_delay" value="$(arg controller_start_delay)"/>
-      <arg name="state_controller_start_delay" value="$(arg state_controller_start_delay)"/>
-      <arg name="start_control" value="$(arg start_control)"/>
-      <arg name="control_mode" value="$(arg control_mode)"/>
-    </include>
+      <include if="$(arg start_distal_cameras)" file="$(find usb_cam)/launch/all.launch">
+        <arg name="viewer" value="$(arg view_distal_cameras)"/>
+        <arg name="zero" value="$(eval 'F0' in arg('distals'))"/>
+        <arg name="one" value="$(eval 'F1' in arg('distals'))"/>
+        <arg name="two" value="$(eval 'F2' in arg('distals'))"/>
+      </include>
+
+      <include file="$(find dx_launch)/launch/dexee_real.launch.xml">
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="hand_type" value="$(arg hand_type)"/>
+        <arg name="ethercat_port" value="$(arg ethercat_port)"/>
+        <arg name="robot_config" value="$(arg robot_config)"/>
+        <arg name="log_user" value="$(arg log_user)"/>
+        <arg name="controller_output" value="$(arg controller_output)"/>
+        <arg name="controller_start_delay" value="$(arg controller_start_delay)"/>
+        <arg name="state_controller_start_delay" value="$(arg state_controller_start_delay)"/>
+        <arg name="start_control" value="$(arg start_control)"/>
+        <arg name="control_mode" value="$(arg control_mode)"/>
+      </include>
+    </group>
 
     <include file="$(find dx_moveit_config)/launch/planning_context.launch"/>
 

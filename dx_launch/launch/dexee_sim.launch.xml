@@ -25,7 +25,7 @@
   </include>
 
   <!-- Spawn controllers -->
-  <include file="$(find dx_launch)/launch/ros_controllers.launch.xml">
+  <include file="$(find dx_launch)/launch/controllers/ros_controllers.launch">
     <arg name="control_type" value="$(arg control_type)"/>
     <arg name="robot_namespace" value="$(arg side)_hand_"/>
   </include>
