@@ -12,7 +12,6 @@
   <arg name="hand_type" default="0x02000105"/>
   <arg name="ethercat_port" default="$(optenv ETHERCAT_PORT enp1s0)"/>
   <arg name="urdf_file" default="$(find dx_robot)/description/robot/right_hand_and_UR10e.urdf.xacro"/>
-  <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
   <arg name="log_user" default="user"/>
   <arg name="controller_output" default="log"/>
   <arg name="controller_start_delay" default="5"/>
@@ -37,6 +36,8 @@
   <arg name="arm" default="true"/>
   <arg name="hand" default="true"/>
   <arg name="arm_model" default="ur10e"/>
+
+  <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
 
   <arg if="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_moveit_config)/launch/moveit.rviz"/>
   <arg unless="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_robot)/config/dx_robot.rviz"/>
