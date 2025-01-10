@@ -38,7 +38,7 @@
   <!--controllers-->
 
   <node if="$(arg start_control)" name="controller_timed_launch" pkg="sr_utilities_common" type="timed_roslaunch.sh"
-        args="$(arg controller_start_delay) dx_launch $(arg control_mode)_controller.launch hand_type:=$(arg hand_type) output:=$(arg controller_output)" />
+        args="$(arg controller_start_delay) dx_launch $(arg control_mode)_controller.launch hand_type:=$(arg hand_type) side:=$(arg side) output:=$(arg controller_output)" />
   
   <node pkg="dx_robot" type="check_subdevices" name="enable_robot" output="screen" />
 </launch>

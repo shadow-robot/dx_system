@@ -125,16 +125,7 @@
 
   <!-- Real robot launch-->
   <group unless="$(arg sim)">
-
     <group if="$(arg hand)" ns="$(arg side)_hand">
-
-      <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/position_controller.yaml"/>
-      <rosparam command="load" file="$(find dx_config)/config/$(arg hand_type)/joint_effort_controller.yaml"/>
-      <rosparam command="load" file="$(find dx_controllers)/config/$(arg hand_type)/actuator_effort_controller.yaml"/>
-
-      <rosparam command="load" file="$(find dx_controllers)/config/$(arg hand_type)/actuator_pwm_controller.yaml"/>
-      <rosparam command="load" file="$(find dx_controllers)/config/$(arg hand_type)/trajectory_controller.yaml"/>
-
       <include if="$(arg start_distal_cameras)" file="$(find usb_cam)/launch/all.launch">
         <arg name="viewer" value="$(arg view_distal_cameras)"/>
         <arg name="zero" value="$(eval 'F0' in arg('distals'))"/>
