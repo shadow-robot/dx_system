@@ -7,18 +7,17 @@
   <arg name="debug" default="false"/>
   <arg name="hand_type" default="0x02000105"/>
   <arg name="ethercat_port" default="$(optenv ETHERCAT_PORT enp1s0)"/>
-  <arg name="robot_config" default=""$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
   <arg name="log_user" default="user"/>
   <arg name="controller_output" default="log"/>
   <arg name="controller_start_delay" default="5"/>
   <arg name="state_controller_start_delay" default="2"/>
-
   <arg name="start_control" default="false"/>
   <arg name="control_mode" default="none"/>
   <!-- allowed values are trajectory, actuator_pwm, actuator_effort, joint_effort, position -->
   <arg name="side" default="right"/>
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
+  <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
   
   <include file="$(find dx_launch)/launch/dexee_driver_only.launch">
     <arg name="debug" value="$(arg debug)"/>
