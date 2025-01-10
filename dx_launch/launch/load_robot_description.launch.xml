@@ -32,7 +32,7 @@
 
   <!-- Hand-only description, needed for srdf generation -->
   <!-- TODO We need to make this depend on the hand_type -->
-  <arg if="$(arg hand)" name="hand_description" value="'$(find dx_robot)/description/robot/0x02000105.urdf.xacro'"/>
+  <arg if="$(arg hand)" name="hand_description" value="'$(find dx_launch)/description/0x02000105.urdf.xacro'"/>
 
   <arg if="$(eval arm and hand)" name="robot_description" value="'$(find dx_launch)/description/dexee_ur.urdf.xacro'"/>
   <arg if="$(eval arm and not hand)" name="robot_description" value="'$(find dx_launch)/description/ur.urdf.xacro'"/>
@@ -41,8 +41,10 @@
 
   <arg if="$(arg arm)" name="load_robot_description_command" value="xacro $(arg robot_description) arm_model:=$(arg arm_model) hand_type:=$(arg hand_type) side:=$(arg side)
                                                                     initial_z:=$(arg initial_z) initial_y:=$(arg initial_y) initial_yaw:=$(arg initial_yaw)"/>
-  <arg if="$(eval arm and hand)" name="load_hand_description_command" value="xacro $(arg hand_description)
-                                                                             prefix:=$(arg side_letter)h_"/>
+  <arg if="$(eval hand and not arm)" name="load_robot_description_command" value="xacro $(arg hand_description)
+                                                                             prefix:=$(arg side_letter)h_ side:=$(arg side)"/>
+  <arg if="$(eval hand)" name="load_hand_description_command" value="xacro $(arg hand_description)
+                                                                             prefix:=$(arg side_letter)h_ side:=$(arg side)"/>
 
   <arg if="$(arg arm)" name="load_arm_description_command" value="xacro $(arg arm_description) arm_model:=$(arg arm_model) hand_type:=$(arg hand_type) side:=$(arg side)
                                                                     initial_z:=$(arg initial_z) initial_y:=$(arg initial_y) initial_yaw:=$(arg initial_yaw)"/>

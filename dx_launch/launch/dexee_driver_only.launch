@@ -15,12 +15,14 @@
   <arg name="state_controller_start_delay" default="2"/>
   <arg name="odometry_monitor_start_delay" default="5"/>
   <arg name="side" default="right"/>
+  <arg name="side_letter" value="$(eval side[0])"/>
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
 
 
   <param name="ethercat_robot_hw/ethercat_port" value="$(arg ethercat_port)" />
   <param name="ethercat_robot_hw/hand_type" value="$(arg hand_type)" />
+  <param name="ethercat_robot_hw/prefix" type="str" value="$(arg side_letter)h_" />
 
   <node pkg="dx_robot" name="param_dump" type="dump_state" output="screen"/>
   <node pkg="dx_robot" name="fan_info_dump" type="dump_fan_debug">

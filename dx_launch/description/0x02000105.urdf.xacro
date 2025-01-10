@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (C) 2024 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
+ Unauthorized copying of the content in this file, via any medium is strictly prohibited.
+-->
+
+<robot name="e3_r3_hand" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find dx_robot)/description/robot/0x02000105.xacro" />
+  <xacro:arg name="prefix" default="" />
+  <xacro:arg name="side" default="" />
+  <link name="world" />
+  <joint name="$(arg prefix)world_joint" type="fixed">
+    <parent link="world" />
+    <child link="$(arg prefix)hand_base" />
+  </joint>
+  <xacro:e3_r3_hand prefix="$(arg prefix)" />
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <!--robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType-->
+      <robotNamespace>$(arg side)_hand</robotNamespace>
+      <robotParam>$(arg prefix)robot_description</robotParam>
+    </plugin>
+  </gazebo>
+</robot>
