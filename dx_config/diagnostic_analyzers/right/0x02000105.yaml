@@ -147,7 +147,7 @@ analyzers:
         type: diagnostic_aggregator/GenericAnalyzer
         path: EtherCAT Slaves
         timeout: 5.0
-        regex: ['Palm', 'rh_F[0-9]: *rh_B[0-9]_F[0-9]_FAN_Over_Ethercat'] # TODO(toni) prefix Palm
+        regex: ['rh_Palm', 'rh_F[0-9]: *rh_B[0-9]_F[0-9]_FAN_Over_Ethercat']
         num_items: 7
       EtherCAT_Master:
         type: diagnostic_aggregator/GenericAnalyzer
