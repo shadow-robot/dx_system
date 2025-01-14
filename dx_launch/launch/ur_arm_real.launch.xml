@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (C) 2024 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
+ Unauthorized copying of the content in this file, via any medium is strictly prohibited.
+-->
+<launch>
+  <arg name="debug" default="false"/>
+  <arg name="hand_type" default="0x02000105"/>
+  <arg name="log_user" default="user"/>
+  <arg name="controller_output" default="log"/>
+  <arg name="controller_start_delay" default="5"/>
+  <arg name="state_controller_start_delay" default="2"/>
+  <arg name="start_control" default="false"/>
+  <arg name="control_mode" default="none"/>
+  <!-- allowed values are trajectory, actuator_pwm, actuator_effort, joint_effort, position -->
+  <arg name="side" default="right"/>
+  <arg name="robot_state_pub_frequency" default="250"/>
+  <arg name="joint_state_pub_frequency" default="125"/>
+  <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
+  
+  <include file="$(find dx_launch)/launch/ur_arm_driver_only.launch">
+    <arg name="debug" value="$(arg debug)"/>
+    <arg name="hand_type" value="$(arg hand_type)"/>
+    <arg name="robot_config" value="$(arg robot_config)"/> 
+    <arg name="log_user" value="$(arg log_user)"/>
+    <arg name="controller_output" value="$(arg controller_output)"/>
+    <arg name="state_controller_start_delay" value="$(arg state_controller_start_delay)"/>
+    <arg name="side" value="$(arg side)"/>
+    <arg name="robot_state_pub_frequency" value="$(arg robot_state_pub_frequency)"/>
+    <arg name="joint_state_pub_frequency" value="$(arg joint_state_pub_frequency)"/>
+  </include>
+
+  <!--controllers-->
+  <rosparam command="load" file="$(find dx_config)/controllers/config/ur/$(arg side)/trajectory_controller.yaml"/>
+  <node name="arm_trajectory_controller_spawner" pkg="controller_manager" type="spawner" output="screen"
+        args="--wait-for=sr_ur_robot_hw/robot_program_running trajectory_controller"/>
+</launch>

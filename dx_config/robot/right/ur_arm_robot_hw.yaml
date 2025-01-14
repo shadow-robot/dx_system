@@ -1,0 +1,49 @@
+# Copyright (C) 2024 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
+# Unauthorized copying of the content in this file, via any medium is strictly prohibited.
+
+sr_ur_robot_hw:
+  joints: &robot_joints
+    - ra_shoulder_pan_joint
+    - ra_shoulder_lift_joint
+    - ra_elbow_joint
+    - ra_wrist_1_joint
+    - ra_wrist_2_joint
+    - ra_wrist_3_joint
+
+  type: ur_driver/HardwareInterface
+  
+  # ra for right side arm la for left side arm
+  robot_id: ra
+
+  tf_prefix: ra_
+  
+  # for sending robot programs
+  # When using aurora (https://github.com/shadow-robot/aurora) it uses sed to replace this IP with the user-defined IP
+  robot_ip: 10.8.1.1
+  
+  # for the server that moves the robot
+  # When using aurora (https://github.com/shadow-robot/aurora) it uses sed to replace this IP with the user-defined IP
+  control_pc_ip_address: 10.8.1.100
+  
+  use_tool_communication: false
+  
+  headless_mode: true
+  
+  servoj_gain: 250
+  
+  servoj_lookahead_time: 0.1
+
+  reverse_port: 50001
+
+  script_sender_port: 50002
+
+  trajectory_port: 50003
+
+  script_command_port: 50004
+
+  use_local_hardware_interface_param: true
+  
+  non_blocking_read: true
+
+  wrench_prefix: right_
+  
