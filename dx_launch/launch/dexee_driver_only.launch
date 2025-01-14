@@ -30,7 +30,6 @@
     <param name="user" value="$(arg log_user)"/>
   </node>
 
-  <!-- TODO Toni. Very likely will need to add prefixed joint names to the list of required subdevices -->
   <rosparam command="load" file="$(arg robot_config)"/>
 
   <node if="$(arg bootload_mode)" pkg="dx_fan_devices" type="call_bootloader" name="bl_call" output="screen"/>
@@ -57,17 +56,10 @@
   <node pkg="dx_robot" type="get_hand_type_service.py" name="get_hand_type_service" output="screen"/>
   <node pkg="dx_robot" type="safe_mode_monitor.py" name="safe_mode_monitor"/>
 
-  <!-- diagnostic aggregator for being able to see the results in the robot_monitor -->
-  <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
-     <rosparam command="load" file="$(find dx_config)/diagnostic_analyzers/$(arg side)/$(arg hand_type).yaml"/>
-  </node>
-
-
   <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" >
     <param name="publish_frequency" type="double" value="$(arg robot_state_pub_frequency)" />
     <param name="tf_prefix" type="string" value="" />
   </node>
-
 
   <node name="imu_timed_launch" pkg="sr_utilities_common" type="timed_roslaunch.sh"
         args="$(arg state_controller_start_delay) dx_controllers imu_state_controller.launch hand_type:=$(arg hand_type) output:=$(arg controller_output)" />

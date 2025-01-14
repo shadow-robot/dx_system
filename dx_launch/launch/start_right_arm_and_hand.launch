@@ -148,6 +148,21 @@
       </include>
     </group>
 
+    <group if="$(arg arm)" ns="$(arg side)_arm">
+      <include file="$(find dx_launch)/launch/arm_real.launch.xml">
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="hand_type" value="$(arg hand_type)"/>
+        <arg name="ethercat_port" value="$(arg ethercat_port)"/>
+        <arg name="robot_config" value="$(arg robot_config)"/>
+        <arg name="log_user" value="$(arg log_user)"/>
+        <arg name="controller_output" value="$(arg controller_output)"/>
+        <arg name="controller_start_delay" value="$(arg controller_start_delay)"/>
+        <arg name="state_controller_start_delay" value="$(arg state_controller_start_delay)"/>
+        <arg name="start_control" value="$(arg start_control)"/>
+        <arg name="control_mode" value="$(arg control_mode)"/>
+      </include>
+    </group>
+
     <include file="$(find dx_moveit_config)/launch/planning_context.launch"/>
 
     <!-- Start move_group only if robot controll is started-->
@@ -157,6 +172,12 @@
     <node if="$(arg gui)" name="$(anon rviz)" pkg="rviz" type="rviz" respawn="true"
       args="-d $(arg rviz_config_file)" output="screen">
       <rosparam command="load" file="$(find dx_moveit_config)/config/kinematics.yaml"/>
+    </node>
+
+
+    <!-- diagnostic aggregator for being able to see the results in the robot_monitor -->
+    <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
+      <rosparam command="load" file="$(find dx_config)/diagnostic_analyzers/$(arg side)/$(arg hand_type).yaml"/>
     </node>
   </group>
 

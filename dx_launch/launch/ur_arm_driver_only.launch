@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (C) 2024 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
+ Unauthorized copying of the content in this file, via any medium is strictly prohibited.
+-->
+<launch>
+  <arg name="debug" default="false"/>
+  <arg name="hand_type" default="0x02000105"/>
+  <arg name="log_user" default="user"/>
+  <arg name="controller_output" default="log"/>
+  <arg name="state_controller_start_delay" default="2"/>
+  <arg name="side" default="right"/>
+  <arg name="side_letter" value="$(eval side[0])"/>
+  <arg name="robot_state_pub_frequency" default="250"/>
+  <arg name="joint_state_pub_frequency" default="125"/>
+  <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/ur_arm_robot_hw.yaml" />
+
+
+  <rosparam command="load" file="$(arg robot_config)"/>
+
+  <group if="$(arg debug)">
+    <node name="dx_finger" pkg="ros_control_robot" type="ros_control_robot" args="" output="screen" launch-prefix="gdb -x run -args">
+    </node>
+  </group>
+
+  <group unless="$(arg debug)">
+    <node name="dx_finger" pkg="ros_control_robot" type="ros_control_robot" args="" output="screen" launch-prefix="ethercat_grant">
+      <param name="bootload_mode" value="$(arg bootload_mode)"/>
+      <param name="fan_dev_serial_mode" value="$(arg serial_mode)"/>
+    </node>
+  </group>
+
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" >
+    <param name="publish_frequency" type="double" value="$(arg robot_state_pub_frequency)" />
+    <param name="tf_prefix" type="string" value="" />
+  </node>
+
+  <node name="js_timed_launch" pkg="sr_utilities_common" type="timed_roslaunch.sh"
+        args="$(arg state_controller_start_delay) ros_ethercat_model joint_state_publisher.launch publish_rate:=$(arg joint_state_pub_frequency)" />
+  </node>
+</launch>
