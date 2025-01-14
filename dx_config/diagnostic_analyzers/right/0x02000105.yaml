@@ -2,7 +2,7 @@
 # Unauthorized copying of the content in this file, via any medium is strictly prohibited.
 
 analyzers:
-  FanSlaves:
+  rhFanSlaves:
     type: diagnostic_aggregator/AnalyzerGroup
     path: rh FAN Sub-devices
     analyzers:
@@ -41,7 +41,7 @@ analyzers:
             timeout: 5.0
             num_items: 3
 
-  Fingers:
+  rhFingers:
     type: diagnostic_aggregator/AnalyzerGroup
     path: rh Fingers
     analyzers:
@@ -155,9 +155,10 @@ analyzers:
         timeout: 5.0
         regex: 'EtherCAT Master' # TODO(toni) prefix this as well
         num_items: 1
+
   control_loop:
     type: diagnostic_aggregator/GenericAnalyzer
     path: Realtime Control Loop
     timeout: 5.0
-    startswith: 'Realtime Control Loop' # TODO(toni) prefix this as well
+    regex: ['^((\w)+ )*Realtime Control Loop']
     num_items: 1
