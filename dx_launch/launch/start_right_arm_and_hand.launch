@@ -37,7 +37,8 @@
   <arg name="hand" default="true"/>
   <arg name="arm_model" default="ur10e"/>
 
-  <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
+  <arg name="hand_robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
+  <arg name="arm_robot_config" default="$(find dx_config)/robot/$(arg side)/ur_arm_robot_hw.yaml" />
 
   <arg if="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_moveit_config)/launch/moveit.rviz"/>
   <arg unless="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_robot)/config/dx_robot.rviz"/>
@@ -61,6 +62,16 @@
   <arg unless="$(arg start_home)" name="spawn_model_extra_args" value="" />
   <arg name="world" default="$(find dx_moveit_config)/config/demo.world"/>
   <arg name="gazebo_gui" default="$(arg gui)"/>
+
+  <group if="$(arg arm)">
+    <!-- These parameters are loaded in two places:
+       - Here in the root namespace because that's what the arm calibration infrastructure expects (robot_description
+         gets loaded to the root and calibration happens outside of the namesapce). This will keep compaibility with the
+         preexisting sr_ur_calibration_loader script
+       - It also gets loaded in the arm namespace in ur_arm_driver-only.launch (to be used by the arm driver)-->
+    <arg name="arm_robot_hw" default="$(find dx_config)/robot/$(arg side)/ur_arm_robot_hw.yaml" />
+    <rosparam command="load" file="$(arg arm_robot_hw)"/>
+  </group>
 
 
   <!-- Loading robot description-->
@@ -126,6 +137,22 @@
 
   <!-- Real robot launch-->
   <group unless="$(arg sim)">
+    <group if="$(arg arm)" ns="$(arg side)_arm">
+      <include file="$(find dx_launch)/launch/ur_arm_real.launch.xml">
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="hand_type" value="$(arg hand_type)"/>
+        <arg name="robot_config" value="$(arg arm_robot_config)"/>
+        <arg name="log_user" value="$(arg log_user)"/>
+        <arg name="controller_output" value="$(arg controller_output)"/>
+        <arg name="controller_start_delay" value="$(arg controller_start_delay)"/>
+        <arg name="state_controller_start_delay" value="$(arg state_controller_start_delay)"/>
+        <arg name="start_control" value="$(arg start_control)"/>
+        <arg name="control_mode" value="$(arg control_mode)"/>
+        <arg name="arm_model" value="$(arg arm_model)"/>
+        <arg name="side" value="$(arg side)"/>
+      </include>
+    </group>
+
     <group if="$(arg hand)" ns="$(arg side)_hand">
       <include if="$(arg start_distal_cameras)" file="$(find usb_cam)/launch/all.launch">
         <arg name="viewer" value="$(arg view_distal_cameras)"/>
@@ -138,22 +165,7 @@
         <arg name="debug" value="$(arg debug)"/>
         <arg name="hand_type" value="$(arg hand_type)"/>
         <arg name="ethercat_port" value="$(arg ethercat_port)"/>
-        <arg name="robot_config" value="$(arg robot_config)"/>
-        <arg name="log_user" value="$(arg log_user)"/>
-        <arg name="controller_output" value="$(arg controller_output)"/>
-        <arg name="controller_start_delay" value="$(arg controller_start_delay)"/>
-        <arg name="state_controller_start_delay" value="$(arg state_controller_start_delay)"/>
-        <arg name="start_control" value="$(arg start_control)"/>
-        <arg name="control_mode" value="$(arg control_mode)"/>
-      </include>
-    </group>
-
-    <group if="$(arg arm)" ns="$(arg side)_arm">
-      <include file="$(find dx_launch)/launch/arm_real.launch.xml">
-        <arg name="debug" value="$(arg debug)"/>
-        <arg name="hand_type" value="$(arg hand_type)"/>
-        <arg name="ethercat_port" value="$(arg ethercat_port)"/>
-        <arg name="robot_config" value="$(arg robot_config)"/>
+        <arg name="robot_config" value="$(arg hand_robot_config)"/>
         <arg name="log_user" value="$(arg log_user)"/>
         <arg name="controller_output" value="$(arg controller_output)"/>
         <arg name="controller_start_delay" value="$(arg controller_start_delay)"/>

@@ -5,37 +5,66 @@
 -->
 <launch>
   <arg name="debug" default="false"/>
+  <!-- Whether there is a hand. -->
+  <arg name="hand" default="true"/>
   <arg name="hand_type" default="0x02000105"/>
+  <arg name="arm_model" default="ur10e"/>
   <arg name="log_user" default="user"/>
   <arg name="controller_output" default="log"/>
   <arg name="state_controller_start_delay" default="2"/>
   <arg name="side" default="right"/>
   <arg name="side_letter" value="$(eval side[0])"/>
+  <arg name="arm_prefix" value="$(arg side_letter)a"/>
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
   <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/ur_arm_robot_hw.yaml" />
+  <arg name="force_torque_sensor_hw" default="$(find dx_config)/controllers/config/ur/$(arg side)/force_torque_controller.yaml"/>
 
 
   <rosparam command="load" file="$(arg robot_config)"/>
 
-  <group if="$(arg debug)">
-    <node name="dx_finger" pkg="ros_control_robot" type="ros_control_robot" args="" output="screen" launch-prefix="gdb -x run -args">
-    </node>
+  <arg name="arm_speed_scale" default="0.5"/>
+
+  <!-- Sets up right payload -->
+  <arg if="$(eval hand and arg('hand_type') == '0x02000105')" name="arm_payload_mass" default="4.5"/>
+  <arg if="$(arg hand)" name="arm_payload_cog" default="[0.0, 0.0, 0.07]"/>
+  <arg unless="$(arg hand)" name="arm_payload_mass" default="0.0"/>
+  <arg unless="$(arg hand)" name="arm_payload_cog" default="[0.0, 0.0, 0.0]"/>
+
+  <rosparam subst_value="True">
+    robot_hardware:
+      - $(arg arm_prefix)_sr_ur_robot_hw
+  </rosparam>
+
+ <!-- Set the parameters related to ur files -->
+  <param name="$(arg arm_prefix)_sr_ur_robot_hw/input_recipe_file" type="string" value="$(find ur_robot_driver)/resources/rtde_input_recipe.txt"/>
+  <param name="$(arg arm_prefix)_sr_ur_robot_hw/output_recipe_file" type="string" value="$(find ur_robot_driver)/resources/rtde_output_recipe.txt"/>
+  <param name="$(arg arm_prefix)_sr_ur_robot_hw/script_file" type="string" value="$(find ur_client_library)/resources/external_control.urscript"/>
+
+  <param name="$(arg arm_prefix)_sr_ur_robot_hw/speed_scale" type="double" value="$(arg arm_speed_scale)"/>
+  <group if="$(eval 'e' in arg('arm_model'))">
+    <rosparam command="load" file="$(arg force_torque_sensor_hw)"/>
+    <node name="ft_sensor_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="force_torque_sensor_controller" />
   </group>
 
-  <group unless="$(arg debug)">
-    <node name="dx_finger" pkg="ros_control_robot" type="ros_control_robot" args="" output="screen" launch-prefix="ethercat_grant">
-      <param name="bootload_mode" value="$(arg bootload_mode)"/>
-      <param name="fan_dev_serial_mode" value="$(arg serial_mode)"/>
-    </node>
-  </group>
+  <!-- Start the robot driver node -->
+  <node if="$(arg debug)" name="ur_arm_robot" pkg="ros_control_robot" type="ros_control_robot" args="" output="screen" launch-prefix="gdb -ex run -args"/>
+  <node unless="$(arg debug)" name="ur_arm_robot" pkg="ros_control_robot" type="ros_control_robot" args="" output="screen" launch-prefix="ethercat_grant"/>
 
-  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" >
+  <!-- Robot state publisher (publishes to /tf in the root namespace) -->
+  <!-- <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" >
     <param name="publish_frequency" type="double" value="$(arg robot_state_pub_frequency)" />
     <param name="tf_prefix" type="string" value="" />
+  </node> -->
+  <node name="conditional_delayed_rostool_robot_state_publisher" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
+    <param name="package_name" value="robot_state_publisher" />
+    <param name="executable_name" value="robot_state_publisher" />
+    <rosparam param="params_list">[^robot_description$]</rosparam>
+    <param name="launch_args_list" value="
+    publish_frequency=$(arg robot_state_pub_frequency) tf_prefix=''" />
   </node>
 
+  <!-- Loads joint state publisher (a ros_control controller plugin that publishes to joint_states in the current namespace) -->
   <node name="js_timed_launch" pkg="sr_utilities_common" type="timed_roslaunch.sh"
         args="$(arg state_controller_start_delay) ros_ethercat_model joint_state_publisher.launch publish_rate:=$(arg joint_state_pub_frequency)" />
-  </node>
 </launch>

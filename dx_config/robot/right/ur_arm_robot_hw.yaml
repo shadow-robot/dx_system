@@ -1,7 +1,8 @@
 # Copyright (C) 2024 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
 # Unauthorized copying of the content in this file, via any medium is strictly prohibited.
 
-sr_ur_robot_hw:
+# We keep the prefixed name because this file is loaded twice (in the roo namespace and in the arm namespace)
+ra_sr_ur_robot_hw:
   joints: &robot_joints
     - ra_shoulder_pan_joint
     - ra_shoulder_lift_joint
@@ -23,7 +24,7 @@ sr_ur_robot_hw:
   
   # for the server that moves the robot
   # When using aurora (https://github.com/shadow-robot/aurora) it uses sed to replace this IP with the user-defined IP
-  control_pc_ip_address: 10.8.1.100
+  control_pc_ip_address: 10.8.1.2 #10.8.1.100
   
   use_tool_communication: false
   

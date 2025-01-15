@@ -55,7 +55,7 @@
   <param name="$(arg side)_hand_type" value="$(arg hand_type)" />
   
   <group unless="$(arg sim)">
-    <node if="$(arg arm)" name="construct_robot_description" pkg="sr_robot_launch" type="construct_robot_description" output="screen">
+    <node if="$(arg arm)" name="construct_robot_description" pkg="dx_launch" type="construct_robot_description" output="screen">
       <param name="arm_type" value="$(arg arm_model)"/>
       <param name="load_robot_description_command" value="$(arg load_robot_description_command)"/>
       <param name="side" value="$(arg side)"/>
