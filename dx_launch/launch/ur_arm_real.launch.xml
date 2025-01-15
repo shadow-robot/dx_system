@@ -5,7 +5,10 @@
 -->
 <launch>
   <arg name="debug" default="false"/>
+  <!-- Whether there is a hand. -->
+  <arg name="hand" default="true"/>
   <arg name="hand_type" default="0x02000105"/>
+  <arg name="arm_model" default="ur10e"/>
   <arg name="log_user" default="user"/>
   <arg name="controller_output" default="log"/>
   <arg name="controller_start_delay" default="5"/>
@@ -14,13 +17,17 @@
   <arg name="control_mode" default="none"/>
   <!-- allowed values are trajectory, actuator_pwm, actuator_effort, joint_effort, position -->
   <arg name="side" default="right"/>
+  <arg name="side_letter" value="$(eval side[0])"/>
+  <arg name="arm_prefix" value="$(arg side_letter)a"/>
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
-  <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
+  <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/ur_arm_robot_hw.yaml" />
   
   <include file="$(find dx_launch)/launch/ur_arm_driver_only.launch">
     <arg name="debug" value="$(arg debug)"/>
+    <arg name="hand" value="$(arg hand)"/>
     <arg name="hand_type" value="$(arg hand_type)"/>
+    <arg name="arm_model" value="$(arg arm_model)"/>
     <arg name="robot_config" value="$(arg robot_config)"/> 
     <arg name="log_user" value="$(arg log_user)"/>
     <arg name="controller_output" value="$(arg controller_output)"/>
@@ -33,5 +40,5 @@
   <!--controllers-->
   <rosparam command="load" file="$(find dx_config)/controllers/config/ur/$(arg side)/trajectory_controller.yaml"/>
   <node name="arm_trajectory_controller_spawner" pkg="controller_manager" type="spawner" output="screen"
-        args="--wait-for=sr_ur_robot_hw/robot_program_running trajectory_controller"/>
+        args="--wait-for=$(arg arm_prefix)_sr_ur_robot_hw/robot_program_running trajectory_controller"/>
 </launch>
