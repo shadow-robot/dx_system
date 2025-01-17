@@ -6,6 +6,7 @@
 <launch>
 
   <arg name="debug" default="false"/>
+  <arg name="debug_log_level" default="false"/>
   <arg name="verbose" default="true"/>
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
@@ -62,6 +63,11 @@
   <arg unless="$(arg start_home)" name="spawn_model_extra_args" value="" />
   <arg name="world" default="$(find dx_moveit_config)/config/demo.world"/>
   <arg name="gazebo_gui" default="$(arg gui)"/>
+
+  <!-- Load custom rosconsole config file to enable debug log level for desired components
+       (e.g used to debug plugin loading issues) -->
+  <env if="$(arg debug_log_level)" name="ROSCONSOLE_CONFIG_FILE"
+       value="$(find dx_config)/debug/custom_rosconsole.conf"/>
 
   <group if="$(arg arm)">
     <!-- These parameters are loaded in two places:
