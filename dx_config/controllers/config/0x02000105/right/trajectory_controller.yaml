@@ -40,7 +40,6 @@ trajectory_controller_position_layer:
   command_timeout: 300.0
   refresh_command_time: True
   type: dx_controllers/FingerPositionController
-  param_namespace: /dx_finger
   finger_names: [rh_F0, rh_F1, rh_F2]
   publish_individual_controller_states: false
   subscribe_command_topics: false

@@ -6,7 +6,6 @@ actuator_effort_controller:
   command_timeout: 5.0
   type: dx_controllers/ActuatorGroupPassThroughEffortController
   actuator_command_type: effort
-  # param_namespace: /dx_finger
   finger_names: [rh_F0, rh_F1, rh_F2]
   fingers:
     rh_F0:

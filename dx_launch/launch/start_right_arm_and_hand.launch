@@ -183,7 +183,7 @@
 
     <include file="$(find dx_moveit_config)/launch/planning_context.launch"/>
 
-    <!-- Start move_group only if robot controll is started-->
+    <!-- Start move_group only if robot control is started-->
     <include if="$(eval arg('moveit') and arg('start_control'))" file="$(find dx_moveit_config)/launch/move_group.launch"/>
 
     <!-- RViz -->

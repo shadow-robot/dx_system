@@ -16,12 +16,6 @@
   <!-- HAND SPECIFIC CONFIG-->
   <arg name="hand_type"/>
 
-  <!-- <arg unless="$(arg arm)" name="robot_description" value="'$(find sr_description)/robots/sr_hand.urdf.xacro'"/>
-  <arg unless="$(arg arm)" name="load_robot_description_command" value="xacro $(arg robot_description)
-                                 hand_type:=$(arg hand_type) hand_version:=$(arg hand_version) side:=$(arg side)
-                                 fingers:=$(arg fingers) tip_sensors:=$(arg tip_sensors)
-                                 mid_sensors:=$(arg mid_sensors) prox_sensors:=$(arg prox_sensors) palm_sensor:=$(arg palm_sensor)"/> -->
-
   <!-- ARM SPECIFIC CONFIG-->
   <arg name="arm_model" default="ur10e"/>
   <arg name="initial_z" default="0.1"/>
@@ -31,8 +25,7 @@
   <arg name="arm_prefix" value="$(arg side_letter)a"/>
 
   <!-- Hand-only description, needed for srdf generation -->
-  <!-- TODO We need to make this depend on the hand_type -->
-  <arg if="$(arg hand)" name="hand_description" value="'$(find dx_launch)/description/0x02000105.urdf.xacro'"/>
+  <arg if="$(arg hand)" name="hand_description" value="'$(find dx_launch)/description/$(arg hand_type).urdf.xacro'"/>
 
   <arg if="$(eval arm and hand)" name="robot_description" value="'$(find dx_launch)/description/dexee_ur.urdf.xacro'"/>
   <arg if="$(eval arm and not hand)" name="robot_description" value="'$(find dx_launch)/description/ur.urdf.xacro'"/>
