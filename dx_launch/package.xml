@@ -1,4 +1,8 @@
 <?xml version="1.0"?>
+<!--
+ Copyright (C) 2024-2025 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
+ Unauthorized copying of the content in this file, via any medium is strictly prohibited.
+-->
 <package format="2">
   <name>dx_launch</name>
   <version>0.0.0</version>
