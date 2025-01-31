@@ -23,6 +23,7 @@
   <exec_depend>sr_ur_arm_calibration_loader</exec_depend>
   <exec_depend>ur_description</exec_depend>
   <exec_depend>ur_robot_driver</exec_depend>
+  <exec_depend>bio_ik</exec_depend>
 
 
   <!-- The export tag contains other, unspecified, tags -->
