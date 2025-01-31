@@ -144,6 +144,7 @@
   <!-- Real robot launch-->
   <group unless="$(arg sim)">
     <group if="$(arg arm)" ns="$(arg side)_arm">
+      <param name="/robot_namespaces/$(arg_side)_arm" value="ur_10e"/>
       <include file="$(find dx_launch)/launch/ur_arm_real.launch.xml">
         <arg name="debug" value="$(arg debug)"/>
         <arg name="hand_type" value="$(arg hand_type)"/>
@@ -160,6 +161,7 @@
     </group>
 
     <group if="$(arg hand)" ns="$(arg side)_hand">
+      <param name="/robot_namespaces/$(arg_side)_arm" value="r3_standard"/>
       <include if="$(arg start_distal_cameras)" file="$(find usb_cam)/launch/all.launch">
         <arg name="viewer" value="$(arg view_distal_cameras)"/>
         <arg name="zero" value="$(eval 'F0' in arg('distals'))"/>
