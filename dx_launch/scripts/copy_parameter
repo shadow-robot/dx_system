@@ -1,0 +1,25 @@
+#!/usr/bin/python3
+
+# Copyright (C) 2025 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
+# Unauthorized copying of the content in this file, via any medium is strictly prohibited.
+
+import rospy
+from rosparam import get_param, upload_params
+from sr_utilities_common.wait_for_param import wait_for_param
+
+if __name__ == "__main__":
+    rospy.init_node("copy_parameter")
+
+    from_ns = rospy.get_param("~from_ns")
+    to_ns = rospy.get_param("~to_ns")
+    param_name = rospy.get_param("~param_name")
+    seconds_to_wait = rospy.get_param("~seconds_to_wait", 0)
+
+    wait_for_param(from_ns + "/" + param_name, 0)
+
+    if seconds_to_wait > 0:
+        rospy.sleep(seconds_to_wait)
+
+    value = get_param(from_ns + "/" + param_name)
+    upload_params(to_ns + "/" + param_name, value)
+    rospy.loginfo(f"Parameter {param_name} copied from {from_ns} to {to_ns}")

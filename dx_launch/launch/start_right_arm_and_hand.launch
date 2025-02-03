@@ -180,10 +180,13 @@
   </group>
 
 
-  <!-- Start move_group only if robot control is started-->
-  <include if="$(eval arg('moveit') and arg('start_control'))" file="$(find dx_right_dexee_ur_moveit_config)/launch/move_group.launch">
-    <arg name="moveit_controller_manager" value="ros_control"/>
-  </include>
+  <!-- Start move_group -->
+  <node name="conditional_delayed_rostool_move_group" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
+    <param name="package_name" value="dx_right_dexee_ur_moveit_config" />
+    <param name="executable_name" value="move_group.launch" />
+    <rosparam param="params_list">[^robot_description$]</rosparam>
+    <param name="launch_args_list" value="moveit_controller_manager:=ros_control"/>
+  </node>
 
   <!-- RViz -->
   <node if="$(arg gui)" name="$(anon rviz)" pkg="rviz" type="rviz" respawn="true"
@@ -193,10 +196,12 @@
 
   <!-- Start a joint_state_publisher that will merge the namespaced joint_states topics and republish them to the
        root namespace. This is only necessary for moveit to work well. -->
-  <arg name="source_list" default="[$(arg side)_hand/joint_states, $(arg side)_arm/joint_states]"/>
-  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen">
-    <rosparam param="source_list" subst_value="True">$(arg source_list)</rosparam>
-    <param name="rate" type="int" value="$(arg joint_state_pub_frequency)"/>
+  <node name="conditional_delayed_rostool_joint_state_publisher" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
+    <param name="package_name" value="joint_state_publisher" />
+    <param name="executable_name" value="joint_state_publisher" />
+    <rosparam param="params_list">[^robot_description$]</rosparam>
+    <param name="launch_args_list" value="
+    _rate:=$(arg joint_state_pub_frequency) _source_list:=[$(arg side)_hand/joint_states,$(arg side)_arm/joint_states]" />
   </node>
 
   <node pkg="sr_logging_common" name="check_log_size" type="check_log_size.py" output="screen" required="True"/>
