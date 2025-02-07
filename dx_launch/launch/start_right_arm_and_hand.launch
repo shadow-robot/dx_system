@@ -41,7 +41,7 @@
   <arg name="hand_robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
   <arg name="arm_robot_config" default="$(find dx_config)/robot/$(arg side)/ur_arm_robot_hw.yaml" />
 
-  <arg if="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_moveit_config)/launch/moveit.rviz"/>
+  <arg if="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_right_dexee_ur_moveit_config)/launch/moveit.rviz"/>
   <arg unless="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_robot)/config/dx_robot.rviz"/>
 
     <!-- Robot description related config-->
@@ -131,20 +131,12 @@
       <rosparam file="$(find dx_config)/gazebo/$(arg side_letter)a_trajectory_controller.yaml" command="load"/>
       <node name="arm_trajectory_controller_spawner" pkg="controller_manager" type="spawner" output="screen" args="$(arg side_letter)a_trajectory_controller"/>
     </group>
-
-    <include if="$(arg moveit)" file="$(find dx_moveit_config)/launch/move_group.launch"/>
-
-    <!-- RViz -->
-    <node if="$(arg gui)" name="$(anon rviz)" pkg="rviz" type="rviz" respawn="true"
-      args="-d $(arg rviz_config_file)" output="screen">
-      <rosparam command="load" file="$(find dx_moveit_config)/config/kinematics.yaml"/>
-    </node>
   </group>
 
   <!-- Real robot launch-->
   <group unless="$(arg sim)">
     <group if="$(arg arm)" ns="$(arg side)_arm">
-      <param name="/robot_namespaces/$(arg_side)_arm" value="ur_10e"/>
+      <param name="/robot_namespaces/$(arg side)_arm" value="ur_10e"/>
       <include file="$(find dx_launch)/launch/ur_arm_real.launch.xml">
         <arg name="debug" value="$(arg debug)"/>
         <arg name="hand_type" value="$(arg hand_type)"/>
@@ -161,7 +153,7 @@
     </group>
 
     <group if="$(arg hand)" ns="$(arg side)_hand">
-      <param name="/robot_namespaces/$(arg_side)_arm" value="r3_standard"/>
+      <param name="/robot_namespaces/$(arg side)_arm" value="r3_standard"/>
       <include if="$(arg start_distal_cameras)" file="$(find usb_cam)/launch/all.launch">
         <arg name="viewer" value="$(arg view_distal_cameras)"/>
         <arg name="zero" value="$(eval 'F0' in arg('distals'))"/>
@@ -183,23 +175,36 @@
       </include>
     </group>
 
-    <include file="$(find dx_moveit_config)/launch/planning_context.launch"/>
-
-    <!-- Start move_group only if robot control is started-->
-    <include if="$(eval arg('moveit') and arg('start_control'))" file="$(find dx_moveit_config)/launch/move_group.launch"/>
-
-    <!-- RViz -->
-    <node if="$(arg gui)" name="$(anon rviz)" pkg="rviz" type="rviz" respawn="true"
-      args="-d $(arg rviz_config_file)" output="screen">
-      <rosparam command="load" file="$(find dx_moveit_config)/config/kinematics.yaml"/>
-    </node>
-
-
     <!-- diagnostic aggregator for being able to see the results in the robot_monitor -->
     <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
       <rosparam command="load" file="$(find dx_config)/diagnostic_analyzers/$(arg side)/$(arg hand_type).yaml"/>
     </node>
   </group>
+
+
+  <!-- Start move_group -->
+  <node name="conditional_delayed_rostool_move_group" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
+    <param name="package_name" value="dx_right_dexee_ur_moveit_config" />
+    <param name="executable_name" value="move_group.launch" />
+    <rosparam param="params_list">[^robot_description$]</rosparam>
+    <param name="launch_args_list" value="moveit_controller_manager:=ros_control"/>
+  </node>
+
+  <!-- RViz -->
+  <node if="$(arg gui)" name="$(anon rviz)" pkg="rviz" type="rviz" respawn="true"
+    args="-d $(arg rviz_config_file)" output="screen">
+    <rosparam command="load" file="$(find dx_right_dexee_ur_moveit_config)/config/kinematics.yaml"/>
+  </node>
+
+  <!-- Start a joint_state_publisher that will merge the namespaced joint_states topics and republish them to the
+       root namespace. This is only necessary for moveit to work well. -->
+  <node name="conditional_delayed_rostool_joint_state_publisher" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
+    <param name="package_name" value="joint_state_publisher" />
+    <param name="executable_name" value="joint_state_publisher" />
+    <rosparam param="params_list">[^robot_description$]</rosparam>
+    <param name="launch_args_list" value="
+    _rate:=$(arg joint_state_pub_frequency) _source_list:=[$(arg side)_hand/joint_states,$(arg side)_arm/joint_states]" />
+  </node>
 
   <node pkg="sr_logging_common" name="check_log_size" type="check_log_size.py" output="screen" required="True"/>
 
