@@ -153,7 +153,7 @@
     </group>
 
     <group if="$(arg hand)" ns="$(arg side)_hand">
-      <param name="/robot_namespaces/$(arg side)_arm" value="r3_standard"/>
+      <param name="/robot_namespaces/$(arg side)_hand" value="r3_standard"/>
       <include if="$(arg start_distal_cameras)" file="$(find usb_cam)/launch/all.launch">
         <arg name="viewer" value="$(arg view_distal_cameras)"/>
         <arg name="zero" value="$(eval 'F0' in arg('distals'))"/>

@@ -12,7 +12,7 @@
   <arg name="log_user" default="user"/>
   <arg name="controller_output" default="log"/>
   <arg name="state_controller_start_delay" default="2"/>
-  <arg name="odometry_monitor_start_delay" default="5"/>
+  <arg name="odometry_monitor_start_delay" default="10"/>
   <arg name="side" default="right"/>
   <arg name="side_letter" value="$(eval side[0])"/>
   <arg name="robot_state_pub_frequency" default="250"/>
