@@ -53,8 +53,8 @@
     </node>
   </group>
 
-  <node pkg="dx_robot" type="hand_info_server.py" name="hand_info_server" output="screen"/>
-  <node pkg="dx_robot" type="safe_mode_monitor.py" name="safe_mode_monitor"/>
+  <node pkg="dx_robot" type="hand_info_server.py" name="hand_info_server" ns="/" output="screen"/>
+  <node pkg="dx_robot" type="safe_mode_monitor.py" name="safe_mode_monitor" ns="/"/>
 
   <!-- <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" >
     <param name="publish_frequency" type="double" value="$(arg robot_state_pub_frequency)" />
