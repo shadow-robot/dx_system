@@ -56,16 +56,13 @@
   <node pkg="dx_robot" type="get_hand_type_service.py" name="get_hand_type_service" output="screen"/>
   <node pkg="dx_robot" type="safe_mode_monitor.py" name="safe_mode_monitor"/>
 
-  <!-- <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" >
-    <param name="publish_frequency" type="double" value="$(arg robot_state_pub_frequency)" />
-    <param name="tf_prefix" type="string" value="" />
-  </node> -->
+  <!-- Robot state publisher (publishes to /tf in the root namespace) -->
   <node name="conditional_delayed_rostool_robot_state_publisher" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
     <param name="package_name" value="robot_state_publisher" />
     <param name="executable_name" value="robot_state_publisher" />
     <rosparam param="params_list">[^robot_description$]</rosparam>
     <param name="launch_args_list" value="
-    publish_frequency=$(arg robot_state_pub_frequency)" />
+    _publish_frequency:=$(arg robot_state_pub_frequency)" />
   </node>
 
   <node name="imu_timed_launch" pkg="sr_utilities_common" type="timed_roslaunch.sh"

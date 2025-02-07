@@ -1,0 +1,4 @@
+- git:
+    local-name: bio_ik
+    uri: https://github.com/shadow-robot/bio_ik.git
+    version: noetic-devel
