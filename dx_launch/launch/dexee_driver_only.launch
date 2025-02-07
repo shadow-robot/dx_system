@@ -12,7 +12,6 @@
   <arg name="log_user" default="user"/>
   <arg name="controller_output" default="log"/>
   <arg name="state_controller_start_delay" default="2"/>
-  <arg name="odometry_monitor_start_delay" default="10"/>
   <arg name="side" default="right"/>
   <arg name="side_letter" value="$(eval side[0])"/>
   <arg name="robot_state_pub_frequency" default="250"/>
@@ -74,7 +73,5 @@
   <node name="js_timed_launch" pkg="sr_utilities_common" type="timed_roslaunch.sh"
         args="$(arg state_controller_start_delay) ros_ethercat_model joint_state_publisher.launch publish_rate:=$(arg joint_state_pub_frequency)" />
 
-  <node pkg="dx_robot" type="odometry_monitor.py" name="odometry_monitor" output="screen"
-        launch-prefix="bash -c 'sleep $(arg odometry_monitor_start_delay); $0 $@' ">
-  </node>
+  <node pkg="dx_robot" type="odometry_monitor.py" name="odometry_monitor" output="screen"/>
 </launch>
