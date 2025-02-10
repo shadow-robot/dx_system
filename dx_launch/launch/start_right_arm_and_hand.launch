@@ -178,6 +178,7 @@
     <!-- diagnostic aggregator for being able to see the results in the robot_monitor -->
     <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
       <rosparam command="load" file="$(find dx_config)/diagnostic_analyzers/$(arg side)/$(arg hand_type).yaml"/>
+      <param if="$(eval arg('hand') and arg('arm'))" name="analyzers/control_loop/num_items" value="2"/>
     </node>
   </group>
 
