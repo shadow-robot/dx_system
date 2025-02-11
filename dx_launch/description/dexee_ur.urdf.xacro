@@ -61,7 +61,7 @@
   <joint name="$(arg arm_prefix)_arm_to_hand" type="fixed">
       <parent link="$(arg arm_prefix)_flange"/>
       <child link="$(arg hand_prefix)_hand_base"/>
-      <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${3.0*pi/4.0} ${pi/2.0}"/>
+      <origin xyz="0.043 0.0 0.0" rpy="${pi/2.0} ${3.0*pi/4.0} ${pi/2.0}"/>
   </joint>
 
   <gazebo>
