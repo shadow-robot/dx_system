@@ -41,10 +41,11 @@
   <arg name="hand_robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
   <arg name="arm_robot_config" default="$(find dx_config)/robot/$(arg side)/ur_arm_robot_hw.yaml" />
 
-  <arg if="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_right_dexee_ur_moveit_config)/launch/moveit.rviz"/>
+  <arg if="$(eval arg('moveit') and arg('start_control') and arg('hand') and arg('arm'))" name="rviz_config_file" default="$(find dx_right_dexee_ur_moveit_config)/launch/moveit.rviz"/>
+  <arg if="$(eval arg('moveit') and arg('start_control') and arg('hand') and not arg('arm'))" name="rviz_config_file" default="$(find dx_right_dexee_moveit_config)/launch/moveit.rviz"/>
   <arg unless="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_robot)/config/dx_robot.rviz"/>
 
-    <!-- Robot description related config-->
+  <!-- Robot description related config-->
   <arg unless="$(arg arm)" name="robot_name" default="$(arg side)_dexee"/>
   <arg unless="$(arg arm)" name="initial_z" default="0.0"/>
   <arg name="initial_y" default="0.0"/>
@@ -184,8 +185,15 @@
 
 
   <!-- Start move_group -->
-  <node name="conditional_delayed_rostool_move_group" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
+  <node if="$(eval arg('hand') and arg('arm'))" name="conditional_delayed_rostool_move_group" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
     <param name="package_name" value="dx_right_dexee_ur_moveit_config" />
+    <param name="executable_name" value="move_group.launch" />
+    <rosparam param="params_list">[^robot_description$]</rosparam>
+    <param name="launch_args_list" value="moveit_controller_manager:=ros_control"/>
+  </node>
+
+  <node if="$(eval arg('hand') and not arg('arm'))" name="conditional_delayed_rostool_move_group" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
+    <param name="package_name" value="dx_right_dexee_moveit_config" />
     <param name="executable_name" value="move_group.launch" />
     <rosparam param="params_list">[^robot_description$]</rosparam>
     <param name="launch_args_list" value="moveit_controller_manager:=ros_control"/>

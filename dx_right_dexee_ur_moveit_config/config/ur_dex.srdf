@@ -28,10 +28,14 @@
     </group>
     <group name="right_arm_and_hand">
         <group name="right_arm"/>
-        <group name="rh_dx_fingers"/>
+        <group name="rh_hand"/>
+    </group>
+    <group name="right_arm_and_manipulator">
+        <chain base_link="ra_base_link" tip_link="rh_end_effector"/>
     </group>
     <group name="rh_hand">
         <link name="rh_hand_base"/>
+        <link name="rh_end_effector"/>
         <link name="rh_F0_base"/>
         <link name="rh_F0_J0_link"/>
         <link name="rh_F0_proximal"/>
@@ -125,6 +129,7 @@
     <end_effector name="rh_f1_ee" parent_link="rh_F1_tip" group="rh_f1"/>
     <end_effector name="rh_f2_ee" parent_link="rh_F2_tip" group="rh_f2"/>
     <end_effector name="righ_arm_ee" parent_link="ra_flange" group="rh_hand"/>
+    <end_effector name="rh_ee" parent_link="rh_end_effector" group="rh_dx_fingers"/>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="ra_base_link_inertia" link2="ra_shoulder_link" reason="Adjacent"/>
     <disable_collisions link1="ra_base_link_inertia" link2="ra_upper_arm_link" reason="Never"/>

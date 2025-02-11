@@ -35,7 +35,8 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
-    - Class: moveit_rviz_plugin/MotionPlanning
+    - Acceleration_Scaling_Factor: 1.0
+      Class: moveit_rviz_plugin/MotionPlanning
       Enabled: true
       Name: MotionPlanning
       Planned Path:
@@ -77,6 +78,7 @@ Visualization Manager:
         Robot Alpha: 0.5
         Show Scene Robot: true
       Value: true
+      Velocity_Scaling_Factor: 1.0
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
