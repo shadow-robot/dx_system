@@ -194,8 +194,6 @@ rh_f0:
     - AITstar
     - ABITstar
     - BITstar
-  projection_evaluator: joints(rh_F0_J0,rh_F0_J1)
-  longest_valid_segment_fraction: 0.005
 rh_f1:
   default_planner_config: BiTRRT
   planner_configs:
@@ -226,8 +224,6 @@ rh_f1:
     - AITstar
     - ABITstar
     - BITstar
-  projection_evaluator: joints(rh_F1_J0,rh_F1_J1)
-  longest_valid_segment_fraction: 0.005
 rh_f2:
   default_planner_config: BiTRRT
   planner_configs:
@@ -258,72 +254,7 @@ rh_f2:
     - AITstar
     - ABITstar
     - BITstar
-  projection_evaluator: joints(rh_F2_J0,rh_F2_J1)
-  longest_valid_segment_fraction: 0.005
 rh_dx_fingers:
-  default_planner_config: BiTRRT
-  planner_configs:
-    - AnytimePathShortening
-    - SBL
-    - EST
-    - LBKPIECE
-    - BKPIECE
-    - KPIECE
-    - RRT
-    - RRTConnect
-    - RRTstar
-    - TRRT
-    - PRM
-    - PRMstar
-    - FMT
-    - BFMT
-    - PDST
-    - STRIDE
-    - BiTRRT
-    - LBTRRT
-    - BiEST
-    - ProjEST
-    - LazyPRM
-    - LazyPRMstar
-    - SPARS
-    - SPARStwo
-    - AITstar
-    - ABITstar
-    - BITstar
-  projection_evaluator: joints(rh_F0_J0,rh_F0_J1)
-  longest_valid_segment_fraction: 0.005
-right_arm:
-  default_planner_config: BiTRRT
-  planner_configs:
-    - AnytimePathShortening
-    - SBL
-    - EST
-    - LBKPIECE
-    - BKPIECE
-    - KPIECE
-    - RRT
-    - RRTConnect
-    - RRTstar
-    - TRRT
-    - PRM
-    - PRMstar
-    - FMT
-    - BFMT
-    - PDST
-    - STRIDE
-    - BiTRRT
-    - LBTRRT
-    - BiEST
-    - ProjEST
-    - LazyPRM
-    - LazyPRMstar
-    - SPARS
-    - SPARStwo
-    - AITstar
-    - ABITstar
-    - BITstar
-right_arm_and_hand:
-  default_planner_config: BiTRRT
   planner_configs:
     - AnytimePathShortening
     - SBL
@@ -353,37 +284,6 @@ right_arm_and_hand:
     - ABITstar
     - BITstar
 rh_hand:
-  default_planner_config: BiTRRT
-  planner_configs:
-    - AnytimePathShortening
-    - SBL
-    - EST
-    - LBKPIECE
-    - BKPIECE
-    - KPIECE
-    - RRT
-    - RRTConnect
-    - RRTstar
-    - TRRT
-    - PRM
-    - PRMstar
-    - FMT
-    - BFMT
-    - PDST
-    - STRIDE
-    - BiTRRT
-    - LBTRRT
-    - BiEST
-    - ProjEST
-    - LazyPRM
-    - LazyPRMstar
-    - SPARS
-    - SPARStwo
-    - AITstar
-    - ABITstar
-    - BITstar
-right_arm_and_manipulator:
-  default_planner_config: BiTRRT
   planner_configs:
     - AnytimePathShortening
     - SBL

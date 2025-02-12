@@ -161,4 +161,5 @@ analyzers:
     path: Realtime Control Loop
     timeout: 5.0
     regex: '^((\w)+ )*Realtime Control Loop'
+    # This value is updated in the launchfile if we have more robots (whether arms or hands)
     num_items: 1
