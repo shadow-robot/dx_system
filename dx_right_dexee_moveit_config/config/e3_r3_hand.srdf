@@ -49,7 +49,6 @@
     <end_effector name="rh_f0_ee" parent_link="rh_F0_tip" group="rh_f0"/>
     <end_effector name="rh_f1_ee" parent_link="rh_F1_tip" group="rh_f1"/>
     <end_effector name="rh_f2_ee" parent_link="rh_F2_tip" group="rh_f2"/>
-    <end_effector name="rh_ee" parent_link="rh_end_effector" group="rh_dx_fingers"/>
     <!--DISABLE COLLISIONS: By default it is assumed that any link of the robot could potentially come into collision with any other link in the robot. This tag disables collision checking between a specified pair of links. -->
     <disable_collisions link1="rh_F0_J0_link" link2="rh_F0_base" reason="Adjacent"/>
     <disable_collisions link1="rh_F0_J0_link" link2="rh_F0_distal" reason="Never"/>

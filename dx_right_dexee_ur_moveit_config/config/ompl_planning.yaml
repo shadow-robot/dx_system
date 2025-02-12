@@ -323,6 +323,7 @@ right_arm:
     - ABITstar
     - BITstar
 right_arm_and_hand:
+  default_planner_config: BiTRRT
   planner_configs:
     - AnytimePathShortening
     - SBL
@@ -352,6 +353,37 @@ right_arm_and_hand:
     - ABITstar
     - BITstar
 rh_hand:
+  default_planner_config: BiTRRT
+  planner_configs:
+    - AnytimePathShortening
+    - SBL
+    - EST
+    - LBKPIECE
+    - BKPIECE
+    - KPIECE
+    - RRT
+    - RRTConnect
+    - RRTstar
+    - TRRT
+    - PRM
+    - PRMstar
+    - FMT
+    - BFMT
+    - PDST
+    - STRIDE
+    - BiTRRT
+    - LBTRRT
+    - BiEST
+    - ProjEST
+    - LazyPRM
+    - LazyPRMstar
+    - SPARS
+    - SPARStwo
+    - AITstar
+    - ABITstar
+    - BITstar
+right_arm_and_manipulator:
+  default_planner_config: BiTRRT
   planner_configs:
     - AnytimePathShortening
     - SBL
