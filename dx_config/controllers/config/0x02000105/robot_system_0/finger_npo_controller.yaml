@@ -3,45 +3,45 @@
 
 F0_npo_controller:
   type: dx_controllers/FingerNpoController
-  finger: rh_F0
+  finger: h0_F0
   actuators:
-    - rh_F0_A0
-    - rh_F0_A1
-    - rh_F0_A2
-    - rh_F0_A3
-    - rh_F0_A4
+    - h0_F0_A0
+    - h0_F0_A1
+    - h0_F0_A2
+    - h0_F0_A3
+    - h0_F0_A4
   joints:
-    - rh_F0_J0
-    - rh_F0_J1
-    - rh_F0_J2
-    - rh_F0_J3
+    - h0_F0_J0
+    - h0_F0_J1
+    - h0_F0_J2
+    - h0_F0_J3
 
 F1_npo_controller:
   type: dx_controllers/FingerNpoController
-  finger: rh_F1
+  finger: h0_F1
   actuators:
-    - rh_F1_A0
-    - rh_F1_A1
-    - rh_F1_A2
-    - rh_F1_A3
-    - rh_F1_A4
+    - h0_F1_A0
+    - h0_F1_A1
+    - h0_F1_A2
+    - h0_F1_A3
+    - h0_F1_A4
   joints:
-    - rh_F1_J0
-    - rh_F1_J1
-    - rh_F1_J2
-    - rh_F1_J3
+    - h0_F1_J0
+    - h0_F1_J1
+    - h0_F1_J2
+    - h0_F1_J3
 
 F2_npo_controller:
   type: dx_controllers/FingerNpoController
-  finger: rh_F2
+  finger: h0_F2
   actuators:
-    - rh_F2_A0
-    - rh_F2_A1
-    - rh_F2_A2
-    - rh_F2_A3
-    - rh_F2_A4
+    - h0_F2_A0
+    - h0_F2_A1
+    - h0_F2_A2
+    - h0_F2_A3
+    - h0_F2_A4
   joints:
-    - rh_F2_J0
-    - rh_F2_J1
-    - rh_F2_J2
-    - rh_F2_J3
+    - h0_F2_J0
+    - h0_F2_J1
+    - h0_F2_J2
+    - h0_F2_J3

@@ -9,11 +9,11 @@
 -->
 <robot name="e3_r3_hand">
     <link name="world" />
-    <joint name="rh_world_joint" type="fixed">
+    <joint name="h0_world_joint" type="fixed">
         <parent link="world" />
-        <child link="rh_hand_base" />
+        <child link="h0_hand_base" />
     </joint>
-    <link name="rh_hand_base">
+    <link name="h0_hand_base">
         <inertial>
             <origin rpy="0 0 0" xyz="0.00024269 0.0064896 0.05011689" />
             <mass value="0.53506724" />
@@ -36,18 +36,18 @@
         </collision>
     </link>
     <!-- Create a virtual end effector link that will be useful for arm IK -->
-    <link name="rh_end_effector" />
-    <joint name="rh_ee_fixed_joint" type="fixed">
-        <parent link="rh_hand_base" />
-        <child link="rh_end_effector" />
+    <link name="h0_end_effector" />
+    <joint name="h0_ee_fixed_joint" type="fixed">
+        <parent link="h0_hand_base" />
+        <child link="h0_end_effector" />
         <origin rpy="0.0 0.0 0.0" xyz="0.0 0.0 0.25" />
     </joint>
-    <joint name="rh_world_joint_F0" type="fixed">
+    <joint name="h0_world_joint_F0" type="fixed">
         <origin rpy="-1.5707 0 0" xyz="0 0.05 0.017" />
-        <parent link="rh_hand_base" />
-        <child link="rh_F0_base" />
+        <parent link="h0_hand_base" />
+        <child link="h0_F0_base" />
     </joint>
-    <link name="rh_F0_base">
+    <link name="h0_F0_base">
         <inertial>
             <origin rpy="0 0 0" xyz="0.00004454 0.00736569 0.08093736" />
             <mass value="0.89937782" />
@@ -69,7 +69,7 @@
             </geometry>
         </collision>
     </link>
-    <link name="rh_F0_J0_link">
+    <link name="h0_F0_J0_link">
         <inertial>
             <origin rpy="0 0 0" xyz="-0.00017293 -0.01537184 0.00956679" />
             <mass value="0.13077995" />
@@ -91,15 +91,15 @@
             </geometry>
         </collision>
     </link>
-    <joint name="rh_F0_J0" type="revolute">
+    <joint name="h0_F0_J0" type="revolute">
         <origin rpy="2.0944 0 0" xyz="0 -0.14073 -0.051327" />
-        <parent link="rh_F0_base" />
-        <child link="rh_F0_J0_link" />
+        <parent link="h0_F0_base" />
+        <child link="h0_F0_J0_link" />
         <axis xyz="0 -1 0" />
         <limit effort="1.5" lower="-0.8727" upper="0.8727" velocity="3.1415" />
         <dynamics friction="0.001" />
     </joint>
-    <link name="rh_F0_proximal">
+    <link name="h0_F0_proximal">
         <inertial>
             <origin rpy="0 0 0" xyz="-0.00020256 0.0024322 0.02375091" />
             <mass value="0.09614332" />
@@ -121,15 +121,15 @@
             </geometry>
         </collision>
     </link>
-    <joint name="rh_F0_J1" type="revolute">
+    <joint name="h0_F0_J1" type="revolute">
         <origin rpy="0 0 0" xyz="0 0.0765883365730207 0.0299999999999999" />
-        <parent link="rh_F0_J0_link" />
-        <child link="rh_F0_proximal" />
+        <parent link="h0_F0_J0_link" />
+        <child link="h0_F0_proximal" />
         <axis xyz="1 0 0" />
         <limit effort="1.2" lower="-1.396" upper="0.785" velocity="3.1415" />
         <dynamics friction="0.001" />
     </joint>
-    <link name="rh_F0_middle">
+    <link name="h0_F0_middle">
         <inertial>
             <origin rpy="0 0 0" xyz="-0.00026744 -0.00004338 0.01669764" />
             <mass value="0.05585897" />
@@ -151,15 +151,15 @@
             </geometry>
         </collision>
     </link>
-    <joint name="rh_F0_J2" type="revolute">
+    <joint name="h0_F0_J2" type="revolute">
         <origin rpy="0 0 0" xyz="0 0 0.05" />
-        <parent link="rh_F0_proximal" />
-        <child link="rh_F0_middle" />
+        <parent link="h0_F0_proximal" />
+        <child link="h0_F0_middle" />
         <axis xyz="1 0 0" />
         <limit effort="0.7" lower="0" upper="1.396" velocity="3.1415" />
         <dynamics friction="0.001" />
     </joint>
-    <link name="rh_F0_distal">
+    <link name="h0_F0_distal">
         <inertial>
             <origin rpy="0 0 0" xyz="0.00084325 0.00164346 0.01482169" />
             <mass value="0.02766365" />
@@ -181,68 +181,68 @@
             </geometry>
         </collision>
     </link>
-    <joint name="rh_F0_J3" type="revolute">
+    <joint name="h0_F0_J3" type="revolute">
         <origin rpy="0 0 0" xyz="0 0 0.035" />
-        <parent link="rh_F0_middle" />
-        <child link="rh_F0_distal" />
+        <parent link="h0_F0_middle" />
+        <child link="h0_F0_distal" />
         <axis xyz="1 0 0" />
         <limit effort="0.35" lower="-0.523" upper="1.485" velocity="3.1415" />
         <dynamics friction="0.001" />
     </joint>
-    <link name="rh_F0_tip" />
-    <joint name="rh_F0_distal_tip" type="fixed">
-        <parent link="rh_F0_distal" />
-        <child link="rh_F0_tip" />
+    <link name="h0_F0_tip" />
+    <joint name="h0_F0_distal_tip" type="fixed">
+        <parent link="h0_F0_distal" />
+        <child link="h0_F0_tip" />
         <origin rpy="0 0 0" xyz="0 0.003 0.033" />
     </joint>
     <!-- These transmissions are wrongly configured and fail to be loaded by the real robot -->
     <!-- We still need to define them in order to be able to launch the robot in simulation -->
-    <transmission name="trans_rh_F0_J0">
+    <transmission name="trans_h0_F0_J0">
         <type>UnusedTransmission</type>
-        <joint name="rh_F0_J0">
+        <joint name="h0_F0_J0">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F0_J0_motor">
+        <actuator name="h0_F0_J0_motor">
             <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F0_J1">
+    <transmission name="trans_h0_F0_J1">
         <type>UnusedTransmission</type>
-        <joint name="rh_F0_J1">
+        <joint name="h0_F0_J1">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F0_J1_motor">
+        <actuator name="h0_F0_J1_motor">
             <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F0_J2">
+    <transmission name="trans_h0_F0_J2">
         <type>UnusedTransmission</type>
-        <joint name="rh_F0_J2">
+        <joint name="h0_F0_J2">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F0_J2_motor">
+        <actuator name="h0_F0_J2_motor">
             <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F0_J3">
+    <transmission name="trans_h0_F0_J3">
         <type>UnusedTransmission</type>
-        <joint name="rh_F0_J3">
+        <joint name="h0_F0_J3">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F0_J3_motor">
+        <actuator name="h0_F0_J3_motor">
             <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <joint name="rh_world_joint_F1" type="fixed">
+    <joint name="h0_world_joint_F1" type="fixed">
         <origin rpy="-1.5707 0 -2.8159" xyz="0.0384 -0.0287 0.017" />
-        <parent link="rh_hand_base" />
-        <child link="rh_F1_base" />
+        <parent link="h0_hand_base" />
+        <child link="h0_F1_base" />
     </joint>
-    <link name="rh_F1_base">
+    <link name="h0_F1_base">
         <inertial>
             <origin rpy="0 0 0" xyz="0.00004454 0.00736569 0.08093736" />
             <mass value="0.89937782" />
@@ -264,7 +264,7 @@
             </geometry>
         </collision>
     </link>
-    <link name="rh_F1_J0_link">
+    <link name="h0_F1_J0_link">
         <inertial>
             <origin rpy="0 0 0" xyz="-0.00017293 -0.01537184 0.00956679" />
             <mass value="0.13077995" />
@@ -286,15 +286,15 @@
             </geometry>
         </collision>
     </link>
-    <joint name="rh_F1_J0" type="revolute">
+    <joint name="h0_F1_J0" type="revolute">
         <origin rpy="2.0944 0 0" xyz="0 -0.14073 -0.051327" />
-        <parent link="rh_F1_base" />
-        <child link="rh_F1_J0_link" />
+        <parent link="h0_F1_base" />
+        <child link="h0_F1_J0_link" />
         <axis xyz="0 -1 0" />
         <limit effort="1.5" lower="-0.8727" upper="0.8727" velocity="3.1415" />
         <dynamics friction="0.001" />
     </joint>
-    <link name="rh_F1_proximal">
+    <link name="h0_F1_proximal">
         <inertial>
             <origin rpy="0 0 0" xyz="-0.00020256 0.0024322 0.02375091" />
             <mass value="0.09614332" />
@@ -316,15 +316,15 @@
             </geometry>
         </collision>
     </link>
-    <joint name="rh_F1_J1" type="revolute">
+    <joint name="h0_F1_J1" type="revolute">
         <origin rpy="0 0 0" xyz="0 0.0765883365730207 0.0299999999999999" />
-        <parent link="rh_F1_J0_link" />
-        <child link="rh_F1_proximal" />
+        <parent link="h0_F1_J0_link" />
+        <child link="h0_F1_proximal" />
         <axis xyz="1 0 0" />
         <limit effort="1.2" lower="-1.396" upper="0.785" velocity="3.1415" />
         <dynamics friction="0.001" />
     </joint>
-    <link name="rh_F1_middle">
+    <link name="h0_F1_middle">
         <inertial>
             <origin rpy="0 0 0" xyz="-0.00026744 -0.00004338 0.01669764" />
             <mass value="0.05585897" />
@@ -346,15 +346,15 @@
             </geometry>
         </collision>
     </link>
-    <joint name="rh_F1_J2" type="revolute">
+    <joint name="h0_F1_J2" type="revolute">
         <origin rpy="0 0 0" xyz="0 0 0.05" />
-        <parent link="rh_F1_proximal" />
-        <child link="rh_F1_middle" />
+        <parent link="h0_F1_proximal" />
+        <child link="h0_F1_middle" />
         <axis xyz="1 0 0" />
         <limit effort="0.7" lower="0" upper="1.396" velocity="3.1415" />
         <dynamics friction="0.001" />
     </joint>
-    <link name="rh_F1_distal">
+    <link name="h0_F1_distal">
         <inertial>
             <origin rpy="0 0 0" xyz="0.00084325 0.00164346 0.01482169" />
             <mass value="0.02766365" />
@@ -376,68 +376,68 @@
             </geometry>
         </collision>
     </link>
-    <joint name="rh_F1_J3" type="revolute">
+    <joint name="h0_F1_J3" type="revolute">
         <origin rpy="0 0 0" xyz="0 0 0.035" />
-        <parent link="rh_F1_middle" />
-        <child link="rh_F1_distal" />
+        <parent link="h0_F1_middle" />
+        <child link="h0_F1_distal" />
         <axis xyz="1 0 0" />
         <limit effort="0.35" lower="-0.523" upper="1.485" velocity="3.1415" />
         <dynamics friction="0.001" />
     </joint>
-    <link name="rh_F1_tip" />
-    <joint name="rh_F1_distal_tip" type="fixed">
-        <parent link="rh_F1_distal" />
-        <child link="rh_F1_tip" />
+    <link name="h0_F1_tip" />
+    <joint name="h0_F1_distal_tip" type="fixed">
+        <parent link="h0_F1_distal" />
+        <child link="h0_F1_tip" />
         <origin rpy="0 0 0" xyz="0 0.003 0.033" />
     </joint>
     <!-- These transmissions are wrongly configured and fail to be loaded by the real robot -->
     <!-- We still need to define them in order to be able to launch the robot in simulation -->
-    <transmission name="trans_rh_F1_J0">
+    <transmission name="trans_h0_F1_J0">
         <type>UnusedTransmission</type>
-        <joint name="rh_F1_J0">
+        <joint name="h0_F1_J0">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F1_J0_motor">
+        <actuator name="h0_F1_J0_motor">
             <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F1_J1">
+    <transmission name="trans_h0_F1_J1">
         <type>UnusedTransmission</type>
-        <joint name="rh_F1_J1">
+        <joint name="h0_F1_J1">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F1_J1_motor">
+        <actuator name="h0_F1_J1_motor">
             <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F1_J2">
+    <transmission name="trans_h0_F1_J2">
         <type>UnusedTransmission</type>
-        <joint name="rh_F1_J2">
+        <joint name="h0_F1_J2">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F1_J2_motor">
+        <actuator name="h0_F1_J2_motor">
             <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F1_J3">
+    <transmission name="trans_h0_F1_J3">
         <type>UnusedTransmission</type>
-        <joint name="rh_F1_J3">
+        <joint name="h0_F1_J3">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F1_J3_motor">
+        <actuator name="h0_F1_J3_motor">
             <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <joint name="rh_world_joint_F2" type="fixed">
+    <joint name="h0_world_joint_F2" type="fixed">
         <origin rpy="-1.5707 0 2.8159" xyz="-0.0384 -0.02870 0.017" />
-        <parent link="rh_hand_base" />
-        <child link="rh_F2_base" />
+        <parent link="h0_hand_base" />
+        <child link="h0_F2_base" />
     </joint>
-    <link name="rh_F2_base">
+    <link name="h0_F2_base">
         <inertial>
             <origin rpy="0 0 0" xyz="0.00004454 0.00736569 0.08093736" />
             <mass value="0.89937782" />
@@ -459,7 +459,7 @@
             </geometry>
         </collision>
     </link>
-    <link name="rh_F2_J0_link">
+    <link name="h0_F2_J0_link">
         <inertial>
             <origin rpy="0 0 0" xyz="-0.00017293 -0.01537184 0.00956679" />
             <mass value="0.13077995" />
@@ -481,15 +481,15 @@
             </geometry>
         </collision>
     </link>
-    <joint name="rh_F2_J0" type="revolute">
+    <joint name="h0_F2_J0" type="revolute">
         <origin rpy="2.0944 0 0" xyz="0 -0.14073 -0.051327" />
-        <parent link="rh_F2_base" />
-        <child link="rh_F2_J0_link" />
+        <parent link="h0_F2_base" />
+        <child link="h0_F2_J0_link" />
         <axis xyz="0 -1 0" />
         <limit effort="1.5" lower="-0.8727" upper="0.8727" velocity="3.1415" />
         <dynamics friction="0.001" />
     </joint>
-    <link name="rh_F2_proximal">
+    <link name="h0_F2_proximal">
         <inertial>
             <origin rpy="0 0 0" xyz="-0.00020256 0.0024322 0.02375091" />
             <mass value="0.09614332" />
@@ -511,15 +511,15 @@
             </geometry>
         </collision>
     </link>
-    <joint name="rh_F2_J1" type="revolute">
+    <joint name="h0_F2_J1" type="revolute">
         <origin rpy="0 0 0" xyz="0 0.0765883365730207 0.0299999999999999" />
-        <parent link="rh_F2_J0_link" />
-        <child link="rh_F2_proximal" />
+        <parent link="h0_F2_J0_link" />
+        <child link="h0_F2_proximal" />
         <axis xyz="1 0 0" />
         <limit effort="1.2" lower="-1.396" upper="0.785" velocity="3.1415" />
         <dynamics friction="0.001" />
     </joint>
-    <link name="rh_F2_middle">
+    <link name="h0_F2_middle">
         <inertial>
             <origin rpy="0 0 0" xyz="-0.00026744 -0.00004338 0.01669764" />
             <mass value="0.05585897" />
@@ -541,15 +541,15 @@
             </geometry>
         </collision>
     </link>
-    <joint name="rh_F2_J2" type="revolute">
+    <joint name="h0_F2_J2" type="revolute">
         <origin rpy="0 0 0" xyz="0 0 0.05" />
-        <parent link="rh_F2_proximal" />
-        <child link="rh_F2_middle" />
+        <parent link="h0_F2_proximal" />
+        <child link="h0_F2_middle" />
         <axis xyz="1 0 0" />
         <limit effort="0.7" lower="0" upper="1.396" velocity="3.1415" />
         <dynamics friction="0.001" />
     </joint>
-    <link name="rh_F2_distal">
+    <link name="h0_F2_distal">
         <inertial>
             <origin rpy="0 0 0" xyz="0.00084325 0.00164346 0.01482169" />
             <mass value="0.02766365" />
@@ -571,58 +571,58 @@
             </geometry>
         </collision>
     </link>
-    <joint name="rh_F2_J3" type="revolute">
+    <joint name="h0_F2_J3" type="revolute">
         <origin rpy="0 0 0" xyz="0 0 0.035" />
-        <parent link="rh_F2_middle" />
-        <child link="rh_F2_distal" />
+        <parent link="h0_F2_middle" />
+        <child link="h0_F2_distal" />
         <axis xyz="1 0 0" />
         <limit effort="0.35" lower="-0.523" upper="1.485" velocity="3.1415" />
         <dynamics friction="0.001" />
     </joint>
-    <link name="rh_F2_tip" />
-    <joint name="rh_F2_distal_tip" type="fixed">
-        <parent link="rh_F2_distal" />
-        <child link="rh_F2_tip" />
+    <link name="h0_F2_tip" />
+    <joint name="h0_F2_distal_tip" type="fixed">
+        <parent link="h0_F2_distal" />
+        <child link="h0_F2_tip" />
         <origin rpy="0 0 0" xyz="0 0.003 0.033" />
     </joint>
     <!-- These transmissions are wrongly configured and fail to be loaded by the real robot -->
     <!-- We still need to define them in order to be able to launch the robot in simulation -->
-    <transmission name="trans_rh_F2_J0">
+    <transmission name="trans_h0_F2_J0">
         <type>UnusedTransmission</type>
-        <joint name="rh_F2_J0">
+        <joint name="h0_F2_J0">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F2_J0_motor">
+        <actuator name="h0_F2_J0_motor">
             <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F2_J1">
+    <transmission name="trans_h0_F2_J1">
         <type>UnusedTransmission</type>
-        <joint name="rh_F2_J1">
+        <joint name="h0_F2_J1">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F2_J1_motor">
+        <actuator name="h0_F2_J1_motor">
             <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F2_J2">
+    <transmission name="trans_h0_F2_J2">
         <type>UnusedTransmission</type>
-        <joint name="rh_F2_J2">
+        <joint name="h0_F2_J2">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F2_J2_motor">
+        <actuator name="h0_F2_J2_motor">
             <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F2_J3">
+    <transmission name="trans_h0_F2_J3">
         <type>UnusedTransmission</type>
-        <joint name="rh_F2_J3">
+        <joint name="h0_F2_J3">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F2_J3_motor">
+        <actuator name="h0_F2_J3_motor">
             <!-- <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface> -->
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
@@ -631,125 +631,125 @@
         <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
             <!--robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType-->
             <robotNamespace>right_hand</robotNamespace>
-            <robotParam>rh_robot_description</robotParam>
+            <robotParam>h0_robot_description</robotParam>
         </plugin>
     </gazebo>
-    <transmission name="trans_rh_F0_J0">
+    <transmission name="trans_h0_F0_J0">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="rh_F0_J0">
+        <joint name="h0_F0_J0">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F0_J0_motor">
+        <actuator name="h0_F0_J0_motor">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F0_J1">
+    <transmission name="trans_h0_F0_J1">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="rh_F0_J1">
+        <joint name="h0_F0_J1">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F0_J1_motor">
+        <actuator name="h0_F0_J1_motor">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F0_J2">
+    <transmission name="trans_h0_F0_J2">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="rh_F0_J2">
+        <joint name="h0_F0_J2">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F0_J2_motor">
+        <actuator name="h0_F0_J2_motor">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F0_J3">
+    <transmission name="trans_h0_F0_J3">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="rh_F0_J3">
+        <joint name="h0_F0_J3">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F0_J3_motor">
+        <actuator name="h0_F0_J3_motor">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F1_J0">
+    <transmission name="trans_h0_F1_J0">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="rh_F1_J0">
+        <joint name="h0_F1_J0">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F1_J0_motor">
+        <actuator name="h0_F1_J0_motor">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F1_J1">
+    <transmission name="trans_h0_F1_J1">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="rh_F1_J1">
+        <joint name="h0_F1_J1">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F1_J1_motor">
+        <actuator name="h0_F1_J1_motor">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F1_J2">
+    <transmission name="trans_h0_F1_J2">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="rh_F1_J2">
+        <joint name="h0_F1_J2">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F1_J2_motor">
+        <actuator name="h0_F1_J2_motor">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F1_J3">
+    <transmission name="trans_h0_F1_J3">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="rh_F1_J3">
+        <joint name="h0_F1_J3">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F1_J3_motor">
+        <actuator name="h0_F1_J3_motor">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F2_J0">
+    <transmission name="trans_h0_F2_J0">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="rh_F2_J0">
+        <joint name="h0_F2_J0">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F2_J0_motor">
+        <actuator name="h0_F2_J0_motor">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F2_J1">
+    <transmission name="trans_h0_F2_J1">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="rh_F2_J1">
+        <joint name="h0_F2_J1">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F2_J1_motor">
+        <actuator name="h0_F2_J1_motor">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F2_J2">
+    <transmission name="trans_h0_F2_J2">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="rh_F2_J2">
+        <joint name="h0_F2_J2">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F2_J2_motor">
+        <actuator name="h0_F2_J2_motor">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>
     </transmission>
-    <transmission name="trans_rh_F2_J3">
+    <transmission name="trans_h0_F2_J3">
         <type>transmission_interface/SimpleTransmission</type>
-        <joint name="rh_F2_J3">
+        <joint name="h0_F2_J3">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
         </joint>
-        <actuator name="rh_F2_J3_motor">
+        <actuator name="h0_F2_J3_motor">
             <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
             <mechanicalReduction>1</mechanicalReduction>
         </actuator>

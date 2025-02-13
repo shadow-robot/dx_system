@@ -4,43 +4,43 @@
 trajectory_controller:
   type: effort_controllers/JointTrajectoryController
   joints:
-    - lh_F0_J0
-    - lh_F0_J1
-    - lh_F0_J2
-    - lh_F0_J3
-    - lh_F1_J0
-    - lh_F1_J1
-    - lh_F1_J2
-    - lh_F1_J3
-    - lh_F2_J0
-    - lh_F2_J1
-    - lh_F2_J2
-    - lh_F2_J3
+    - h1_F0_J0
+    - h1_F0_J1
+    - h1_F0_J2
+    - h1_F0_J3
+    - h1_F1_J0
+    - h1_F1_J1
+    - h1_F1_J2
+    - h1_F1_J3
+    - h1_F2_J0
+    - h1_F2_J1
+    - h1_F2_J2
+    - h1_F2_J3
   gains:
-    lh_F0_J0: {p: 200.0, i: 100.0, d: 0.1, antiwindup: True, i_clamp_min: -1000, i_clamp_max: 1000}
-    lh_F0_J1: {p: 200.0, i: 1000.0, d: 0.05, antiwindup: True, i_clamp_min: -5, i_clamp_max: 5}
-    lh_F0_J2: {p: 20.0, i: 100.0, d: 0.0001, antiwindup: True, i_clamp_min: -50, i_clamp_max: 50}
-    lh_F0_J3: {p: 10.0, i: 10.0, d: 0.0001, antiwindup: True, i_clamp_min: -50, i_clamp_max: 50}
-    lh_F1_J0: {p: 200.0, i: 100.0, d: 0.1, antiwindup: True, i_clamp_min: -1000, i_clamp_max: 1000}
-    lh_F1_J1: {p: 200.0, i: 1000.0, d: 0.05, antiwindup: True, i_clamp_min: -5, i_clamp_max: 5}
-    lh_F1_J2: {p: 20.0, i: 100.0, d: 0.0001, antiwindup: True, i_clamp_min: -50, i_clamp_max: 50}
-    lh_F1_J3: {p: 10.0, i: 10.0, d: 0.0001, antiwindup: True, i_clamp_min: -50, i_clamp_max: 50}
-    lh_F2_J0: {p: 200.0, i: 100.0, d: 0.1, antiwindup: True, i_clamp_min: -1000, i_clamp_max: 1000}
-    lh_F2_J1: {p: 200.0, i: 1000.0, d: 0.05, antiwindup: True, i_clamp_min: -5, i_clamp_max: 5}
-    lh_F2_J2: {p: 20.0, i: 100.0, d: 0.0001, antiwindup: True, i_clamp_min: -50, i_clamp_max: 50}
-    lh_F2_J3: {p: 10.0, i: 10.0, d: 0.0001, antiwindup: True, i_clamp_min: -50, i_clamp_max: 50}
+    h1_F0_J0: {p: 200.0, i: 100.0, d: 0.1, antiwindup: True, i_clamp_min: -1000, i_clamp_max: 1000}
+    h1_F0_J1: {p: 200.0, i: 1000.0, d: 0.05, antiwindup: True, i_clamp_min: -5, i_clamp_max: 5}
+    h1_F0_J2: {p: 20.0, i: 100.0, d: 0.0001, antiwindup: True, i_clamp_min: -50, i_clamp_max: 50}
+    h1_F0_J3: {p: 10.0, i: 10.0, d: 0.0001, antiwindup: True, i_clamp_min: -50, i_clamp_max: 50}
+    h1_F1_J0: {p: 200.0, i: 100.0, d: 0.1, antiwindup: True, i_clamp_min: -1000, i_clamp_max: 1000}
+    h1_F1_J1: {p: 200.0, i: 1000.0, d: 0.05, antiwindup: True, i_clamp_min: -5, i_clamp_max: 5}
+    h1_F1_J2: {p: 20.0, i: 100.0, d: 0.0001, antiwindup: True, i_clamp_min: -50, i_clamp_max: 50}
+    h1_F1_J3: {p: 10.0, i: 10.0, d: 0.0001, antiwindup: True, i_clamp_min: -50, i_clamp_max: 50}
+    h1_F2_J0: {p: 200.0, i: 100.0, d: 0.1, antiwindup: True, i_clamp_min: -1000, i_clamp_max: 1000}
+    h1_F2_J1: {p: 200.0, i: 1000.0, d: 0.05, antiwindup: True, i_clamp_min: -5, i_clamp_max: 5}
+    h1_F2_J2: {p: 20.0, i: 100.0, d: 0.0001, antiwindup: True, i_clamp_min: -50, i_clamp_max: 50}
+    h1_F2_J3: {p: 10.0, i: 10.0, d: 0.0001, antiwindup: True, i_clamp_min: -50, i_clamp_max: 50}
   allow_partial_joints_goal: true
   constraints:
     stopped_velocity_tolerance: 0
-    lh_F0_J0: {goal: 1.0, trajectory: 0.1}
-    lh_F0_J1: {goal: 1.0, trajectory: 0.1}
-    lh_F0_J2: {goal: 1.0, trajectory: 0.1}
-    lh_F0_J3: {goal: 1.0, trajectory: 0.1}
-    lh_F1_J0: {goal: 1.0, trajectory: 0.1}
-    lh_F1_J1: {goal: 1.0, trajectory: 0.1}
-    lh_F1_J2: {goal: 1.0, trajectory: 0.1}
-    lh_F1_J3: {goal: 1.0, trajectory: 0.1}
-    lh_F2_J0: {goal: 1.0, trajectory: 0.1}
-    lh_F2_J1: {goal: 1.0, trajectory: 0.1}
-    lh_F2_J2: {goal: 1.0, trajectory: 0.1}
-    lh_F2_J3: {goal: 1.0, trajectory: 0.1}
+    h1_F0_J0: {goal: 1.0, trajectory: 0.1}
+    h1_F0_J1: {goal: 1.0, trajectory: 0.1}
+    h1_F0_J2: {goal: 1.0, trajectory: 0.1}
+    h1_F0_J3: {goal: 1.0, trajectory: 0.1}
+    h1_F1_J0: {goal: 1.0, trajectory: 0.1}
+    h1_F1_J1: {goal: 1.0, trajectory: 0.1}
+    h1_F1_J2: {goal: 1.0, trajectory: 0.1}
+    h1_F1_J3: {goal: 1.0, trajectory: 0.1}
+    h1_F2_J0: {goal: 1.0, trajectory: 0.1}
+    h1_F2_J1: {goal: 1.0, trajectory: 0.1}
+    h1_F2_J2: {goal: 1.0, trajectory: 0.1}
+    h1_F2_J3: {goal: 1.0, trajectory: 0.1}

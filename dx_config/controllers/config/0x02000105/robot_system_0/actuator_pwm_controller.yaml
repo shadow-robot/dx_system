@@ -6,28 +6,28 @@ actuator_pwm_controller:
   command_timeout: 5.0
   type: dx_controllers/ActuatorGroupPassThroughEffortController
   actuator_command_type: pwm
-  finger_names: [rh_F0, rh_F1, rh_F2]
+  finger_names: [h0_F0, h0_F1, h0_F2]
   fingers:
-    rh_F0:
+    h0_F0:
       actuators:
-        - rh_F0_A0
-        - rh_F0_A1
-        - rh_F0_A2
-        - rh_F0_A3
-        - rh_F0_A4
+        - h0_F0_A0
+        - h0_F0_A1
+        - h0_F0_A2
+        - h0_F0_A3
+        - h0_F0_A4
         
-    rh_F1:
+    h0_F1:
       actuators:
-        - rh_F1_A0
-        - rh_F1_A1
-        - rh_F1_A2
-        - rh_F1_A3
-        - rh_F1_A4
+        - h0_F1_A0
+        - h0_F1_A1
+        - h0_F1_A2
+        - h0_F1_A3
+        - h0_F1_A4
         
-    rh_F2:
+    h0_F2:
       actuators:
-        - rh_F2_A0
-        - rh_F2_A1
-        - rh_F2_A2
-        - rh_F2_A3
-        - rh_F2_A4
+        - h0_F2_A0
+        - h0_F2_A1
+        - h0_F2_A2
+        - h0_F2_A3
+        - h0_F2_A4

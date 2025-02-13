@@ -5,7 +5,7 @@
   <arg name="paused" default="false" doc="Start Gazebo paused"/>
   <arg name="world_name" default="worlds/empty.world" doc="Gazebo world file"/>
   <arg name="world_pose" default="-x 0 -y 0 -z 0 -R 0 -P 0 -Y 0" doc="Pose to spawn the robot at"/>
-  <arg name="initial_joint_positions" default=" -J ra_elbow_joint 0 -J ra_shoulder_lift_joint 0 -J ra_shoulder_pan_joint 0 -J ra_wrist_1_joint 0 -J ra_wrist_2_joint 0 -J ra_wrist_3_joint 0 -J rh_F0_J0 0 -J rh_F0_J1 -0.5 -J rh_F0_J2 0 -J rh_F0_J3 0 -J rh_F1_J0 0 -J rh_F1_J1 -0.5 -J rh_F1_J2 0 -J rh_F1_J3 0 -J rh_F2_J0 0 -J rh_F2_J1 -0.5 -J rh_F2_J2 0 -J rh_F2_J3 0" doc="Initial joint configuration of the robot"/>
+  <arg name="initial_joint_positions" default=" -J a0_elbow_joint 0 -J a0_shoulder_lift_joint 0 -J a0_shoulder_pan_joint 0 -J a0_wrist_1_joint 0 -J a0_wrist_2_joint 0 -J a0_wrist_3_joint 0 -J h0_F0_J0 0 -J h0_F0_J1 -0.5 -J h0_F0_J2 0 -J h0_F0_J3 0 -J h0_F1_J0 0 -J h0_F1_J1 -0.5 -J h0_F1_J2 0 -J h0_F1_J3 0 -J h0_F2_J0 0 -J h0_F2_J1 -0.5 -J h0_F2_J2 0 -J h0_F2_J3 0" doc="Initial joint configuration of the robot"/>
 
   <!-- Start Gazebo paused to allow the controllers to pickup the initial pose -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch" pass_all_args="true">

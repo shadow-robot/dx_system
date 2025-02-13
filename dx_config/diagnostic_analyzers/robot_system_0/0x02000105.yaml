@@ -9,19 +9,19 @@ analyzers:
       Actuators:
         type: diagnostic_aggregator/GenericAnalyzer
         path: Actuators
-        regex: ['rh_F[0-9]_A[0-9]']
+        regex: ['h0_F[0-9]_A[0-9]']
         timeout: 5.0
         num_items: 15
       Joints:
         type: diagnostic_aggregator/GenericAnalyzer
         path: Joints
-        regex: ['rh_F[0-9]_J[0-9]']
+        regex: ['h0_F[0-9]_J[0-9]']
         timeout: 5.0
         num_items: 12
       IMUs:
         type: diagnostic_aggregator/GenericAnalyzer
         path: IMUs
-        regex: ['rh_F[0-9]_I[0-9]']
+        regex: ['h0_F[0-9]_I[0-9]']
         timeout: 5.0
         num_items: 9
       MagTacs:
@@ -31,13 +31,13 @@ analyzers:
           Mid_MT:
             type: diagnostic_aggregator/GenericAnalyzer
             path: MT_Mid
-            regex: ['rh_F[0-9]_MTMID']
+            regex: ['h0_F[0-9]_MTMID']
             timeout: 5.0
             num_items: 3
           Prox_MT:
             type: diagnostic_aggregator/GenericAnalyzer
             path: MT_Prox
-            regex: ['rh_F[0-9]_MTPROX']
+            regex: ['h0_F[0-9]_MTPROX']
             timeout: 5.0
             num_items: 3
 
@@ -52,25 +52,25 @@ analyzers:
           Actuators:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Actuators
-            regex: ['rh_F0_A[0-9]']
+            regex: ['h0_F0_A[0-9]']
             timeout: 5.0
             num_items: 5
           Joints:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Joints
-            regex: ['rh_F0_J[0-9]']
+            regex: ['h0_F0_J[0-9]']
             timeout: 5.0
             num_items: 4
           IMUs:
             type: diagnostic_aggregator/GenericAnalyzer
             path: IMUs
-            regex: ['rh_F0_I[0-9]']
+            regex: ['h0_F0_I[0-9]']
             timeout: 5.0
             num_items: 3
           Slaves:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Slaves
-            regex: ['rh_B[0-9]_F0: Slave [0-9]']
+            regex: ['h0_B[0-9]_F0: Slave [0-9]']
             timeout: 5.0
 
 
@@ -81,25 +81,25 @@ analyzers:
           Actuators:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Actuators
-            regex: ['rh_F1_A[0-9]']
+            regex: ['h0_F1_A[0-9]']
             timeout: 5.0
             num_items: 5
           Joints:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Joints
-            regex: ['rh_F1_J[0-9]']
+            regex: ['h0_F1_J[0-9]']
             timeout: 5.0
             num_items: 4
           IMUs:
             type: diagnostic_aggregator/GenericAnalyzer
             path: IMUs
-            regex: ['rh_F1_I[0-9]']
+            regex: ['h0_F1_I[0-9]']
             timeout: 5.0
             num_items: 3
           Slaves:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Slaves
-            regex: ['rh_B[0-9]_F1: Slave [0-9]']
+            regex: ['h0_B[0-9]_F1: Slave [0-9]']
             timeout: 5.0
 
 
@@ -110,26 +110,26 @@ analyzers:
           Actuators:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Actuators
-            regex: ['rh_F2_A[0-9]']
+            regex: ['h0_F2_A[0-9]']
             timeout: 5.0
             num_items: 5
           Joints:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Joints
-            regex: ['rh_F2_J[0-9]']
+            regex: ['h0_F2_J[0-9]']
             timeout: 5.0
             num_items: 4
           IMUs:
             type: diagnostic_aggregator/GenericAnalyzer
             path: IMUs
-            regex: ['rh_F2_I[0-9]']
+            regex: ['h0_F2_I[0-9]']
             timeout: 5.0
             num_items: 3
 
           Slaves:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Slaves
-            regex: ['rh_B[0-9]_F2: Slave [0-9]']
+            regex: ['h0_B[0-9]_F2: Slave [0-9]']
             timeout: 5.0
 
 
@@ -147,7 +147,7 @@ analyzers:
         type: diagnostic_aggregator/GenericAnalyzer
         path: EtherCAT Slaves
         timeout: 5.0
-        regex: ['rh_Palm', 'rh_F[0-9]: *rh_B[0-9]_F[0-9]_FAN_Over_Ethercat']
+        regex: ['h0_Palm', 'h0_F[0-9]: *h0_B[0-9]_F[0-9]_FAN_Over_Ethercat']
         num_items: 7
       EtherCAT_Master:
         type: diagnostic_aggregator/GenericAnalyzer

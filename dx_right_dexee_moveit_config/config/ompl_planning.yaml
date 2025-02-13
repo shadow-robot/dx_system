@@ -164,7 +164,7 @@ planner_configs:
     stop_on_each_solution_improvement: 0  # stop the planner each time a solution improvement is found. Useful for debugging. Default: 0
     use_strict_queue_ordering: 0  # sort edges in the queue at the end of the batch (0) or after each rewiring (1). Default: 0
     find_approximate_solutions: 0  # track approximate solutions (1) or not (0). Default: 0
-rh_f0:
+h0_f0:
   default_planner_config: BiTRRT
   planner_configs:
     - AnytimePathShortening
@@ -194,7 +194,7 @@ rh_f0:
     - AITstar
     - ABITstar
     - BITstar
-rh_f1:
+h0_f1:
   default_planner_config: BiTRRT
   planner_configs:
     - AnytimePathShortening
@@ -224,7 +224,7 @@ rh_f1:
     - AITstar
     - ABITstar
     - BITstar
-rh_f2:
+h0_f2:
   default_planner_config: BiTRRT
   planner_configs:
     - AnytimePathShortening
@@ -254,7 +254,7 @@ rh_f2:
     - AITstar
     - ABITstar
     - BITstar
-rh_dx_fingers:
+h0_dx_fingers:
   planner_configs:
     - AnytimePathShortening
     - SBL
@@ -283,7 +283,7 @@ rh_dx_fingers:
     - AITstar
     - ABITstar
     - BITstar
-rh_hand:
+h0_hand:
   planner_configs:
     - AnytimePathShortening
     - SBL
