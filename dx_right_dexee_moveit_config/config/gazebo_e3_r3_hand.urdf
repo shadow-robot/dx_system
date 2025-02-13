@@ -630,7 +630,7 @@
     <gazebo>
         <plugin filename="libgazebo_ros_control.so" name="gazebo_ros_control">
             <!--robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType-->
-            <robotNamespace>right_hand</robotNamespace>
+            <robotNamespace>hand_0</robotNamespace>
             <robotParam>h0_robot_description</robotParam>
         </plugin>
     </gazebo>

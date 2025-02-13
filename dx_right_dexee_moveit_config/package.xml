@@ -1,6 +1,6 @@
 <package>
 
-  <name>dx_right_dexee_moveit_config</name>
+  <name>dx_dexee_0_moveit_config</name>
   <version>0.3.0</version>
   <description>
      An automatically generated package with all the configuration and launch files for using the e3_r3_hand with the MoveIt Motion Planning Framework

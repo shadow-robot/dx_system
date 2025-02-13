@@ -35,7 +35,7 @@ controller_list:
       - h0_F2_J1
       - h0_F2_J2
       - h0_F2_J3
-  - name: fake_right_arm_controller
+  - name: fake_arm_0_controller
     type: $(arg fake_execution_type)
     joints:
       - a0_shoulder_pan_joint
@@ -44,7 +44,7 @@ controller_list:
       - a0_wrist_1_joint
       - a0_wrist_2_joint
       - a0_wrist_3_joint
-  - name: fake_right_arm_and_hand_controller
+  - name: fake_arm_and_hand_0_controller
     type: $(arg fake_execution_type)
     joints:
       - a0_shoulder_pan_joint
@@ -83,5 +83,5 @@ controller_list:
 initial:  # Define initial robot poses per group
   - group: h0_dx_fingers
     pose: home
-  - group: right_arm
+  - group: arm_0
     pose: a0_zero

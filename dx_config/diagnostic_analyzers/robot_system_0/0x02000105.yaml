@@ -153,7 +153,7 @@ analyzers:
         type: diagnostic_aggregator/GenericAnalyzer
         path: EtherCAT Master
         timeout: 5.0
-        regex: 'right_hand EtherCAT Master'
+        regex: 'hand_0 EtherCAT Master'
         num_items: 1
 
   control_loop:

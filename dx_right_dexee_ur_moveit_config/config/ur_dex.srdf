@@ -23,14 +23,14 @@
         <group name="h0_f1"/>
         <group name="h0_f2"/>
     </group>
-    <group name="right_arm">
+    <group name="arm_0">
         <chain base_link="a0_base_link" tip_link="a0_flange"/>
     </group>
-    <group name="right_arm_and_hand">
-        <group name="right_arm"/>
+    <group name="arm_and_hand_0">
+        <group name="arm_0"/>
         <group name="h0_hand"/>
     </group>
-    <group name="right_arm_and_manipulator">
+    <group name="arm_and_manipulator_0">
         <chain base_link="a0_base_link" tip_link="h0_end_effector"/>
     </group>
     <group name="h0_hand">
@@ -84,7 +84,7 @@
         <joint name="h0_F2_J2" value="0"/>
         <joint name="h0_F2_J3" value="-0.523"/>
     </group_state>
-    <group_state name="a0_zero" group="right_arm">
+    <group_state name="a0_zero" group="arm_0">
         <joint name="a0_elbow_joint" value="0"/>
         <joint name="a0_shoulder_lift_joint" value="0"/>
         <joint name="a0_shoulder_pan_joint" value="0"/>
@@ -92,7 +92,7 @@
         <joint name="a0_wrist_2_joint" value="0"/>
         <joint name="a0_wrist_3_joint" value="0"/>
     </group_state>
-    <group_state name="a0_start" group="right_arm">
+    <group_state name="a0_start" group="arm_0">
         <joint name="a0_elbow_joint" value="2"/>
         <joint name="a0_shoulder_lift_joint" value="-1.25"/>
         <joint name="a0_shoulder_pan_joint" value="0"/>
@@ -100,7 +100,7 @@
         <joint name="a0_wrist_2_joint" value="1.573"/>
         <joint name="a0_wrist_3_joint" value="-3.1416"/>
     </group_state>
-    <group_state name="hand_change" group="right_arm">
+    <group_state name="hand_change" group="arm_0">
         <joint name="a0_elbow_joint" value="1.8135"/>
         <joint name="a0_shoulder_lift_joint" value="-0.8813"/>
         <joint name="a0_shoulder_pan_joint" value="0"/>
@@ -108,7 +108,7 @@
         <joint name="a0_wrist_2_joint" value="1.573"/>
         <joint name="a0_wrist_3_joint" value="-3.1416"/>
     </group_state>
-    <group_state name="safe_store" group="right_arm">
+    <group_state name="safe_store" group="arm_0">
         <joint name="a0_elbow_joint" value="2.8529"/>
         <joint name="a0_shoulder_lift_joint" value="-1.3315"/>
         <joint name="a0_shoulder_pan_joint" value="0"/>
@@ -116,7 +116,7 @@
         <joint name="a0_wrist_2_joint" value="1.573"/>
         <joint name="a0_wrist_3_joint" value="-3.1416"/>
     </group_state>
-    <group_state name="pack_in_box" group="right_arm">
+    <group_state name="pack_in_box" group="arm_0">
         <joint name="a0_elbow_joint" value="-2.87979"/>
         <joint name="a0_shoulder_lift_joint" value="-1.5708"/>
         <joint name="a0_shoulder_pan_joint" value="3.14159"/>

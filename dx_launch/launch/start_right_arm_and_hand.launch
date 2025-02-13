@@ -12,7 +12,7 @@
   <arg name="joint_state_pub_frequency" default="125"/>
   <arg name="hand_type" default="0x02000105"/>
   <arg name="ethercat_port" default="$(optenv ETHERCAT_PORT enp1s0)"/>
-  <arg name="urdf_file" default="$(find dx_robot)/description/robot/right_hand_and_UR10e.urdf.xacro"/>
+  <arg name="urdf_file" default="$(find dx_robot)/description/robot/hand_and_UR10e_0.urdf.xacro"/>
   <arg name="log_user" default="user"/>
   <arg name="controller_output" default="log"/>
   <arg name="controller_start_delay" default="5"/>
@@ -40,8 +40,8 @@
   <arg name="hand_robot_config" default="$(find dx_config)/robot/robot_system_$(arg robot_system_id)/$(arg hand_type).yaml" />
   <arg name="arm_robot_config" default="$(find dx_config)/robot/robot_system_$(arg robot_system_id)/ur_arm_robot_hw.yaml" />
 
-  <arg if="$(eval arg('moveit') and arg('start_control') and arg('hand') and arg('arm'))" name="rviz_config_file" default="$(find dx_right_dexee_ur_moveit_config)/launch/moveit.rviz"/>
-  <arg if="$(eval arg('moveit') and arg('start_control') and arg('hand') and not arg('arm'))" name="rviz_config_file" default="$(find dx_right_dexee_moveit_config)/launch/moveit.rviz"/>
+  <arg if="$(eval arg('moveit') and arg('start_control') and arg('hand') and arg('arm'))" name="rviz_config_file" default="$(find dx_dexee_0_ur_moveit_config)/launch/moveit.rviz"/>
+  <arg if="$(eval arg('moveit') and arg('start_control') and arg('hand') and not arg('arm'))" name="rviz_config_file" default="$(find dx_dexee_0_moveit_config)/launch/moveit.rviz"/>
   <arg unless="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_robot)/config/dx_robot.rviz"/>
 
     <!-- Robot description related config-->
@@ -184,14 +184,14 @@
 
   <!-- Start move_group -->
   <node if="$(eval arg('hand') and arg('arm'))" name="conditional_delayed_rostool_move_group" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
-    <param name="package_name" value="dx_right_dexee_ur_moveit_config" />
+    <param name="package_name" value="dx_dexee_0_ur_moveit_config" />
     <param name="executable_name" value="move_group.launch" />
     <rosparam param="params_list">[^robot_description$]</rosparam>
     <param name="launch_args_list" value="moveit_controller_manager:=ros_control"/>
   </node>
 
   <node if="$(eval arg('hand') and not arg('arm'))" name="conditional_delayed_rostool_move_group" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
-    <param name="package_name" value="dx_right_dexee_moveit_config" />
+    <param name="package_name" value="dx_dexee_0_moveit_config" />
     <param name="executable_name" value="move_group.launch" />
     <rosparam param="params_list">[^robot_description$]</rosparam>
     <param name="launch_args_list" value="moveit_controller_manager:=ros_control"/>
@@ -200,7 +200,7 @@
   <!-- RViz -->
   <node if="$(arg gui)" name="$(anon rviz)" pkg="rviz" type="rviz" respawn="true"
     args="-d $(arg rviz_config_file)" output="screen">
-    <rosparam command="load" file="$(find dx_right_dexee_ur_moveit_config)/config/kinematics.yaml"/>
+    <rosparam command="load" file="$(find dx_dexee_0_ur_moveit_config)/config/kinematics.yaml"/>
   </node>
 
   <!-- Start a joint_state_publisher that will merge the namespaced joint_states topics and republish them to the

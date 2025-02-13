@@ -1,7 +1,7 @@
 moveit_setup_assistant_config:
   URDF:
     package: ""
-    relative_path: /home/user/right_dexee_ur10e.urdf
+    relative_path: /home/user/dexee_0_ur10e.urdf
     xacro_args: ""
   SRDF:
     relative_path: config/ur_dex.srdf

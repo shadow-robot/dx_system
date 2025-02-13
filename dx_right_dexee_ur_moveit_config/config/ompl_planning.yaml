@@ -292,7 +292,7 @@ h0_dx_fingers:
     - BITstar
   projection_evaluator: joints(h0_F0_J0,h0_F0_J1)
   longest_valid_segment_fraction: 0.005
-right_arm:
+arm_0:
   default_planner_config: BiTRRT
   planner_configs:
     - AnytimePathShortening
@@ -322,7 +322,7 @@ right_arm:
     - AITstar
     - ABITstar
     - BITstar
-right_arm_and_hand:
+arm_and_hand_0:
   default_planner_config: BiTRRT
   planner_configs:
     - AnytimePathShortening
@@ -382,7 +382,7 @@ h0_hand:
     - AITstar
     - ABITstar
     - BITstar
-right_arm_and_manipulator:
+arm_and_manipulator_0:
   default_planner_config: BiTRRT
   planner_configs:
     - AnytimePathShortening
