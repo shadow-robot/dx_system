@@ -20,16 +20,10 @@
   <xacro:include filename="$(find ur_description)/urdf/inc/$(arg arm_model)_macro.xacro"/>
 
   <xacro:arg name="hand_type" default="0x02000105"/>
-  <xacro:arg name="side" default="right"/>
+  <xacro:arg name="robot_system_id" default="0"/>
 
-  <xacro:if value="${'$(arg side)' == 'right'}">
-      <xacro:arg name="arm_prefix" default="ra" />
-      <xacro:arg name="hand_prefix" default="rh" />
-  </xacro:if>
-  <xacro:if value="${'$(arg side)' == 'left'}">
-      <xacro:arg name="arm_prefix" default="la" />
-      <xacro:arg name="hand_prefix" default="lh" />
-  </xacro:if>
+  <xacro:arg name="arm_prefix" default="a$(arg robot_system_id)" />
+  <xacro:arg name="hand_prefix" default="h$(arg robot_system_id)" />
 
   <xacro:if value="${'$(arg arm_model)' == 'ur10e'}">
       <xacro:ur10e_robot prefix="$(arg arm_prefix)_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config)"/>
@@ -48,7 +42,7 @@
 
   <xacro:e3_r3_hand prefix="$(arg hand_prefix)_" />
 <!-- TODO Do something for the mounting plate (as it is shown below for hand E)
-  <xacro:sr_hand side="$(arg side)" hand_type="$(arg hand_type)" hand_version="$(arg hand_version)"
+  <xacro:sr_hand robot_system_id="$(arg robot_system_id)" hand_type="$(arg hand_type)" hand_version="$(arg hand_version)"
                   fingers="$(arg fingers)" tip_sensors="$(arg tip_sensors)" mid_sensors="$(arg mid_sensors)"
                   prox_sensors="$(arg prox_sensors)" palm_sensor="$(arg palm_sensor)" mounting_plate="true"/> -->
 
@@ -68,7 +62,7 @@
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
       <!--robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType-->
-      <robotNamespace>$(arg side)_arm</robotNamespace>
+      <robotNamespace>arm_$(arg robot_system_id)</robotNamespace>
       <robotParam>$(arg arm_prefix)_robot_description</robotParam>
     </plugin>
   </gazebo>
@@ -76,7 +70,7 @@
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
       <!--robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType-->
-      <robotNamespace>$(arg side)_hand</robotNamespace>
+      <robotNamespace>hand_$(arg robot_system_id)</robotNamespace>
       <robotParam>$(arg hand_prefix)_robot_description</robotParam>
     </plugin>
   </gazebo>

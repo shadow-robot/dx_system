@@ -2,21 +2,21 @@
 # Unauthorized copying of the content in this file, via any medium is strictly prohibited.
 
 # We keep the prefixed name because this file is loaded twice (in the roo namespace and in the arm namespace)
-ra_sr_ur_robot_hw:
+a0_sr_ur_robot_hw:
   joints: &robot_joints
-    - ra_shoulder_pan_joint
-    - ra_shoulder_lift_joint
-    - ra_elbow_joint
-    - ra_wrist_1_joint
-    - ra_wrist_2_joint
-    - ra_wrist_3_joint
+    - a0_shoulder_pan_joint
+    - a0_shoulder_lift_joint
+    - a0_elbow_joint
+    - a0_wrist_1_joint
+    - a0_wrist_2_joint
+    - a0_wrist_3_joint
 
   type: ur_driver/HardwareInterface
   
-  # ra for right side arm la for left side arm
-  robot_id: ra
+  # a0 for arm 0, a1 for arm 1, etc.
+  robot_id: a0
 
-  tf_prefix: ra_
+  tf_prefix: a0_
   
   # for sending robot programs
   # When using aurora (https://github.com/shadow-robot/aurora) it uses sed to replace this IP with the user-defined IP
@@ -46,5 +46,5 @@ ra_sr_ur_robot_hw:
   
   non_blocking_read: true
 
-  wrench_prefix: right_
+  wrench_prefix: a0_
   

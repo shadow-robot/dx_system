@@ -25,27 +25,26 @@ class DxConstructRobotDescription:
 
     def __init__(self):
         self._load_robot_description_command = rospy.get_param("~load_robot_description_command")
-        self._side = ''
+        self._robot_system_id = ''
         self._robot_description_params = {}
         self._sr_ur_load_calibration = ''
         arm_type = rospy.get_param("~arm_type")
+        self._n_arms = rospy.get_param("~n_arms", 1)
 
-        right_arm_ip = '10.8.1.1'
-        left_arm_ip = '10.8.2.1'
+        arm_ips = [f'10.8.{arm_id+1}.1' for arm_id in range(self._n_arms)]
 
         if self._arm_ip_params_loaded_before_timeout(self.TIMEOUT_IN_SECS):
-            right_arm_ip, left_arm_ip = self._get_arm_ip_params(right_arm_ip, left_arm_ip)
+            arm_ips = self._get_arm_ip_params()
         else:
             rospy.logwarn(f"No arm ip param was found on param server, using the following default arm ips:\n \
-                           right arm ip: {right_arm_ip} - left arm ip: {left_arm_ip}")
+                            {"/n".join(arm_ips)}")
 
-        self._right_arm_params = {'prefix': 'ra', 'ip_address': right_arm_ip, 'arm_type': arm_type}
-        self._left_arm_params = {'prefix': 'la', 'ip_address': left_arm_ip, 'arm_type': arm_type}
+        self._arm_params_list = []
+        for arm_id in range(self._n_arms):
+            self._arm_params_list.append({'prefix': f'a{arm_id}', 'ip_address': arm_ips[arm_id], 'arm_type': arm_type})
 
-        if 'bimanual' in self._load_robot_description_command:
-            self._side = 'both'
-        else:
-            self._side = rospy.get_param("~side")
+        # TODO Implement multiarm support, potentially allow robot_system_id param to be defined as a list
+        self._robot_system_id = rospy.get_param("~robot_system_id")
 
         self._process_parameters()
         urdf = self._parse_xacro()
@@ -53,45 +52,31 @@ class DxConstructRobotDescription:
         rospy.set_param('robot_description', urdf.decode("utf-8"))
         rospy.set_param('robot_description_ready', "true")
 
-    @staticmethod
-    def _arm_ip_params_loaded_before_timeout(timeout_in_secs):
+    def _arm_ip_params_loaded_before_timeout(self, timeout_in_secs: float) -> bool:
         start_time = rospy.get_time()
-        while not rospy.has_param("/la_sr_ur_robot_hw/robot_ip") and not rospy.has_param("/ra_sr_ur_robot_hw/robot_ip"):
+        while not all(rospy.has_param(f"/a{arm_id}_sr_ur_robot_hw/robot_ip") for arm_id in range(self._n_arms)):
             rospy.sleep(0.1)
             if rospy.get_time() - start_time > timeout_in_secs:
                 return False
         return True
 
-    @staticmethod
-    def _get_arm_ip_params(right_arm_ip, left_arm_ip):
-        if rospy.has_param("/ra_sr_ur_robot_hw/robot_ip"):
-            right_arm_ip = rospy.get_param("/ra_sr_ur_robot_hw/robot_ip")
-        if rospy.has_param("/la_sr_ur_robot_hw/robot_ip"):
-            left_arm_ip = rospy.get_param("/la_sr_ur_robot_hw/robot_ip")
-        return right_arm_ip, left_arm_ip
+    def _get_arm_ip_params(self, arm_ips: list) -> list:
+        for arm_id in range(self._n_arms):
+            if rospy.has_param(f"/a{arm_id}_sr_ur_robot_hw/robot_ip"):
+                arm_ips[arm_id] = rospy.get_param(f"/a{arm_id}_sr_ur_robot_hw/robot_ip")
+        return arm_ips
 
     def _process_parameters(self):
         kinematics_configs = self._get_kinematics_config()
-        if not self._side == 'both':
-            self._robot_description_params['kinematics_config'] = kinematics_configs[0]
-        else:
-            self._robot_description_params['kinematics_config_right'] = kinematics_configs[0]
-            self._robot_description_params['kinematics_config_left'] = kinematics_configs[1]
+        config = kinematics_configs[self._robot_system_id]
+        self._robot_description_params[f'kinematics_config_robot_system_{self._robot_system_id}'] = config
 
     def _get_kinematics_config(self):
         kinematics_configs = []
-        if self._side == 'both':
-            self._sr_ur_load_calibration = SrUrLoadCalibration([self._right_arm_params, self._left_arm_params])
-        elif self._side == 'right':
-            self._sr_ur_load_calibration = SrUrLoadCalibration([self._right_arm_params])
-        elif self._side == 'left':
-            self._sr_ur_load_calibration = SrUrLoadCalibration([self._left_arm_params])
+        self._sr_ur_load_calibration = SrUrLoadCalibration([self._arm_params_list[self._robot_system_id]])
         arms_info = self._sr_ur_load_calibration.get_calibration_files()
-        if self._side != 'both':
-            kinematics_configs.append(arms_info[0]['kinematics_config'])
-        else:
-            for arm in arms_info:
-                kinematics_configs.append(arm['kinematics_config'])
+        for arm in arms_info:
+            kinematics_configs.append(arm['kinematics_config'])
         return kinematics_configs
 
     def _parse_xacro(self):

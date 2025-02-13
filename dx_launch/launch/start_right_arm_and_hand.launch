@@ -32,33 +32,31 @@
   <arg name="start_distal_cameras" default="false"/>
   <arg name="view_distal_cameras" default="false"/>
 
-  <arg name="side" default="right"/>
-  <arg name="side_letter" value="$(eval side[0])"/>
+  <arg name="robot_system_id" default="0"/>
   <arg name="arm" default="true"/>
   <arg name="hand" default="true"/>
   <arg name="arm_model" default="ur10e"/>
 
-  <arg name="hand_robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
-  <arg name="arm_robot_config" default="$(find dx_config)/robot/$(arg side)/ur_arm_robot_hw.yaml" />
+  <arg name="hand_robot_config" default="$(find dx_config)/robot/robot_system_$(arg robot_system_id)/$(arg hand_type).yaml" />
+  <arg name="arm_robot_config" default="$(find dx_config)/robot/robot_system_$(arg robot_system_id)/ur_arm_robot_hw.yaml" />
 
   <arg if="$(eval arg('moveit') and arg('start_control') and arg('hand') and arg('arm'))" name="rviz_config_file" default="$(find dx_right_dexee_ur_moveit_config)/launch/moveit.rviz"/>
   <arg if="$(eval arg('moveit') and arg('start_control') and arg('hand') and not arg('arm'))" name="rviz_config_file" default="$(find dx_right_dexee_moveit_config)/launch/moveit.rviz"/>
   <arg unless="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_robot)/config/dx_robot.rviz"/>
 
-  <!-- Robot description related config-->
-  <arg unless="$(arg arm)" name="robot_name" default="$(arg side)_dexee"/>
+    <!-- Robot description related config-->
+  <arg unless="$(arg arm)" name="robot_name" default="dexee_$(arg robot_system_id)"/>
   <arg unless="$(arg arm)" name="initial_z" default="0.0"/>
   <arg name="initial_y" default="0.0"/>
   <arg name="initial_yaw" default="0.0"/>
-  <arg if="$(arg arm)" name="robot_name" default="$(arg side)_$(arg arm_model)_dexee"/>
+  <arg if="$(arg arm)" name="robot_name" default="$(arg arm_model)_dexee_$(arg robot_system_id)"/>
   <arg if="$(arg arm)" name="initial_z" default="0.1"/>
 
   <!-- Args for simulation -->
   <!-- Set to true if you want the robot to start in the "home" positions -->
   <arg name="start_home" default="true"/>
   <!-- home_angles must be input at the launch -->
-  <arg name="home_angles" unless="$(eval side=='left')" value="-J ra_shoulder_pan_joint 0.0 -J ra_elbow_joint 2.0 -J ra_wrist_1_joint -1 -J ra_wrist_2_joint 1.5708 -J ra_shoulder_lift_joint -1.25 -J ra_wrist_3_joint -2 -J rh_F0_J1 -0.5 -J rh_F1_J1 -0.5 -J rh_F2_J1 -0.5"/>
-  <arg name="home_angles" if="$(eval side=='left')" value="-J la_shoulder_pan_joint 0.0 -J la_elbow_joint -2.0 -J la_wrist_1_joint -2.1 -J la_wrist_2_joint -1.5708 -J la_shoulder_lift_joint -1.89 -J la_wrist_3_joint 2 -J lh_F0_J1 -0.5 -J lh_F1_J1 -0.5 -J lh_F2_J1 -0.5"/>
+  <arg name="home_angles" if="$(eval robot_system_id=='0')" value="-J a0_shoulder_pan_joint 0.0 -J a0_elbow_joint 2.0 -J a0_wrist_1_joint -1 -J a0_wrist_2_joint 1.5708 -J a0_shoulder_lift_joint -1.25 -J a0_wrist_3_joint -2 -J h0_F0_J1 -0.5 -J h0_F1_J1 -0.5 -J h0_F2_J1 -0.5"/>
   <arg name="paused" value="$(arg start_home)"/>
   <arg if="$(arg start_home)" name="spawn_model_extra_args" value="-unpause $(arg home_angles)" />
   <arg unless="$(arg start_home)" name="spawn_model_extra_args" value="" />
@@ -76,7 +74,7 @@
          gets loaded to the root and calibration happens outside of the namesapce). This will keep compaibility with the
          preexisting sr_ur_calibration_loader script
        - It also gets loaded in the arm namespace in ur_arm_driver-only.launch (to be used by the arm driver)-->
-    <arg name="arm_robot_hw" default="$(find dx_config)/robot/$(arg side)/ur_arm_robot_hw.yaml" />
+    <arg name="arm_robot_hw" default="$(find dx_config)/robot/robot_system_$(arg robot_system_id)/ur_arm_robot_hw.yaml" />
     <rosparam command="load" file="$(arg arm_robot_hw)"/>
   </group>
 
@@ -84,7 +82,7 @@
   <!-- Loading robot description-->
   <include file="$(find dx_launch)/launch/load_robot_description.launch.xml">
     <arg name="sim" value="$(arg sim)"/>
-    <arg name="side" value="$(arg side)"/>
+    <arg name="robot_system_id" value="$(arg robot_system_id)"/>
     <arg name="arm" value="$(arg arm)"/>
     <arg name="hand" value="$(arg hand)"/>
     <arg name="arm_model" value="$(arg arm_model)"/>
@@ -109,16 +107,16 @@
 
     <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model $(arg robot_name) $(arg spawn_model_extra_args)" respawn="false" output="screen"/>
 
-    <group if="$(arg hand)" ns="$(arg side)_hand">
+    <group if="$(arg hand)" ns="hand_$(arg robot_system_id)">
       <include file="$(find dx_launch)/launch/dexee_sim.launch.xml">
         <arg name="robot_state_pub_frequency" default="$(arg robot_state_pub_frequency)"/>
         <arg name="joint_state_pub_frequency" default="$(arg joint_state_pub_frequency)"/>
         <arg name="moveit" default="$(arg moveit)"/>
-        <arg name="side" default="$(arg side)"/>
+        <arg name="robot_system_id" default="$(arg robot_system_id)"/>
       </include>
     </group>
 
-    <group if="$(arg arm)" ns="$(arg side)_arm">
+    <group if="$(arg arm)" ns="arm_$(arg robot_system_id)">
       <include file="$(find ros_ethercat_model)/launch/joint_state_publisher.launch" >
         <arg name="publish_rate" value="$(arg joint_state_pub_frequency)"/>
       </include>
@@ -129,15 +127,15 @@
         <param name="tf_prefix" type="string" value="" />
       </node>
 
-      <rosparam file="$(find dx_config)/gazebo/$(arg side_letter)a_trajectory_controller.yaml" command="load"/>
-      <node name="arm_trajectory_controller_spawner" pkg="controller_manager" type="spawner" output="screen" args="$(arg side_letter)a_trajectory_controller"/>
+      <rosparam file="$(find dx_config)/gazebo/a$(arg robot_system_id)_trajectory_controller.yaml" command="load"/>
+      <node name="arm_trajectory_controller_spawner" pkg="controller_manager" type="spawner" output="screen" args="a$(arg robot_system_id)_trajectory_controller"/>
     </group>
   </group>
 
   <!-- Real robot launch-->
   <group unless="$(arg sim)">
-    <group if="$(arg arm)" ns="$(arg side)_arm">
-      <param name="/robot_namespaces/$(arg side)_arm" value="$(arg arm_model)"/>
+    <group if="$(arg arm)" ns="arm_$(arg robot_system_id)">
+      <param name="/robot_namespaces/arm_$(arg robot_system_id)" value="$(arg arm_model)"/>
       <include file="$(find dx_launch)/launch/ur_arm_real.launch.xml">
         <arg name="debug" value="$(arg debug)"/>
         <arg name="hand_type" value="$(arg hand_type)"/>
@@ -149,12 +147,12 @@
         <arg name="start_control" value="$(arg start_control)"/>
         <arg name="control_mode" value="$(arg control_mode)"/>
         <arg name="arm_model" value="$(arg arm_model)"/>
-        <arg name="side" value="$(arg side)"/>
+        <arg name="robot_system_id" value="$(arg robot_system_id)"/>
       </include>
     </group>
 
-    <group if="$(arg hand)" ns="$(arg side)_hand">
-      <param name="/robot_namespaces/$(arg side)_hand" value="r3_standard"/>
+    <group if="$(arg hand)" ns="hand_$(arg robot_system_id)">
+      <param name="/robot_namespaces/hand_$(arg robot_system_id)" value="r3_standard"/>
       <include if="$(arg start_distal_cameras)" file="$(find usb_cam)/launch/all.launch">
         <arg name="viewer" value="$(arg view_distal_cameras)"/>
         <arg name="zero" value="$(eval 'F0' in arg('distals'))"/>
@@ -178,7 +176,7 @@
 
     <!-- diagnostic aggregator for being able to see the results in the robot_monitor -->
     <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator" >
-      <rosparam command="load" file="$(find dx_config)/diagnostic_analyzers/$(arg side)/$(arg hand_type).yaml"/>
+      <rosparam command="load" file="$(find dx_config)/diagnostic_analyzers/robot_system_$(arg robot_system_id)/$(arg hand_type).yaml"/>
       <param if="$(eval arg('hand') and arg('arm'))" name="analyzers/control_loop/num_items" value="2"/>
     </node>
   </group>
@@ -212,7 +210,7 @@
     <param name="executable_name" value="joint_state_publisher" />
     <rosparam param="params_list">[^robot_description$]</rosparam>
     <param name="launch_args_list" value="
-    _rate:=$(arg joint_state_pub_frequency) _source_list:=[$(arg side)_hand/joint_states,$(arg side)_arm/joint_states]" />
+    _rate:=$(arg joint_state_pub_frequency) _source_list:=[hand_$(arg robot_system_id)/joint_states,arm_$(arg robot_system_id)/joint_states]" />
   </node>
 
   <node pkg="sr_logging_common" name="check_log_size" type="check_log_size.py" output="screen" required="True"/>
