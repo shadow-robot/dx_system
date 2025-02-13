@@ -8,6 +8,7 @@
   <arg name="debug" default="false"/>
   <arg name="debug_log_level" default="false"/>
   <arg name="verbose" default="true"/>
+  <arg name="bootload_mode" default="false"/>
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
   <arg name="hand_type" default="0x02000105"/>
@@ -166,6 +167,7 @@
         <arg name="debug" value="$(arg debug)"/>
         <arg name="hand_type" value="$(arg hand_type)"/>
         <arg name="ethercat_port" value="$(arg ethercat_port)"/>
+        <arg name="bootload_mode" value="$(arg bootload_mode)"/>
         <arg name="robot_config" value="$(arg hand_robot_config)"/>
         <arg name="log_user" value="$(arg log_user)"/>
         <arg name="controller_output" value="$(arg controller_output)"/>

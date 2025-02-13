@@ -23,7 +23,7 @@
   <arg name="joint_state_pub_frequency" default="125"/>
   <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/ur_arm_robot_hw.yaml" />
   
-  <include file="$(find dx_launch)/launch/ur_arm_driver_only.launch">
+  <include file="$(find dx_launch)/launch/ur_arm_driver_only.launch.xml">
     <arg name="debug" value="$(arg debug)"/>
     <arg name="hand" value="$(arg hand)"/>
     <arg name="hand_type" value="$(arg hand_type)"/>
