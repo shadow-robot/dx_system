@@ -8,8 +8,7 @@
   <arg name="sim"/>
 
   <!-- ROBOT CONFIGS -->
-  <arg name="side"/>
-  <arg name="side_letter" value="$(eval side[0])"/>
+  <arg name="robot_system_id"/>
   <arg name="arm" default="true"/>
   <arg name="hand" default="true"/>
 
@@ -22,7 +21,7 @@
   <arg name="initial_y"/>
   <arg name="initial_yaw"/>
 
-  <arg name="arm_prefix" value="$(arg side_letter)a"/>
+  <arg name="arm_prefix" value="a$(arg robot_system_id)"/>
 
   <!-- Hand-only description, needed for srdf generation -->
   <arg if="$(arg hand)" name="hand_description" value="'$(find dx_launch)/description/$(arg hand_type).urdf.xacro'"/>
@@ -32,32 +31,32 @@
   <arg if="$(arg arm)" name="arm_description" value="'$(find dx_launch)/description/ur.urdf.xacro'"/>
 
 
-  <arg if="$(arg arm)" name="load_robot_description_command" value="xacro $(arg robot_description) arm_model:=$(arg arm_model) hand_type:=$(arg hand_type) side:=$(arg side)
+  <arg if="$(arg arm)" name="load_robot_description_command" value="xacro $(arg robot_description) arm_model:=$(arg arm_model) hand_type:=$(arg hand_type) robot_system_id:=$(arg robot_system_id)
                                                                     initial_z:=$(arg initial_z) initial_y:=$(arg initial_y) initial_yaw:=$(arg initial_yaw)"/>
   <arg if="$(eval hand and not arm)" name="load_robot_description_command" value="xacro $(arg hand_description)
-                                                                             prefix:=$(arg side_letter)h_ side:=$(arg side)"/>
+                                                                             prefix:=h$(arg robot_system_id)_ robot_system_id:=$(arg robot_system_id)"/>
   <arg if="$(eval hand)" name="load_hand_description_command" value="xacro $(arg hand_description)
-                                                                             prefix:=$(arg side_letter)h_ side:=$(arg side)"/>
+                                                                             prefix:=h$(arg robot_system_id)_ robot_system_id:=$(arg robot_system_id)"/>
 
-  <arg if="$(arg arm)" name="load_arm_description_command" value="xacro $(arg arm_description) arm_model:=$(arg arm_model) hand_type:=$(arg hand_type) side:=$(arg side)
+  <arg if="$(arg arm)" name="load_arm_description_command" value="xacro $(arg arm_description) arm_model:=$(arg arm_model) hand_type:=$(arg hand_type) robot_system_id:=$(arg robot_system_id)
                                                                     initial_z:=$(arg initial_z) initial_y:=$(arg initial_y) initial_yaw:=$(arg initial_yaw)"/>
 
   <!-- LOAD THE DESCRIPTION -->
-  <param if="$(eval arm and hand)" name="$(arg side)_hand_description" command="$(arg load_hand_description_command)"/>
+  <param if="$(eval arm and hand)" name="hand_$(arg robot_system_id)_description" command="$(arg load_hand_description_command)"/>
   <param if="$(arg sim)" name="robot_description" command="$(arg load_robot_description_command)"/>
-  <param name="$(arg side)_hand_type" value="$(arg hand_type)" />
+  <param name="hand_$(arg robot_system_id)_type" value="$(arg hand_type)" />
   
   <group unless="$(arg sim)">
     <node if="$(arg arm)" name="construct_robot_description" pkg="dx_launch" type="construct_robot_description" output="screen">
       <param name="arm_type" value="$(arg arm_model)"/>
       <param name="load_robot_description_command" value="$(arg load_robot_description_command)"/>
-      <param name="side" value="$(arg side)"/>
+      <param name="robot_system_id" value="$(arg robot_system_id)"/>
     </node>
 
     <param unless="$(arg arm)" name="robot_description" command="$(arg load_robot_description_command)"/>
   </group>
 
   <!-- LOAD DESCRIPTIONS FOR GAZEBO -->
-  <param if="$(eval sim and hand)" name="$(arg side_letter)h_robot_description" command="$(arg load_hand_description_command)"/>
-  <param if="$(eval sim and arm)" name="$(arg side_letter)a_robot_description" command="$(arg load_arm_description_command)"/>
+  <param if="$(eval sim and hand)" name="h$(arg robot_system_id)_robot_description" command="$(arg load_hand_description_command)"/>
+  <param if="$(eval sim and arm)" name="a$(arg robot_system_id)_robot_description" command="$(arg load_arm_description_command)"/>
 </launch>

@@ -55,7 +55,7 @@
   <!-- Set to true if you want the robot to start in the "home" positions -->
   <arg name="start_home" default="true"/>
   <!-- home_angles must be input at the launch -->
-  <arg name="home_angles" if="$(eval robot_system_id=='0')" value="-J a0_shoulder_pan_joint 0.0 -J a0_elbow_joint 2.0 -J a0_wrist_1_joint -1 -J a0_wrist_2_joint 1.5708 -J a0_shoulder_lift_joint -1.25 -J a0_wrist_3_joint -2 -J h0_F0_J1 -0.5 -J h0_F1_J1 -0.5 -J h0_F2_J1 -0.5"/>
+  <arg name="home_angles" if="$(eval robot_system_id==0)" value="-J a0_shoulder_pan_joint 0.0 -J a0_elbow_joint 2.0 -J a0_wrist_1_joint -1 -J a0_wrist_2_joint 1.5708 -J a0_shoulder_lift_joint -1.25 -J a0_wrist_3_joint -2 -J h0_F0_J1 -0.5 -J h0_F1_J1 -0.5 -J h0_F2_J1 -0.5"/>
   <arg name="paused" value="$(arg start_home)"/>
   <arg if="$(arg start_home)" name="spawn_model_extra_args" value="-unpause $(arg home_angles)" />
   <arg unless="$(arg start_home)" name="spawn_model_extra_args" value="" />

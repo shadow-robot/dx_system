@@ -5,7 +5,7 @@
 -->
 <launch>
   <arg name="moveit" default="true"/>
-  <arg name="side"/>
+  <arg name="robot_system_id"/>
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
 
@@ -27,7 +27,7 @@
   <!-- Spawn controllers -->
   <include file="$(find dx_launch)/launch/controllers/gazebo_ros_controllers.launch">
     <arg name="control_type" value="$(arg control_type)"/>
-    <arg name="robot_namespace" value="$(arg side)_hand_"/>
+    <arg name="robot_namespace" value="hand_$(arg robot_system_id)_"/>
   </include>
 
 </launch>
