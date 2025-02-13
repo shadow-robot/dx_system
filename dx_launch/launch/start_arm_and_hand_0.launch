@@ -12,7 +12,6 @@
   <arg name="joint_state_pub_frequency" default="125"/>
   <arg name="hand_type" default="0x02000105"/>
   <arg name="ethercat_port" default="$(optenv ETHERCAT_PORT enp1s0)"/>
-  <arg name="urdf_file" default="$(find dx_robot)/description/robot/hand_and_UR10e_0.urdf.xacro"/>
   <arg name="log_user" default="user"/>
   <arg name="controller_output" default="log"/>
   <arg name="controller_start_delay" default="5"/>
