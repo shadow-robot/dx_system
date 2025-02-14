@@ -3,6 +3,7 @@
 # Copyright (C) 2024-2025 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
 # Unauthorized copying of the content in this file, via any medium is strictly prohibited.
 
+from typing import List
 from subprocess import check_output
 import rospy
 from sr_ur_arm_calibration_loader.sr_ur_arm_calibration_loader import SrUrLoadCalibration
@@ -25,13 +26,12 @@ class DxConstructRobotDescription:
 
     def __init__(self):
         self._load_robot_description_command = rospy.get_param("~load_robot_description_command")
-        self._robot_system_id = ''
+        self._robot_system_ids = self._parse_robot_system_id()
         self._robot_description_params = {}
         self._sr_ur_load_calibration = ''
         arm_type = rospy.get_param("~arm_type")
-        self._n_arms = rospy.get_param("~n_arms", 1)
 
-        arm_ips = [f'10.8.{arm_id+1}.1' for arm_id in range(self._n_arms)]
+        arm_ips = [f'10.8.{arm_id+1}.1' for arm_id in self._robot_system_ids]
 
         if self._arm_ip_params_loaded_before_timeout(self.TIMEOUT_IN_SECS):
             arm_ips = self._get_arm_ip_params(arm_ips)
@@ -40,11 +40,8 @@ class DxConstructRobotDescription:
                           "\n\t".join(arm_ips))
 
         self._arm_params_list = []
-        for arm_id in range(self._n_arms):
+        for arm_id in self._robot_system_ids:
             self._arm_params_list.append({'prefix': f'a{arm_id}', 'ip_address': arm_ips[arm_id], 'arm_type': arm_type})
-
-        # TODO Implement multiarm support, potentially allow robot_system_id param to be defined as a list
-        self._robot_system_id = rospy.get_param("~robot_system_id")
 
         self._process_parameters()
         urdf = self._parse_xacro()
@@ -54,26 +51,29 @@ class DxConstructRobotDescription:
 
     def _arm_ip_params_loaded_before_timeout(self, timeout_in_secs: float) -> bool:
         start_time = rospy.get_time()
-        while not all(rospy.has_param(f"/a{arm_id}_sr_ur_robot_hw/robot_ip") for arm_id in range(self._n_arms)):
+        while not all(rospy.has_param(f"/a{arm_id}_sr_ur_robot_hw/robot_ip") for arm_id in self._robot_system_ids):
             rospy.sleep(0.1)
             if rospy.get_time() - start_time > timeout_in_secs:
                 return False
         return True
 
-    def _get_arm_ip_params(self, arm_ips: list) -> list:
-        for arm_id in range(self._n_arms):
+    def _get_arm_ip_params(self, arm_ips: list) -> List[str]:
+        for arm_id in self._robot_system_ids:
             if rospy.has_param(f"/a{arm_id}_sr_ur_robot_hw/robot_ip"):
                 arm_ips[arm_id] = rospy.get_param(f"/a{arm_id}_sr_ur_robot_hw/robot_ip")
         return arm_ips
 
     def _process_parameters(self):
         kinematics_configs = self._get_kinematics_config()
-        config = kinematics_configs[self._robot_system_id]
-        self._robot_description_params[f'kinematics_config_robot_system_{self._robot_system_id}'] = config
+        if len(self._robot_system_ids) == 1:
+            for arm_id in self._robot_system_ids:
+                self._robot_description_params[f'kinematics_config_robot_system_{arm_id}'] = kinematics_configs[arm_id]
+        else:
+            self._robot_description_params[f'kinematics_config'] = kinematics_configs[0]
 
     def _get_kinematics_config(self) -> list:
         kinematics_configs = []
-        self._sr_ur_load_calibration = SrUrLoadCalibration([self._arm_params_list[self._robot_system_id]])
+        self._sr_ur_load_calibration = SrUrLoadCalibration(self._arm_params_list)
         arms_info = self._sr_ur_load_calibration.get_calibration_files()
         for arm in arms_info:
             kinematics_configs.append(arm['kinematics_config'])
@@ -85,6 +85,16 @@ class DxConstructRobotDescription:
             xacro_command += (' ' + key + ':=' + str(value))
         return check_output([command.strip('\'') for command in xacro_command.split()])
 
+    def _parse_robot_system_id(self) -> List[int]:
+        """
+            Parse the robot_system_id parameter and return a list of robot system ids. Expected input format is a comma
+            separated list of robot system ids. E.g. "0,1,2"
+
+            :return: List of robot system ids. E.g. [0, 1, 2]
+        """
+        robot_system_id = rospy.get_param("~robot_system_id")
+        parsed_robot_system_id = robot_system_id.replace(" ", "").split(',')
+        return map(int, parsed_robot_system_id)
 
 if __name__ == "__main__":
     rospy.init_node("dx_construct_robot_description")
