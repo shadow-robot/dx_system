@@ -17,7 +17,7 @@
   <arg name="controller_output" default="log"/>
   <arg name="controller_start_delay" default="5"/>
   <arg name="state_controller_start_delay" default="2"/>
-  <arg name="snapshot_group" default="/snapshot_groups/robot_finger_states_group"/>
+  <arg name="snapshot_group" default="snapshot_groups/robot_finger_states_group"/>
 
   <arg name="start_control" default="true"/>
   <arg name="control_mode" default="trajectory"/>
@@ -174,6 +174,11 @@
         <arg name="start_control" value="$(arg start_control)"/>
         <arg name="control_mode" value="$(arg control_mode)"/>
       </include>
+
+      <include file="$(find dx_robot)/launch/snapshot_recorder.launch.xml">
+        <!-- Different snapshot groups can be defined from snapshot_recording_params.yaml-->
+        <arg name="snapshot_group" value="$(arg snapshot_group)"/>
+      </include>
     </group>
 
     <!-- diagnostic aggregator for being able to see the results in the robot_monitor -->
@@ -216,10 +221,5 @@
   </node>
 
   <node pkg="sr_logging_common" name="check_log_size" type="check_log_size.py" output="screen" required="True"/>
-
-  <include file="$(find dx_robot)/launch/snapshot_recorder.launch.xml">
-    <!-- Different snapshot groups can be defined from snapshot_recording_params.yaml-->
-    <arg name="snapshot_group" value="$(arg snapshot_group)"/>
-  </include>
 
 </launch>
