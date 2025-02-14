@@ -34,7 +34,7 @@ class DxConstructRobotDescription:
         arm_ips = [f'10.8.{arm_id+1}.1' for arm_id in range(self._n_arms)]
 
         if self._arm_ip_params_loaded_before_timeout(self.TIMEOUT_IN_SECS):
-            arm_ips = self._get_arm_ip_params()
+            arm_ips = self._get_arm_ip_params(arm_ips)
         else:
             rospy.logwarn("No arm ip param was found on param server, using the following default arm ips:\n\t" +
                           "\n\t".join(arm_ips))
@@ -71,7 +71,7 @@ class DxConstructRobotDescription:
         config = kinematics_configs[self._robot_system_id]
         self._robot_description_params[f'kinematics_config_robot_system_{self._robot_system_id}'] = config
 
-    def _get_kinematics_config(self):
+    def _get_kinematics_config(self) -> list:
         kinematics_configs = []
         self._sr_ur_load_calibration = SrUrLoadCalibration([self._arm_params_list[self._robot_system_id]])
         arms_info = self._sr_ur_load_calibration.get_calibration_files()
