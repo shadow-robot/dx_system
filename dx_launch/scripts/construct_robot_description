@@ -37,7 +37,7 @@ class DxConstructRobotDescription:
             arm_ips = self._get_arm_ip_params()
         else:
             rospy.logwarn("No arm ip param was found on param server, using the following default arm ips:\n" +
-                          f"\t{"\n".join(arm_ips)}")
+                          f"\t{'\n'.join(arm_ips)}")
 
         self._arm_params_list = []
         for arm_id in range(self._n_arms):
