@@ -20,7 +20,7 @@
   <arg name="arm_prefix" value="a$(arg robot_system_id)"/>
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
-  <arg name="robot_config" default="$(find dx_config)/robot/robot_system_$(arg $(arg robot_system_id))/ur_arm_robot_hw.yaml" />
+  <arg name="robot_config" default="$(find dx_config)/robot/robot_system_$(arg robot_system_id)/ur_arm_robot_hw.yaml" />
   
   <include file="$(find dx_launch)/launch/ur_arm_driver_only.launch">
     <arg name="debug" value="$(arg debug)"/>
