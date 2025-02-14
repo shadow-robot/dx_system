@@ -4,7 +4,7 @@
 analyzers:
   rhFanSlaves:
     type: diagnostic_aggregator/AnalyzerGroup
-    path: rh FAN Sub-devices
+    path: h0 FAN Sub-devices
     analyzers:
       Actuators:
         type: diagnostic_aggregator/GenericAnalyzer
@@ -43,7 +43,7 @@ analyzers:
 
   rhFingers:
     type: diagnostic_aggregator/AnalyzerGroup
-    path: rh Fingers
+    path: h0 Fingers
     analyzers:
       F0:
         type: diagnostic_aggregator/AnalyzerGroup
@@ -141,7 +141,7 @@ analyzers:
 
   rhEthercat:
     type: diagnostic_aggregator/AnalyzerGroup
-    path: rh EtherCat
+    path: h0 EtherCat
     analyzers:
       EtherCAT_Slaves:
         type: diagnostic_aggregator/GenericAnalyzer
