@@ -65,7 +65,7 @@ class DxConstructRobotDescription:
 
     def _process_parameters(self):
         kinematics_configs = self._get_kinematics_config()
-        if len(self._robot_system_ids) == 1:
+        if len(self._robot_system_ids) > 1:
             for arm_id in self._robot_system_ids:
                 self._robot_description_params[f'kinematics_config_robot_system_{arm_id}'] = kinematics_configs[arm_id]
         else:
