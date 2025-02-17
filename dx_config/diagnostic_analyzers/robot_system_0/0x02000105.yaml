@@ -2,7 +2,7 @@
 # Unauthorized copying of the content in this file, via any medium is strictly prohibited.
 
 analyzers:
-  rhFanSlaves:
+  h0FanSlaves:
     type: diagnostic_aggregator/AnalyzerGroup
     path: h0 FAN Sub-devices
     analyzers:
@@ -41,7 +41,7 @@ analyzers:
             timeout: 5.0
             num_items: 3
 
-  rhFingers:
+  h0Fingers:
     type: diagnostic_aggregator/AnalyzerGroup
     path: h0 Fingers
     analyzers:
@@ -139,7 +139,7 @@ analyzers:
     path: ''
 
 
-  rhEthercat:
+  h0Ethercat:
     type: diagnostic_aggregator/AnalyzerGroup
     path: h0 EtherCat
     analyzers:
