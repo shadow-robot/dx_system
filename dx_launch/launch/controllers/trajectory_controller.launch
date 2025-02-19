@@ -8,7 +8,6 @@
 <arg name="output" default="screen"/>
 <arg name="side"/>
 
-<rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/trajectory_controller.yaml"/>
 <node name="spawn_trajectory_controller"
       pkg="controller_manager" type="spawner" respawn="false"
       output="$(arg output)"
