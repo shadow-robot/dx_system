@@ -13,7 +13,7 @@
   <arg name="state_controller_start_delay" default="2"/>
   <arg name="start_control" default="false"/>
   <arg name="control_mode" default="none"/>
-  <!-- allowed values are trajectory, actuator_pwm, actuator_effort, joint_effort, position -->
+  <!-- allowed values are trajectory, actuator_pwm, actuator_effort, joint_effort, position, position_effort -->
   <arg name="side" default="right"/>
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
@@ -36,6 +36,7 @@
 
   <!--controllers-->
 
+  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/position_effort_controller.yaml"/>
   <node if="$(arg start_control)" name="controller_timed_launch" pkg="sr_utilities_common" type="timed_roslaunch.sh"
         args="$(arg controller_start_delay) dx_launch $(arg control_mode)_controller.launch hand_type:=$(arg hand_type) side:=$(arg side) output:=$(arg controller_output)" />
   
