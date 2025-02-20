@@ -4,11 +4,8 @@
  Unauthorized copying of the content in this file, via any medium is strictly prohibited.
 -->
 <launch>
-<arg name="hand_type"/>
 <arg name="output" default="screen"/>
-<arg name="side"/>
 
-<rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/joint_effort_controller.yaml"/>
 <node name="joint_effort_controller"
       pkg="controller_manager" type="spawner" respawn="false"
       output="$(arg output)"
