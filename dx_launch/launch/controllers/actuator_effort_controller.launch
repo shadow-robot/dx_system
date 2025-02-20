@@ -4,9 +4,7 @@
  Unauthorized copying of the content in this file, via any medium is strictly prohibited.
 -->
 <launch>
-<arg name="hand_type"/>
 <arg name="output" default="screen"/>
-<arg name="side"/>
 
 <node name="spawn_actuator_effort_controller"
       pkg="controller_manager" type="spawner" respawn="false"
