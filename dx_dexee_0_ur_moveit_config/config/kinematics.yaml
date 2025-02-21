@@ -1,0 +1,42 @@
+h0_f0:
+  kinematics_solver: bio_ik/BioIKKinematicsPlugin
+  kinematics_solver_search_resolution: 0.005
+  kinematics_solver_timeout: 0.005
+  dpos: 0.001
+  drot: 0.01
+  mode: gd_c
+h0_f1:
+  kinematics_solver: bio_ik/BioIKKinematicsPlugin
+  kinematics_solver_search_resolution: 0.005
+  kinematics_solver_timeout: 0.005
+  dpos: 0.001
+  drot: 0.01
+  mode: gd_c
+h0_f2:
+  kinematics_solver: bio_ik/BioIKKinematicsPlugin
+  kinematics_solver_search_resolution: 0.005
+  kinematics_solver_timeout: 0.005
+  dpos: 0.001
+  drot: 0.01
+  mode: gd_c
+arm_0:
+  kinematics_solver: bio_ik/BioIKKinematicsPlugin
+  kinematics_solver_search_resolution: 0.005
+  kinematics_solver_timeout: 0.005
+  dpos: 0.001
+  drot: 0.01
+  mode: gd_c
+arm_and_hand_0:
+  kinematics_solver: bio_ik/BioIKKinematicsPlugin
+  kinematics_solver_search_resolution: 0.005
+  kinematics_solver_timeout: 0.005
+  dpos: 0.001
+  drot: 0.01
+  mode: gd_c
+arm_and_manipulator_0:
+  kinematics_solver: bio_ik/BioIKKinematicsPlugin
+  kinematics_solver_search_resolution: 0.005
+  kinematics_solver_timeout: 0.005
+  dpos: 0.001
+  drot: 0.01
+  mode: gd_c

@@ -15,17 +15,12 @@
   <xacro:arg name="initial_yaw" default="0.0"/>
   <xacro:arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface"/>
 
-  <xacro:arg name="side" default="right"/>
+  <xacro:arg name="robot_system_id" default="0"/>
   <xacro:arg name="robot_model" default="ur10e"/>
   <xacro:arg name="kinematics_config" default="$(find ur_description)/config/$(arg robot_model)/default_kinematics.yaml"/>
   <xacro:include filename="$(find ur_description)/urdf/inc/$(arg robot_model)_macro.xacro"/>
 
-  <xacro:if value="${'$(arg side)' == 'right'}">
-      <xacro:arg name="arm_prefix" default="ra" />
-  </xacro:if>
-  <xacro:if value="${'$(arg side)' == 'left'}">
-      <xacro:arg name="arm_prefix" default="la" />
-  </xacro:if>
+  <xacro:arg name="arm_prefix" default="a$(arg robot_system_id)" />
 
   <xacro:if value="${'$(arg robot_model)' == 'ur10e'}">
       <xacro:ur10e_robot prefix="$(arg arm_prefix)_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config)"/>

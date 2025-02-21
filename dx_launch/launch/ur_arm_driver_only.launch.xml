@@ -12,20 +12,19 @@
   <arg name="log_user" default="user"/>
   <arg name="controller_output" default="log"/>
   <arg name="state_controller_start_delay" default="2"/>
-  <arg name="side" default="right"/>
-  <arg name="side_letter" value="$(eval side[0])"/>
-  <arg name="arm_prefix" value="$(arg side_letter)a"/>
+  <arg name="robot_system_id" default="0"/>
+  <arg name="arm_prefix" value="a$(arg robot_system_id)"/>
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
-  <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/ur_arm_robot_hw.yaml" />
-  <arg name="force_torque_sensor_hw" default="$(find dx_config)/controllers/config/ur/$(arg side)/force_torque_controller.yaml"/>
+  <arg name="robot_config" default="$(find dx_config)/robot/robot_system_$(arg robot_system_id)/ur_arm_robot_hw.yaml" />
+  <arg name="force_torque_sensor_hw" default="$(find dx_config)/controllers/config/ur/robot_system_$(arg robot_system_id)/force_torque_controller.yaml"/>
 
 
   <rosparam command="load" file="$(arg robot_config)"/>
 
   <arg name="arm_speed_scale" default="0.5"/>
 
-  <!-- Sets up right payload -->
+  <!-- Sets up correct payload -->
   <arg if="$(eval hand and arg('hand_type') == '0x02000105')" name="arm_payload_mass" default="4.51453837"/>
   <arg if="$(arg hand)" name="arm_payload_cog" default="[0.0, 0.0, 0.07]"/>
   <arg unless="$(arg hand)" name="arm_payload_mass" default="0.0"/>
@@ -48,7 +47,7 @@
   namespace by sr_ur_arm_calibration-loader.py. We keep it like that because it needs to be compatible with the way it
   works with hand E. The calibration is also read outside of the robot namespaces, because that is where we build the
   full robot URDf in construct_robot_description. -->
-  <node name="copy_$(arg side)_arm_kinematics_parameter" pkg="dx_launch" type="copy_parameter" output="screen">
+  <node name="copy_arm_$(arg robot_system_id)_kinematics_parameter" pkg="dx_launch" type="copy_parameter" output="screen">
     <param name="from_ns" value="/$(arg arm_prefix)_sr_ur_robot_hw"/>
     <param name="to_ns" value="$(arg arm_prefix)_sr_ur_robot_hw"/>
     <param name="param_name" value="kinematics"/>

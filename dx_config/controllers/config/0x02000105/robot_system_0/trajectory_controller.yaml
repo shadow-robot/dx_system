@@ -1,0 +1,226 @@
+# Copyright (C) 2024-2025 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
+# Unauthorized copying of the content in this file, via any medium is strictly prohibited.
+
+trajectory_controller:
+  type: "position_controllers/JointTrajectoryController"
+  joints:
+    - h0_F0_J0
+    - h0_F0_J1
+    - h0_F0_J2
+    - h0_F0_J3
+    - h0_F1_J0
+    - h0_F1_J1
+    - h0_F1_J2
+    - h0_F1_J3
+    - h0_F2_J0
+    - h0_F2_J1
+    - h0_F2_J2
+    - h0_F2_J3
+
+  constraints:
+    goal_time: 0.6
+    stopped_velocity_tolerance: 10.0
+    h0_F0_J0: {trajectory: 2.0, goal: 2.1}
+    h0_F0_J1: {trajectory: 2.0, goal: 2.1}
+    h0_F0_J2: {trajectory: 2.0, goal: 2.1}
+    h0_F0_J3: {trajectory: 2.0, goal: 2.1}
+    h0_F1_J0: {trajectory: 2.0, goal: 2.1}
+    h0_F1_J1: {trajectory: 2.0, goal: 2.1}
+    h0_F1_J2: {trajectory: 2.0, goal: 2.1}
+    h0_F1_J3: {trajectory: 2.0, goal: 2.1}
+    h0_F2_J0: {trajectory: 2.0, goal: 2.1}
+    h0_F2_J1: {trajectory: 2.0, goal: 2.1}
+    h0_F2_J2: {trajectory: 2.0, goal: 2.1}
+    h0_F2_J3: {trajectory: 2.0, goal: 2.1}
+  stop_trajectory_duration: 0.5
+  allow_partial_joints_goal: true
+
+trajectory_controller_position_layer:
+  update_period: 0.001
+  command_timeout: 300.0
+  refresh_command_time: True
+  type: dx_controllers/FingerPositionController
+  finger_names: [h0_F0, h0_F1, h0_F2]
+  publish_individual_controller_states: false
+  subscribe_command_topics: false
+  fingers:
+    h0_F0:
+      actuators:
+        - h0_F0_A0
+        - h0_F0_A1
+        - h0_F0_A2
+        - h0_F0_A3
+        - h0_F0_A4
+      joints:
+        - h0_F0_J0
+        - h0_F0_J1
+        - h0_F0_J2
+        - h0_F0_J3
+
+      h0_F0_J0:
+        max_slew_rate: 3.141
+        velocity_smoothing_length: 12
+        pid:
+          publish_state: false
+          p: 2.8
+          i: 4.0
+          d: 0.03
+          i_clamp_min: -0.1
+          i_clamp_max: 0.1
+          antiwindup: true
+
+      h0_F0_J1:
+        max_slew_rate: 3.141
+        velocity_smoothing_length: 12
+        pid:
+          publish_state: False
+          p: 2.5
+          i: 3.0
+          d: 0.02  #0.01
+          i_clamp_min: -0.2
+          i_clamp_max: 0.2
+          antiwindup: true
+
+      h0_F0_J2:
+        max_slew_rate: 3.141
+        velocity_smoothing_length: 12
+        pid:
+          publish_state: False
+          p: 1.1
+          i: 3.0
+          d: 0.01
+          i_clamp_min: -0.2
+          i_clamp_max: 0.2
+          antiwindup: true
+
+      h0_F0_J3:
+        max_slew_rate: 3.141
+        velocity_smoothing_length: 12
+        pid:
+          publish_state: False
+          p: 0.6
+          i: 3.0
+          d: 0.008
+          i_clamp_min: -0.1
+          i_clamp_max: -0.1
+          antiwindup: true
+    h0_F1:
+      actuators:
+        - h0_F1_A0
+        - h0_F1_A1
+        - h0_F1_A2
+        - h0_F1_A3
+        - h0_F1_A4
+      joints:
+        - h0_F1_J0
+        - h0_F1_J1
+        - h0_F1_J2
+        - h0_F1_J3
+
+      h0_F1_J0:
+        max_slew_rate: 3.141
+        velocity_smoothing_length: 12
+        pid:
+          publish_state: false
+          p: 2.8
+          i: 4.0
+          d: 0.03
+          i_clamp_min: -0.1
+          i_clamp_max: 0.1
+          antiwindup: true
+
+      h0_F1_J1:
+        max_slew_rate: 3.141
+        velocity_smoothing_length: 12
+        pid:
+          publish_state: False
+          p: 2.5
+          i: 3.0
+          d: 0.02  #0.01
+          i_clamp_min: -0.2
+          i_clamp_max: 0.2
+          antiwindup: true
+
+      h0_F1_J2:
+        max_slew_rate: 3.141
+        velocity_smoothing_length: 12
+        pid:
+          publish_state: False
+          p: 1.1
+          i: 3.0
+          d: 0.01
+          i_clamp_min: -0.2
+          i_clamp_max: 0.2
+          antiwindup: true
+
+      h0_F1_J3:
+        max_slew_rate: 3.141
+        velocity_smoothing_length: 12
+        pid:
+          publish_state: False
+          p: 0.6
+          i: 3.0
+          d: 0.008
+          i_clamp_min: -0.1
+          i_clamp_max: -0.1
+          antiwindup: true
+    h0_F2:
+      actuators:
+        - h0_F2_A0
+        - h0_F2_A1
+        - h0_F2_A2
+        - h0_F2_A3
+        - h0_F2_A4
+      joints:
+        - h0_F2_J0
+        - h0_F2_J1
+        - h0_F2_J2
+        - h0_F2_J3
+
+      h0_F2_J0:
+        max_slew_rate: 3.141
+        velocity_smoothing_length: 12
+        pid:
+          publish_state: false
+          p: 2.8
+          i: 4.0
+          d: 0.03
+          i_clamp_min: -0.1
+          i_clamp_max: 0.1
+          antiwindup: true
+
+      h0_F2_J1:
+        max_slew_rate: 3.141
+        velocity_smoothing_length: 12
+        pid:
+          publish_state: False
+          p: 2.5
+          i: 3.0
+          d: 0.02  #0.01
+          i_clamp_min: -0.2
+          i_clamp_max: 0.2
+          antiwindup: true
+
+      h0_F2_J2:
+        max_slew_rate: 3.141
+        velocity_smoothing_length: 12
+        pid:
+          publish_state: False
+          p: 1.1
+          i: 3.0
+          d: 0.01
+          i_clamp_min: -0.2
+          i_clamp_max: 0.2
+          antiwindup: true
+
+      h0_F2_J3:
+        max_slew_rate: 3.141
+        velocity_smoothing_length: 12
+        pid:
+          publish_state: False
+          p: 0.6
+          i: 3.0
+          d: 0.008
+          i_clamp_min: -0.1
+          i_clamp_max: -0.1
+          antiwindup: true

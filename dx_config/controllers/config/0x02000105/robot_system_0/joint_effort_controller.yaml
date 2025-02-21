@@ -1,0 +1,46 @@
+# Copyright (C) 2024-2025 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
+# Unauthorized copying of the content in this file, via any medium is strictly prohibited.
+
+joint_effort_controller:
+  command_timeout: 5.0
+  type: dx_controllers/FingerPassThroughEffortController
+  finger_names: [h0_F0, h0_F1, h0_F2]
+  fingers:
+    h0_F0:
+      actuators:
+        - h0_F0_A0
+        - h0_F0_A1
+        - h0_F0_A2
+        - h0_F0_A3
+        - h0_F0_A4
+      joints:
+        - h0_F0_J0
+        - h0_F0_J1
+        - h0_F0_J2
+        - h0_F0_J3
+        
+    h0_F1:
+      actuators:
+        - h0_F1_A0
+        - h0_F1_A1
+        - h0_F1_A2
+        - h0_F1_A3
+        - h0_F1_A4
+      joints:
+        - h0_F1_J0
+        - h0_F1_J1
+        - h0_F1_J2
+        - h0_F1_J3
+
+    h0_F2:
+      actuators:
+        - h0_F2_A0
+        - h0_F2_A1
+        - h0_F2_A2
+        - h0_F2_A3
+        - h0_F2_A4
+      joints:
+        - h0_F2_J0
+        - h0_F2_J1
+        - h0_F2_J2
+        - h0_F2_J3

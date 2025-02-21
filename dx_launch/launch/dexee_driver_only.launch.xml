@@ -12,17 +12,16 @@
   <arg name="log_user" default="user"/>
   <arg name="controller_output" default="log"/>
   <arg name="state_controller_start_delay" default="2"/>
-  <arg name="side" default="right"/>
-  <arg name="side_letter" value="$(eval side[0])"/>
+  <arg name="robot_system_id" default="0"/>
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
-  <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
+  <arg name="robot_config" default="$(find dx_config)/robot/robot_system_$(arg robot_system_id)/$(arg hand_type).yaml" />
 
 
   <param name="ethercat_robot_hw/ethercat_port" value="$(arg ethercat_port)" />
   <param name="ethercat_robot_hw/hand_type" value="$(arg hand_type)" />
   <!-- The robot node does not allow for underscores in the robot_prefix (but it can be an empty prefix) -->
-  <param name="ethercat_robot_hw/robot_prefix" type="str" value="$(arg side_letter)h" />
+  <param name="ethercat_robot_hw/robot_prefix" type="str" value="h$(arg robot_system_id)" />
 
   <node pkg="dx_robot" name="param_dump" type="dump_state" output="screen"/>
   <node pkg="dx_robot" name="fan_info_dump" type="dump_fan_debug">
@@ -34,7 +33,7 @@
   <node if="$(arg bootload_mode)" pkg="dx_fan_devices" type="call_bootloader" name="bl_call" output="screen"/>
 
   <!-- Launch npo controller -->
-  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/finger_npo_controller.yaml"/>
+  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/robot_system_$(arg robot_system_id)/finger_npo_controller.yaml"/>
   <node name="spawn_npo_controller"
         pkg="controller_manager" type="spawner" respawn="false"
         output="screen"

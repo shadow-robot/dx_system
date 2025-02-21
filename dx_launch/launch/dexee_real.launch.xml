@@ -15,10 +15,10 @@
   <arg name="start_control" default="false"/>
   <arg name="control_mode" default="none"/>
   <!-- allowed values are trajectory, actuator_pwm, actuator_effort, joint_effort, position -->
-  <arg name="side" default="right"/>
+  <arg name="robot_system_id" default="0"/>
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
-  <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
+  <arg name="robot_config" default="$(find dx_config)/robot/robot_system_$(arg robot_system_id)/$(arg hand_type).yaml" />
   
   <include file="$(find dx_launch)/launch/dexee_driver_only.launch.xml">
     <arg name="debug" value="$(arg debug)"/>
@@ -30,7 +30,7 @@
     <arg name="log_user" value="$(arg log_user)"/>
     <arg name="controller_output" value="$(arg controller_output)"/>
     <arg name="state_controller_start_delay" value="$(arg state_controller_start_delay)"/>
-    <arg name="side" value="$(arg side)"/>
+    <arg name="robot_system_id" value="$(arg robot_system_id)"/>
     <arg name="robot_state_pub_frequency" value="$(arg robot_state_pub_frequency)"/>
     <arg name="joint_state_pub_frequency" value="$(arg joint_state_pub_frequency)"/>
   </include>
