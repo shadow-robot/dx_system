@@ -36,9 +36,17 @@
 
   <!--controllers-->
 
+  <!-- Load all controller configurations from YAML file to parameter server. This is necessary to allow for controller
+       switching while running the driver -->
+  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/actuator_effort_controller.yaml"/>
+  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/actuator_pwm_controller.yaml"/>
+  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/joint_effort_controller.yaml"/>
+  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/position_controller.yaml"/>
+  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/trajectory_controller.yaml"/>
   <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/position_effort_controller.yaml"/>
+  
   <node if="$(arg start_control)" name="controller_timed_launch" pkg="sr_utilities_common" type="timed_roslaunch.sh"
-        args="$(arg controller_start_delay) dx_launch $(arg control_mode)_controller.launch hand_type:=$(arg hand_type) side:=$(arg side) output:=$(arg controller_output)" />
+        args="$(arg controller_start_delay) dx_launch $(arg control_mode)_controller.launch output:=$(arg controller_output)" />
   
   <node pkg="dx_robot" type="check_subdevices_to_enable_robot" name="check_subdevices_to_enable_robot" output="screen" />
 </launch>
