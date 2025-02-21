@@ -7,6 +7,7 @@
   <arg name="debug" default="false"/>
   <arg name="hand_type" default="0x02000105"/>
   <arg name="ethercat_port" default="$(optenv ETHERCAT_PORT enp1s0)"/>
+  <arg name="bootload_mode" default="false"/>
   <arg name="log_user" default="user"/>
   <arg name="controller_output" default="log"/>
   <arg name="controller_start_delay" default="5"/>
@@ -19,12 +20,12 @@
   <arg name="joint_state_pub_frequency" default="125"/>
   <arg name="robot_config" default="$(find dx_config)/robot/$(arg side)/$(arg hand_type).yaml" />
   
-  <include file="$(find dx_launch)/launch/dexee_driver_only.launch">
+  <include file="$(find dx_launch)/launch/dexee_driver_only.launch.xml">
     <arg name="debug" value="$(arg debug)"/>
     <arg name="hand_type" value="$(arg hand_type)"/>
     <arg name="ethercat_port" value="$(arg ethercat_port)"/>
+    <arg name="bootload_mode" value="$(arg bootload_mode)"/>
     <arg name="robot_config" value="$(arg robot_config)"/> 
-    <arg name="bootload_mode" value="false"/>
     <arg name="serial_mode" value="false"/>
     <arg name="log_user" value="$(arg log_user)"/>
     <arg name="controller_output" value="$(arg controller_output)"/>
@@ -47,5 +48,5 @@
   <node if="$(arg start_control)" name="controller_timed_launch" pkg="sr_utilities_common" type="timed_roslaunch.sh"
         args="$(arg controller_start_delay) dx_launch $(arg control_mode)_controller.launch output:=$(arg controller_output)" />
   
-  <node pkg="dx_robot" type="check_subdevices_to_enable_robot" name="check_subdevices_to_enable_robot" output="screen" />
+  <node unless="$(arg bootload_mode)" pkg="dx_robot" type="check_subdevices_to_enable_robot" name="check_subdevices_to_enable_robot" output="screen" />
 </launch>
