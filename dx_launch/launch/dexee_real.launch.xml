@@ -14,7 +14,7 @@
   <arg name="state_controller_start_delay" default="2"/>
   <arg name="start_control" default="false"/>
   <arg name="control_mode" default="none"/>
-  <!-- allowed values are trajectory, actuator_pwm, actuator_effort, joint_effort, position -->
+  <!-- allowed values are trajectory, actuator_pwm, actuator_effort, joint_effort, position, position_effort -->
   <arg name="robot_system_id" default="0"/>
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
@@ -39,12 +39,13 @@
 
   <!-- Load all controller configurations from YAML file to parameter server. This is necessary to allow for controller
        switching while running the driver -->
-  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/actuator_effort_controller.yaml"/>
-  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/actuator_pwm_controller.yaml"/>
-  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/joint_effort_controller.yaml"/>
-  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/position_controller.yaml"/>
-  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/$(arg side)/trajectory_controller.yaml"/>
-
+  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/robot_system_$(arg robot_system_id)/actuator_effort_controller.yaml"/>
+  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/robot_system_$(arg robot_system_id)/actuator_pwm_controller.yaml"/>
+  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/robot_system_$(arg robot_system_id)/joint_effort_controller.yaml"/>
+  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/robot_system_$(arg robot_system_id)/position_controller.yaml"/>
+  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/robot_system_$(arg robot_system_id)/trajectory_controller.yaml"/>
+  <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/robot_system_$(arg robot_system_id)/position_effort_controller.yaml"/>
+  
   <node if="$(arg start_control)" name="controller_timed_launch" pkg="sr_utilities_common" type="timed_roslaunch.sh"
         args="$(arg controller_start_delay) dx_launch $(arg control_mode)_controller.launch output:=$(arg controller_output)" />
   
