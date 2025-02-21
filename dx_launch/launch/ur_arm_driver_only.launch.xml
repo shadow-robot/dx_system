@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Copyright (C) 2024-2025 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
+ Unauthorized copying of the content in this file, via any medium is strictly prohibited.
+-->
+<launch>
+  <arg name="debug" default="false"/>
+  <!-- Whether there is a hand. -->
+  <arg name="hand" default="true"/>
+  <arg name="hand_type" default="0x02000105"/>
+  <arg name="arm_model" default="ur10e"/>
+  <arg name="log_user" default="user"/>
+  <arg name="controller_output" default="log"/>
+  <arg name="state_controller_start_delay" default="2"/>
+  <arg name="robot_system_id" default="0"/>
+  <arg name="arm_prefix" value="a$(arg robot_system_id)"/>
+  <arg name="robot_state_pub_frequency" default="250"/>
+  <arg name="joint_state_pub_frequency" default="125"/>
+  <arg name="robot_config" default="$(find dx_config)/robot/robot_system_$(arg robot_system_id)/ur_arm_robot_hw.yaml" />
+  <arg name="force_torque_sensor_hw" default="$(find dx_config)/controllers/config/ur/robot_system_$(arg robot_system_id)/force_torque_controller.yaml"/>
+
+
+  <rosparam command="load" file="$(arg robot_config)"/>
+
+  <arg name="arm_speed_scale" default="0.5"/>
+
+  <!-- Sets up correct payload -->
+  <arg if="$(eval hand and arg('hand_type') == '0x02000105')" name="arm_payload_mass" default="4.51453837"/>
+  <arg if="$(arg hand)" name="arm_payload_cog" default="[0.0, 0.0, 0.07]"/>
+  <arg unless="$(arg hand)" name="arm_payload_mass" default="0.0"/>
+  <arg unless="$(arg hand)" name="arm_payload_cog" default="[0.0, 0.0, 0.0]"/>
+
+  <rosparam subst_value="True">
+    robot_hardware:
+      - $(arg arm_prefix)_sr_ur_robot_hw
+  </rosparam>
+
+ <!-- Set the parameters related to ur files -->
+  <param name="$(arg arm_prefix)_sr_ur_robot_hw/input_recipe_file" type="string" value="$(find ur_robot_driver)/resources/rtde_input_recipe.txt"/>
+  <param name="$(arg arm_prefix)_sr_ur_robot_hw/output_recipe_file" type="string" value="$(find ur_robot_driver)/resources/rtde_output_recipe.txt"/>
+  <param name="$(arg arm_prefix)_sr_ur_robot_hw/script_file" type="string" value="$(find ur_client_library)/resources/external_control.urscript"/>
+
+  <param name="$(arg arm_prefix)_sr_ur_robot_hw/speed_scale" type="double" value="$(arg arm_speed_scale)"/>
+
+  <!-- This is necessary to copy the kinematic parametersx into the proper namespace to avoid the driver complaining
+  about a mismatch in the calibration parameters read from the arm. The parameters are originally loaded in the root
+  namespace by sr_ur_arm_calibration-loader.py. We keep it like that because it needs to be compatible with the way it
+  works with hand E. The calibration is also read outside of the robot namespaces, because that is where we build the
+  full robot URDf in construct_robot_description. -->
+  <node name="copy_arm_$(arg robot_system_id)_kinematics_parameter" pkg="dx_launch" type="copy_parameter" output="screen">
+    <param name="from_ns" value="/$(arg arm_prefix)_sr_ur_robot_hw"/>
+    <param name="to_ns" value="$(arg arm_prefix)_sr_ur_robot_hw"/>
+    <param name="param_name" value="kinematics"/>
+    <!-- Wait a bit until all the subparameters under kinematics have been loaded to the parameter server,
+    but not too much that the arm driver will have tried to read the kinematics/hash parameter.
+    TODO get rid of this potential race condition by making the ur_arm_robot driver node wait for /robot_description or
+    for $(arg arm_prefix)_sr_ur_robot_hw/kinematics/hash -->
+    <param name="seconds_to_wait" value="0.1"/>
+  </node>
+
+  <group if="$(eval 'e' in arg('arm_model'))">
+    <rosparam command="load" file="$(arg force_torque_sensor_hw)"/>
+    <node name="ft_sensor_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="force_torque_sensor_controller" />
+  </group>
+
+  <!-- Start the robot driver node -->
+  <node if="$(arg debug)" name="ur_arm_robot" pkg="ros_control_robot" type="ros_control_robot" args="" output="screen" launch-prefix="gdb -ex run -args"/>
+  <node unless="$(arg debug)" name="ur_arm_robot" pkg="ros_control_robot" type="ros_control_robot" args="" output="screen" launch-prefix="ethercat_grant"/>
+
+  <!-- Robot state publisher (publishes to /tf in the root namespace) -->
+  <node name="conditional_delayed_rostool_robot_state_publisher" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
+    <param name="package_name" value="robot_state_publisher" />
+    <param name="executable_name" value="robot_state_publisher" />
+    <rosparam param="params_list">[^robot_description$]</rosparam>
+    <param name="launch_args_list" value="
+    _publish_frequency:=$(arg robot_state_pub_frequency)" />
+  </node>
+
+  <!-- Loads joint state publisher (a ros_control controller plugin that publishes to joint_states in the current namespace) -->
+  <node name="js_timed_launch" pkg="sr_utilities_common" type="timed_roslaunch.sh"
+        args="$(arg state_controller_start_delay) ros_ethercat_model joint_state_publisher.launch publish_rate:=$(arg joint_state_pub_frequency)" />
+</launch>

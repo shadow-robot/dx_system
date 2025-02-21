@@ -1,0 +1,87 @@
+controller_list:
+  - name: fake_h0_f0_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - h0_F0_J0
+      - h0_F0_J1
+      - h0_F0_J2
+      - h0_F0_J3
+  - name: fake_h0_f1_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - h0_F1_J0
+      - h0_F1_J1
+      - h0_F1_J2
+      - h0_F1_J3
+  - name: fake_h0_f2_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - h0_F2_J0
+      - h0_F2_J1
+      - h0_F2_J2
+      - h0_F2_J3
+  - name: fake_h0_dx_fingers_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - h0_F0_J0
+      - h0_F0_J1
+      - h0_F0_J2
+      - h0_F0_J3
+      - h0_F1_J0
+      - h0_F1_J1
+      - h0_F1_J2
+      - h0_F1_J3
+      - h0_F2_J0
+      - h0_F2_J1
+      - h0_F2_J2
+      - h0_F2_J3
+  - name: fake_arm_0_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - a0_shoulder_pan_joint
+      - a0_shoulder_lift_joint
+      - a0_elbow_joint
+      - a0_wrist_1_joint
+      - a0_wrist_2_joint
+      - a0_wrist_3_joint
+  - name: fake_arm_and_hand_0_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - a0_shoulder_pan_joint
+      - a0_shoulder_lift_joint
+      - a0_elbow_joint
+      - a0_wrist_1_joint
+      - a0_wrist_2_joint
+      - a0_wrist_3_joint
+      - h0_F0_J0
+      - h0_F0_J1
+      - h0_F0_J2
+      - h0_F0_J3
+      - h0_F1_J0
+      - h0_F1_J1
+      - h0_F1_J2
+      - h0_F1_J3
+      - h0_F2_J0
+      - h0_F2_J1
+      - h0_F2_J2
+      - h0_F2_J3
+  - name: fake_h0_hand_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - h0_F0_J0
+      - h0_F0_J1
+      - h0_F0_J2
+      - h0_F0_J3
+      - h0_F1_J0
+      - h0_F1_J1
+      - h0_F1_J2
+      - h0_F1_J3
+      - h0_F2_J0
+      - h0_F2_J1
+      - h0_F2_J2
+      - h0_F2_J3
+initial:  # Define initial robot poses per group
+  - group: h0_dx_fingers
+    pose: home
+  - group: arm_0
+    pose: a0_zero
