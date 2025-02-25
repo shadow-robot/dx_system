@@ -28,10 +28,19 @@
 
   <!-- Sets up correct payload -->
   <group if="$(eval hand and arg('hand_type') == '0x02000105')">
-    <arg unless="$(arg mounting_plate)" name="arm_payload_mass" default="4.16453837"/>
-    <arg if="$(eval mounting_plate and arg('mounting_plate_name') == 'G-SHW063_Tool_change_plate')" name="arm_payload_mass" default="4.51453837"/>
+    <arg name="hand_mass" value="4.16453837"/>
+    <arg unless="$(arg mounting_plate)" name="arm_payload_mass" default="$(arg hand_mass)"/>
+    <arg if="$(eval mounting_plate and arg('mounting_plate_name') == 'G-SHW063_Tool_change_plate')"
+      name="arm_payload_mass" default="$(eval arg('hand_mass') + 0.35)"/>
   </group>
-  <arg if="$(arg hand)" name="arm_payload_cog" default="[0.0, 0.0, 0.07]"/>
+  <!-- Sets up correct center of gravity -->
+  <group if="$(arg hand)">
+    <arg name="hand_cog" value="[0.0, 0.0, 0.07]"/>
+    <arg unless="$(arg mounting_plate)" name="arm_payload_cog" default="$(arg hand_cog)"/>
+    <arg if="$(eval mounting_plate and arg('mounting_plate_name') == 'G-SHW063_Tool_change_plate')"
+      name="arm_payload_cog" default="[0.0, 0.0, 0.108]"/>
+  </group>
+
   <arg unless="$(arg hand)" name="arm_payload_mass" default="0.0"/>
   <arg unless="$(arg hand)" name="arm_payload_cog" default="[0.0, 0.0, 0.0]"/>
 
