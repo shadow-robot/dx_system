@@ -8,6 +8,8 @@
   <!-- Whether there is a hand. -->
   <arg name="hand" default="true"/>
   <arg name="hand_type" default="0x02000105"/>
+  <arg name="mounting_plate" default="true" />
+  <arg name="mounting_plate_name" default="G-SHW063_Tool_change_plate" />
   <arg name="arm_model" default="ur10e"/>
   <arg name="log_user" default="user"/>
   <arg name="controller_output" default="log"/>
@@ -25,7 +27,10 @@
   <arg name="arm_speed_scale" default="0.5"/>
 
   <!-- Sets up correct payload -->
-  <arg if="$(eval hand and arg('hand_type') == '0x02000105')" name="arm_payload_mass" default="4.51453837"/>
+  <group if="$(eval hand and arg('hand_type') == '0x02000105')">
+    <arg unless="$(arg mounting_plate)" name="arm_payload_mass" default="4.16453837"/>
+    <arg if="$(eval mounting_plate and arg('mounting_plate_name') == 'G-SHW063_Tool_change_plate')" name="arm_payload_mass" default="4.51453837"/>
+  </group>
   <arg if="$(arg hand)" name="arm_payload_cog" default="[0.0, 0.0, 0.07]"/>
   <arg unless="$(arg hand)" name="arm_payload_mass" default="0.0"/>
   <arg unless="$(arg hand)" name="arm_payload_cog" default="[0.0, 0.0, 0.0]"/>

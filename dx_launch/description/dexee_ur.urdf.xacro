@@ -25,6 +25,10 @@
   <xacro:arg name="arm_prefix" default="a$(arg robot_system_id)" />
   <xacro:arg name="hand_prefix" default="h$(arg robot_system_id)" />
 
+  <xacro:arg name="mounting_plate" default="true" />
+  <!-- Name of the mounting plate xacro file: E.g. G-SHW063_Tool_change_plate -->
+  <xacro:arg name="mounting_plate_name" default="G-SHW063_Tool_change_plate" />
+
   <xacro:if value="${'$(arg arm_model)' == 'ur10e'}">
       <xacro:ur10e_robot prefix="$(arg arm_prefix)_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config)"/>
   </xacro:if>
@@ -41,10 +45,6 @@
   <xacro:include filename="$(find dx_robot)/description/robot/$(arg hand_type).xacro" />
 
   <xacro:e3_r3_hand prefix="$(arg hand_prefix)_" />
-<!-- TODO Do something for the mounting plate (as it is shown below for hand E)
-  <xacro:sr_hand robot_system_id="$(arg robot_system_id)" hand_type="$(arg hand_type)" hand_version="$(arg hand_version)"
-                  fingers="$(arg fingers)" tip_sensors="$(arg tip_sensors)" mid_sensors="$(arg mid_sensors)"
-                  prox_sensors="$(arg prox_sensors)" palm_sensor="$(arg palm_sensor)" mounting_plate="true"/> -->
 
   <joint name="world_joint" type="fixed">
       <parent link="world"/>
@@ -52,12 +52,19 @@
       <origin xyz="0.0 $(arg initial_y) $(arg initial_z)" rpy="0.0 0.0 $(arg initial_yaw)"/>
   </joint> 
 
-  <joint name="$(arg arm_prefix)_arm_to_hand" type="fixed">
+  <xacro:if value="$(arg mounting_plate)">
+    <xacro:include filename="$(find dx_robot)/description/xacros/mounting_plates/$(arg mounting_plate_name).xacro" />
+    <xacro:macro_e3r3_mounting_plate prefix="$(arg hand_prefix)_" parent="$(arg arm_prefix)_flange" mounted_tool="$(arg hand_prefix)_hand_base" >
+      <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${3.0*pi/4.0} ${pi/2.0}"/>
+    </xacro:macro_e3r3_mounting_plate>
+  </xacro:if>
+  <xacro:unless value="$(arg mounting_plate)">
+    <joint name="$(arg arm_prefix)_arm_to_hand" type="fixed">
       <parent link="$(arg arm_prefix)_flange"/>
       <child link="$(arg hand_prefix)_hand_base"/>
-      <!-- 0.043m x-offset and 3pi/4 rad pitch are due to height and angle of attachement plate -->
-      <origin xyz="0.043 0.0 0.0" rpy="${pi/2.0} ${3.0*pi/4.0} ${pi/2.0}"/>
+      <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${pi} ${pi/2.0}"/>
   </joint>
+  </xacro:unless>
 
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">

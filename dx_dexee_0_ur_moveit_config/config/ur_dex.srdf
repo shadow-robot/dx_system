@@ -305,4 +305,6 @@
     <disable_collisions link1="h0_F0_base" link2="h0_F0_distal" reason="User"/>
     <disable_collisions link1="h0_F0_distal" link2="h0_hand_base" reason="User"/>
     <disable_collisions link1="h0_F0_middle" link2="h0_hand_base" reason="User"/>
+    <disable_collisions link1="h0_mounting_plate_top" link2="h0_hand_base" reason="Adjacent"/>
+    <disable_collisions link1="h0_mounting_plate_base" link2="h0_mounting_plate_top" reason="Adjacent"/>
 </robot>
