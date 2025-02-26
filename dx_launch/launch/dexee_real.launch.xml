@@ -47,7 +47,7 @@
   <rosparam command="load" file="$(find dx_config)/controllers/config/$(arg hand_type)/robot_system_$(arg robot_system_id)/position_effort_controller.yaml"/>
   
   <node if="$(arg start_control)" name="controller_timed_launch" pkg="sr_utilities_common" type="timed_roslaunch.sh"
-        args="$(arg controller_start_delay) dx_launch $(arg control_mode)_controller.launch output:=$(arg controller_output)" />
+        args="$(arg controller_start_delay) dx_launch $(arg control_mode)_controller.launch.xml output:=$(arg controller_output)" />
   
   <node unless="$(arg bootload_mode)" pkg="dx_robot" type="check_subdevices_to_enable_robot" name="check_subdevices_to_enable_robot" output="screen" />
 </launch>
