@@ -94,7 +94,7 @@ class DxConstructRobotDescription:
         """
         robot_system_id = str(rospy.get_param("~robot_system_id"))
         parsed_robot_system_id = robot_system_id.replace(" ", "").split(',')
-        return map(int, parsed_robot_system_id)
+        return list(map(int, parsed_robot_system_id))
 
 if __name__ == "__main__":
     rospy.init_node("dx_construct_robot_description")
