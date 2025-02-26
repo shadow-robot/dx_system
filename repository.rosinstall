@@ -11,4 +11,4 @@
 - git:
     uri: https://github.com/UniversalRobots/Universal_Robots_ROS_Driver.git
     version: v2.2.0
-    local-name: ur_robot_driver
+    local-name: Universal_Robots_ROS_Driver
