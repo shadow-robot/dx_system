@@ -8,7 +8,10 @@
     version: noetic-devel
     local-name: bio_ik
 
+# If installed from binary, the main node cannot find the required libraries because the main node is run with
+# setuid via ethercat_grant. Using version 2.1.5 as it is known to work with the latest binary of
+# Universal_Robots_CLient_library
 - git:
     uri: https://github.com/UniversalRobots/Universal_Robots_ROS_Driver.git
-    version: v2.2.0
+    version: v2.1.5
     local-name: Universal_Robots_ROS_Driver
