@@ -25,17 +25,16 @@
 
   <arg name="arm_speed_scale" default="0.5"/>
 
-  <!-- Sets up correct payload -->
   <group if="$(eval hand and arg('hand_type') == '0x02000105')">
+    <!-- Sets up correct payload -->
     <arg name="hand_mass" value="4.16453837"/>
     <arg if="$(eval arg('mounting_plate_name') == 'G-SHW063_Tool_change_plate')"
       name="arm_payload_mass" default="$(eval arg('hand_mass') + 0.35)"/>
-  </group>
-  <!-- Sets up correct center of gravity -->
-  <group if="$(arg hand)">
+
+    <!-- Sets up correct center of gravity -->
     <!-- hand CoG is [0.0, 0.0, 0.07] -->
     <arg if="$(eval arg('mounting_plate_name') == 'G-SHW063_Tool_change_plate')"
-      name="arm_payload_cog" default="[0.0, 0.0, 0.108]"/>  
+      name="arm_payload_cog" default="[0.0, 0.0, 0.108]"/>
   </group>
 
   <arg unless="$(arg hand)" name="arm_payload_mass" default="0.0"/>
