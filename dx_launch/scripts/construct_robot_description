@@ -92,9 +92,9 @@ class DxConstructRobotDescription:
 
             :return: List of robot system ids. E.g. [0, 1, 2]
         """
-        robot_system_id = rospy.get_param("~robot_system_id")
+        robot_system_id = str(rospy.get_param("~robot_system_id"))
         parsed_robot_system_id = robot_system_id.replace(" ", "").split(',')
-        return map(int, parsed_robot_system_id)
+        return list(map(int, parsed_robot_system_id))
 
 if __name__ == "__main__":
     rospy.init_node("dx_construct_robot_description")
