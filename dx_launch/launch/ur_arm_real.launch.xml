@@ -8,7 +8,6 @@
   <!-- Whether there is a hand. -->
   <arg name="hand" default="true"/>
   <arg name="hand_type" default="0x02000105"/>
-  <arg name="mounting_plate" default="true" />
   <arg name="mounting_plate_name" default="G-SHW063_Tool_change_plate" />
   <arg name="arm_model" default="ur10e"/>
   <arg name="log_user" default="user"/>
@@ -28,7 +27,6 @@
     <arg name="debug" value="$(arg debug)"/>
     <arg name="hand" value="$(arg hand)"/>
     <arg name="hand_type" value="$(arg hand_type)"/>
-    <arg name="mounting_plate" default="$(arg mounting_plate)" />
     <arg name="mounting_plate_name" default="$(arg mounting_plate_name)" />
     <arg name="arm_model" value="$(arg arm_model)"/>
     <arg name="robot_config" value="$(arg robot_config)"/> 
