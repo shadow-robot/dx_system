@@ -2,3 +2,13 @@
     uri: https://{{github_login}}:{{github_password}}@github.com/shadow-robot/dx_host.git
     version: noetic-devel
     local-name: dx_host
+
+- git:
+    uri: https://github.com/shadow-robot/bio_ik.git
+    version: noetic-devel
+    local-name: bio_ik
+
+- git:
+    uri: https://github.com/UniversalRobots/Universal_Robots_ROS_Driver.git
+    version: v2.2.0
+    local-name: ur_robot_driver
