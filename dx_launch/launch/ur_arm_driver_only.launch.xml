@@ -25,20 +25,30 @@
 
   <arg name="arm_speed_scale" default="0.5"/>
 
+  <!-- Set arm payload mass and center of gravity -->
   <group if="$(eval hand and arg('hand_type') == '0x02000105')">
-    <!-- Sets up correct payload -->
+    <!-- Get correct mass -->
     <arg name="hand_mass" value="4.16453837"/>
     <arg if="$(eval arg('mounting_plate_name') == 'G-SHW063_Tool_change_plate')"
       name="arm_payload_mass" default="$(eval arg('hand_mass') + 0.35)"/>
 
-    <!-- Sets up correct center of gravity -->
+    <!-- Get correct center of gravity -->
     <!-- hand CoG is [0.0, 0.0, 0.07] -->
     <arg if="$(eval arg('mounting_plate_name') == 'G-SHW063_Tool_change_plate')"
       name="arm_payload_cog" default="[0.0, 0.0, 0.108]"/>
-  </group>
 
-  <arg unless="$(arg hand)" name="arm_payload_mass" default="0.0"/>
-  <arg unless="$(arg hand)" name="arm_payload_cog" default="[0.0, 0.0, 0.0]"/>
+    <!-- Set the payload mass and CoG for the arm -->
+    <node pkg="rosservice" type="rosservice" name="set_$(arg arm_prefix)_payload"
+      args="call --wait $(arg_arm_prefix)_sr_ur_robot_hw/set_payload '{mass: $(arg arm_payload_mass), center_of_gravity: $(arg arm_payload_cog)}'"/>
+  </group>
+  <group unless="$(arg hand)">
+    <arg name="arm_payload_mass" default="0.0"/>
+    <arg name="arm_payload_cog" default="[0.0, 0.0, 0.0]"/>
+
+    <!-- Set the payload mass and CoG for the arm -->
+    <node pkg="rosservice" type="rosservice" name="set_$(arg arm_prefix)_payload"
+      args="call --wait $(arg_arm_prefix)_sr_ur_robot_hw/set_payload '{mass: $(arg arm_payload_mass), center_of_gravity: $(arg arm_payload_cog)}'"/>
+  </group>
 
   <rosparam subst_value="True">
     robot_hardware:
