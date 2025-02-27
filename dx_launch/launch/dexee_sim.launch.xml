@@ -25,7 +25,7 @@
   </include>
 
   <!-- Spawn controllers -->
-  <include file="$(find dx_launch)/launch/controllers/gazebo_ros_controllers.launch">
+  <include file="$(find dx_launch)/launch/controllers/gazebo_ros_controllers.launch.xml">
     <arg name="control_type" value="$(arg control_type)"/>
     <arg name="robot_namespace" value="hand_$(arg robot_system_id)_"/>
   </include>
