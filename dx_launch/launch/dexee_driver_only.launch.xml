@@ -53,6 +53,7 @@
 
   <node pkg="dx_robot" type="hand_info_server.py" name="hand_info_server" ns="/" output="screen"/>
   <node pkg="dx_robot" type="safe_mode_monitor.py" name="safe_mode_monitor" ns="/"/>
+  <node pkg="dx_robot" type="dump_finger_configs_on_startup" name="dump_finger_configs_on_startup" />
 
   <!-- Robot state publisher (publishes to /tf in the root namespace) -->
   <node name="conditional_delayed_rostool_robot_state_publisher" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
