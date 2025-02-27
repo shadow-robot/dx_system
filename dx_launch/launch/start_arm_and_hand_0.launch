@@ -61,8 +61,11 @@
   <arg name="home_angles" if="$(eval robot_system_id==0)" value="-J a0_shoulder_pan_joint 0.0 -J a0_elbow_joint 2.0 -J a0_wrist_1_joint -1 -J a0_wrist_2_joint 1.5708 -J a0_shoulder_lift_joint -1.25 -J a0_wrist_3_joint -2 -J h0_F0_J1 -0.5 -J h0_F1_J1 -0.5 -J h0_F2_J1 -0.5"/>
   <arg name="home_angles" if="$(eval robot_system_id==1)" value="-J a1_shoulder_pan_joint 0.0 -J a1_elbow_joint -2.0 -J a1_wrist_1_joint -2.1 -J a1_wrist_2_joint -1.5708 -J a1_shoulder_lift_joint -1.89 -J a1_wrist_3_joint 2 -J h1_F0_J1 -0.5 -J h1_F1_J1 -0.5 -J h1_F2_J1 -0.5"/>
   <arg name="paused" value="$(arg start_home)"/>
-  <arg if="$(arg start_home)" name="spawn_model_extra_args" value="-unpause $(arg home_angles)" />
+
+  <arg if="$(eval start_home and arm)" name="spawn_model_extra_args" value="-unpause $(arg home_angles)" />
+  <arg if="$(eval start_home and not arm)" name="spawn_model_extra_args" value="-unpause -z 0.01 $(arg home_angles)" />
   <arg unless="$(arg start_home)" name="spawn_model_extra_args" value="" />
+
   <arg name="world" default="$(find dx_moveit_config)/config/demo.world"/>
   <arg name="gazebo_gui" default="$(arg gui)"/>
 
