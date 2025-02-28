@@ -37,6 +37,8 @@
   <arg name="hand" default="true"/>
   <arg name="arm_model" default="ur10e"/>
 
+  <arg name="mounting_plate_name" default="G-SHW063_Tool_change_plate" />
+
   <arg name="hand_robot_config" default="$(find dx_config)/robot/robot_system_$(arg robot_system_id)/$(arg hand_type).yaml" />
   <arg name="arm_robot_config" default="$(find dx_config)/robot/robot_system_$(arg robot_system_id)/ur_arm_robot_hw.yaml" />
 
@@ -91,6 +93,7 @@
     <arg name="hand" value="$(arg hand)"/>
     <arg name="arm_model" value="$(arg arm_model)"/>
     <arg name="hand_type" value="$(arg hand_type)"/>
+    <arg name="mounting_plate_name" default="$(arg mounting_plate_name)" />
     <arg name="initial_z" value="$(arg initial_z)"/>
     <arg name="initial_y" value="$(arg initial_y)"/>
     <arg name="initial_yaw" value="$(arg initial_yaw)"/>
@@ -143,6 +146,7 @@
       <include file="$(find dx_launch)/launch/ur_arm_real.launch.xml">
         <arg name="debug" value="$(arg debug)"/>
         <arg name="hand_type" value="$(arg hand_type)"/>
+        <arg name="mounting_plate_name" default="$(arg mounting_plate_name)" />
         <arg name="robot_config" value="$(arg arm_robot_config)"/>
         <arg name="log_user" value="$(arg log_user)"/>
         <arg name="controller_output" value="$(arg controller_output)"/>
