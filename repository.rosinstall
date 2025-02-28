@@ -8,13 +8,16 @@
     version: noetic-devel
     local-name: bio_ik
 
-# In a Dexee-UR setup, the UR arm drivers must be run as a privileged resource in ethercat. When the UR drivers are
-# installed from binary, they are unable to find the necessary libraries to run due to a limitation of setuid.
-# The workaround for this issue is to install the UR drivers from source. The tagged version 2.1.5 is used as this
-# version has been tested and is known to work with the latest binaries of Universal_Robots_Client_Library.
-# Universal_Robots_Client_Library cannot be installed form source as the package is not catkin and therefore it is
+# We're running the URDriver as a plugin loaded by our default ros_control_robot node. We run that node via
+# ethercat_grant so that it gets extra linux capabilities. These capabilities are: ability to set its priority to
+# SCHED_FIFO, to disable memory paging, and to have raw access to the ethernet port. This last capability is only
+# necessary for ethercat devices, but not for an ethernet/IP device like the UR arm. When the UR drivers are
+# installed from binary, they are unable to find the necessary libraries to run due to a limitation of setuid. The
+# workaround for this issue is to install the UR drivers from source. The tagged version 2.1.5 is used as this
+# version has been tested and is known to work with the latest binaries of Universal_Robots_Client_Library (1.7.1).
+# Universal_Robots_Client_Library cannot be installed from source as the package is not catkin and therefore it is
 # unknown if our image build process would support builing a non-homogenous workspace.
 - git:
     uri: https://github.com/UniversalRobots/Universal_Robots_ROS_Driver.git
-    version: tag/v2.1.5
+    version: tags/v2.1.5
     local-name: Universal_Robots_ROS_Driver
