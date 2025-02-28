@@ -8,10 +8,13 @@
     version: noetic-devel
     local-name: bio_ik
 
-# If installed from binary, the main node cannot find the required libraries because the main node is run with
-# setuid via ethercat_grant. Using version 2.1.5 as it is known to work with the latest binary of
-# Universal_Robots_CLient_library
+# In a Dexee-UR setup, the UR arm drivers must be run as a privileged resource in ethercat. When the UR drivers are
+# installed from binary, they are unable to find the necessary libraries to run due to a limitation of setuid.
+# The workaround for this issue is to install the UR drivers from source. The tagged version 2.1.5 is used as this
+# version has been tested and is known to work with the latest binaries of Universal_Robots_Client_Library.
+# Universal_Robots_Client_Library cannot be installed form source as the package is not catkin and therefore it is
+# unknown if our image build process would support builing a non-homogenous workspace.
 - git:
     uri: https://github.com/UniversalRobots/Universal_Robots_ROS_Driver.git
-    version: v2.1.5
+    version: tag/v2.1.5
     local-name: Universal_Robots_ROS_Driver
