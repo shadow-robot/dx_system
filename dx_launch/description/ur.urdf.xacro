@@ -35,7 +35,12 @@
       <xacro:ur5_robot prefix="$(arg arm_prefix)_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config)"/>
   </xacro:if>
 
-  <xacro:include filename="$(find sr_description)/other/xacro/gazebo.urdf.xacro"/>
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>arm_$(arg robot_system_id)</robotNamespace>
+      <robotParam>$(arg arm_prefix)_robot_description</robotParam>
+    </plugin>
+  </gazebo>
   <xacro:include filename="$(find sr_description)/other/xacro/materials.urdf.xacro"/>
 
   <joint name="world_joint" type="fixed">
