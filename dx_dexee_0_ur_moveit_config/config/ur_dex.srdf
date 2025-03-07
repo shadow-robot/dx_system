@@ -84,6 +84,34 @@
         <joint name="h0_F2_J2" value="0"/>
         <joint name="h0_F2_J3" value="-0.523"/>
     </group_state>
+    <group_state name="home" group="h0_hand">
+        <joint name="h0_F0_J0" value="0"/>
+        <joint name="h0_F0_J1" value="-0.5"/>
+        <joint name="h0_F0_J2" value="0"/>
+        <joint name="h0_F0_J3" value="0"/>
+        <joint name="h0_F1_J0" value="0"/>
+        <joint name="h0_F1_J1" value="-0.5"/>
+        <joint name="h0_F1_J2" value="0"/>
+        <joint name="h0_F1_J3" value="0"/>
+        <joint name="h0_F2_J0" value="0"/>
+        <joint name="h0_F2_J1" value="-0.5"/>
+        <joint name="h0_F2_J2" value="0"/>
+        <joint name="h0_F2_J3" value="0"/>
+    </group_state>
+    <group_state name="open" group="h0_hand">
+        <joint name="h0_F0_J0" value="0"/>
+        <joint name="h0_F0_J1" value="-1.396"/>
+        <joint name="h0_F0_J2" value="0"/>
+        <joint name="h0_F0_J3" value="-0.523"/>
+        <joint name="h0_F1_J0" value="0"/>
+        <joint name="h0_F1_J1" value="-1.396"/>
+        <joint name="h0_F1_J2" value="0"/>
+        <joint name="h0_F1_J3" value="-0.523"/>
+        <joint name="h0_F2_J0" value="0"/>
+        <joint name="h0_F2_J1" value="-1.396"/>
+        <joint name="h0_F2_J2" value="0"/>
+        <joint name="h0_F2_J3" value="-0.523"/>
+    </group_state>
     <group_state name="a0_zero" group="arm_0">
         <joint name="a0_elbow_joint" value="0"/>
         <joint name="a0_shoulder_lift_joint" value="0"/>
