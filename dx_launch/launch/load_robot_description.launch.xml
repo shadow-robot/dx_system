@@ -24,6 +24,7 @@
   <arg name="arm_prefix" value="a$(arg robot_system_id)"/>
 
   <!-- MOUNTING PLATE CONFIG -->
+  <arg name="mounting_plate" default="true"/>
   <arg name="mounting_plate_name" default="G-SHW063_Tool_change_plate" />
 
   <!-- Hand-only description, needed for srdf generation -->
@@ -34,15 +35,28 @@
   <arg if="$(arg arm)" name="arm_description" value="'$(find dx_launch)/description/ur.urdf.xacro'"/>
 
 
-  <arg if="$(arg arm)" name="load_robot_description_command" value="xacro $(arg robot_description) arm_model:=$(arg arm_model) hand_type:=$(arg hand_type) robot_system_id:=$(arg robot_system_id)
-                                                                    initial_z:=$(arg initial_z) initial_y:=$(arg initial_y) initial_yaw:=$(arg initial_yaw) mounting_plate_name:=$(arg mounting_plate_name)"/>
+  <arg if="$(arg arm)" name="load_robot_description_command" value="xacro $(arg robot_description)
+                                                                    arm_model:=$(arg arm_model)
+                                                                    hand_type:=$(arg hand_type)
+                                                                    robot_system_id:=$(arg robot_system_id)
+                                                                    initial_z:=$(arg initial_z)
+                                                                    initial_y:=$(arg initial_y)
+                                                                    initial_yaw:=$(arg initial_yaw)
+                                                                    mounting_plate:=$(arg mounting_plate)
+                                                                    mounting_plate_name:=$(arg mounting_plate_name)"/>
   <arg if="$(eval hand and not arm)" name="load_robot_description_command" value="xacro $(arg hand_description)
                                                                              prefix:=h$(arg robot_system_id)_ robot_system_id:=$(arg robot_system_id)"/>
-  <arg if="$(eval hand)" name="load_hand_description_command" value="xacro $(arg hand_description)
-                                                                             prefix:=h$(arg robot_system_id)_ robot_system_id:=$(arg robot_system_id)"/>
+  <arg if="$(arg hand)" name="load_hand_description_command" value="xacro $(arg hand_description)
+                                                                    prefix:=h$(arg robot_system_id)_
+                                                                    robot_system_id:=$(arg robot_system_id)"/>
 
-  <arg if="$(arg arm)" name="load_arm_description_command" value="xacro $(arg arm_description) arm_model:=$(arg arm_model) hand_type:=$(arg hand_type) robot_system_id:=$(arg robot_system_id)
-                                                                    initial_z:=$(arg initial_z) initial_y:=$(arg initial_y) initial_yaw:=$(arg initial_yaw)"/>
+  <arg if="$(arg arm)" name="load_arm_description_command" value="xacro $(arg arm_description)
+                                                                  arm_model:=$(arg arm_model)
+                                                                  hand_type:=$(arg hand_type)
+                                                                  robot_system_id:=$(arg robot_system_id)
+                                                                  initial_z:=$(arg initial_z)
+                                                                  initial_y:=$(arg initial_y)
+                                                                  initial_yaw:=$(arg initial_yaw)"/>
 
   <!-- LOAD THE DESCRIPTION -->
   <param if="$(eval arm and hand)" name="hand_$(arg robot_system_id)_description" command="$(arg load_hand_description_command)"/>

@@ -25,6 +25,7 @@
   <xacro:arg name="arm_prefix" default="a$(arg robot_system_id)" />
   <xacro:arg name="hand_prefix" default="h$(arg robot_system_id)" />
 
+  <xacro:arg name="mounting_plate" default="true" />
   <!-- Name of the mounting plate xacro file: E.g. G-SHW063_Tool_change_plate -->
   <xacro:arg name="mounting_plate_name" default="G-SHW063_Tool_change_plate" />
 
@@ -51,10 +52,19 @@
       <origin xyz="0.0 $(arg initial_y) $(arg initial_z)" rpy="0.0 0.0 $(arg initial_yaw)"/>
   </joint> 
 
-  <xacro:include filename="$(find dx_robot)/description/xacros/mounting_plates/$(arg mounting_plate_name).xacro" />
-  <xacro:macro_e3r3_mounting_plate prefix="$(arg hand_prefix)_" parent="$(arg arm_prefix)_flange" mounted_tool="$(arg hand_prefix)_hand_base" >
-    <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${3.0*pi/4.0} ${pi/2.0}"/>
-  </xacro:macro_e3r3_mounting_plate>
+  <xacro:if value="$(arg mounting_plate)">
+    <xacro:include filename="$(find dx_robot)/description/xacros/mounting_plates/$(arg mounting_plate_name).xacro" />
+    <xacro:macro_e3r3_mounting_plate prefix="$(arg hand_prefix)_" parent="$(arg arm_prefix)_flange" mounted_tool="$(arg hand_prefix)_hand_base" >
+      <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${3.0*pi/4.0} ${pi/2.0}"/>
+    </xacro:macro_e3r3_mounting_plate>
+  </xacro:if>
+  <xacro:unless value="$(arg mounting_plate)">
+    <joint name="$(arg arm_prefix)_arm_to_hand" type="fixed">
+      <parent link="$(arg arm_prefix)_flange"/>
+      <child link="$(arg hand_prefix)_hand_base"/>
+      <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${pi} ${pi/2.0}"/>
+  </joint>
+  </xacro:unless>
 
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
