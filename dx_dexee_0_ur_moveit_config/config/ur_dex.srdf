@@ -216,7 +216,7 @@
     <disable_collisions link1="a0_wrist_3_link" link2="h0_F2_distal" reason="Never"/>
     <disable_collisions link1="a0_wrist_3_link" link2="h0_F2_middle" reason="Never"/>
     <disable_collisions link1="a0_wrist_3_link" link2="h0_F2_proximal" reason="Never"/>
-    <disable_collisions link1="a0_wrist_3_link" link2="h0_hand_base" reason="Never"/>
+    <disable_collisions link1="a0_wrist_3_link" link2="h0_hand_base" reason="Adjacent"/>
     <disable_collisions link1="a0_wrist_3_link" link2="h0_mounting_plate_base" reason="Adjacent"/>
     <disable_collisions link1="a0_wrist_3_link" link2="h0_mounting_plate_top" reason="Never"/>
     <disable_collisions link1="h0_F0_J0_link" link2="h0_F0_base" reason="Adjacent"/>
