@@ -13,12 +13,8 @@ if __name__ == "__main__":
     from_ns = rospy.get_param("~from_ns")
     to_ns = rospy.get_param("~to_ns")
     param_name = rospy.get_param("~param_name")
-    seconds_to_wait = rospy.get_param("~seconds_to_wait", 0)
 
     wait_for_param(from_ns + "/" + param_name, 0)
-
-    if seconds_to_wait > 0:
-        rospy.sleep(seconds_to_wait)
 
     value = get_param(from_ns + "/" + param_name)
     upload_params(to_ns + "/" + param_name, value)
