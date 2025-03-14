@@ -98,7 +98,6 @@
     <rosparam param="params_list" subst_value="True">[^$(arg arm_prefix)_sr_ur_robot_hw/kinematics/hash$]</rosparam>
     <param name="launch_args_list" value="__name:=ur_robot_driver"/>
     <param name="launch_prefix" value="$(arg arm_launch_prefix)" />
-    <param name="timeout" value="10.0" />
   </node>
 
   <!-- Robot state publisher (publishes to /tf in the root namespace) -->
