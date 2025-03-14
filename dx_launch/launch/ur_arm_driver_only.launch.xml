@@ -89,15 +89,15 @@
   <!-- Wait for /robot_description to be available before running ur_arm_driver node. This avoids a potential race
   conidtion where the arm driver attempts to read the kinematics/hash parameter before all the subparameters under
   kinematics have been loaded to the parameter server-->
-  <arg if="$(arg debug)" name="launch_prefix" value="gdb -ex run -args"/>
-  <arg unless="$(arg debug)" name="launch_prefix" value="ethercat_grant"/>
+  <arg if="$(arg debug)" name="arm_launch_prefix" value="gdb -ex run -args"/>
+  <arg unless="$(arg debug)" name="arm_launch_prefix" value="ethercat_grant"/>
 
   <include file="$(find sr_utilities_common)/launch/conditional_delayed_roslaunch.launch">
     <arg name="package_name" value="ros_control_robot" />
     <arg name="executable_name" value="ros_control_robot" />
     <arg name="params_list" value="['/robot_description']" />
     <arg name="launch_args_list" default="__name:=ur_robot_driver"/>
-    <arg name="launch_prefix" value="$(arg launch_prefix)" />
+    <arg name="launch_prefix" value="$(arg arm_launch_prefix)" />
     <arg name="timeout" value="10.0" />
   </include>
 
