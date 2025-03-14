@@ -92,14 +92,14 @@
   <arg if="$(arg debug)" name="arm_launch_prefix" value="gdb -ex run -args"/>
   <arg unless="$(arg debug)" name="arm_launch_prefix" value="ethercat_grant"/>
 
-  <include file="$(find sr_utilities_common)/launch/conditional_delayed_roslaunch.launch">
-    <arg name="package_name" value="ros_control_robot" />
-    <arg name="executable_name" value="ros_control_robot" />
-    <arg name="params_list" value="['/robot_description']" />
-    <arg name="launch_args_list" default="__name:=ur_robot_driver"/>
-    <arg name="launch_prefix" value="$(arg arm_launch_prefix)" />
-    <arg name="timeout" value="10.0" />
-  </include>
+  <node name="conditional_delayed_rostool_ur_robot_driver" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
+    <param name="package_name" value="ros_control_robot" />
+    <param name="executable_name" value="ros_control_robot" />
+    <rosparam param="params_list">[^robot_description$]</rosparam>
+    <param name="launch_args_list" default="__name:=ur_robot_driver"/>
+    <param name="launch_prefix" value="$(arg arm_launch_prefix)" />
+    <param name="timeout" value="10.0" />
+  </node>
 
   <!-- Robot state publisher (publishes to /tf in the root namespace) -->
   <node name="conditional_delayed_rostool_robot_state_publisher" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
