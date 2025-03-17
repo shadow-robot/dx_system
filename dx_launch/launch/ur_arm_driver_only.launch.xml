@@ -66,7 +66,7 @@
 
   <param name="$(arg arm_prefix)_sr_ur_robot_hw/speed_scale" type="double" value="$(arg arm_speed_scale)"/>
 
-  <!-- This is necessary to copy the kinematic parametersx into the proper namespace to avoid the driver complaining
+  <!-- This is necessary to copy the kinematic parameters into the proper namespace to avoid the driver complaining
   about a mismatch in the calibration parameters read from the arm. The parameters are originally loaded in the root
   namespace by sr_ur_arm_calibration-loader.py. We keep it like that because it needs to be compatible with the way it
   works with hand E. The calibration is also read outside of the robot namespaces, because that is where we build the
@@ -75,10 +75,8 @@
     <param name="from_ns" value="/$(arg arm_prefix)_sr_ur_robot_hw"/>
     <param name="to_ns" value="$(arg arm_prefix)_sr_ur_robot_hw"/>
     <param name="param_name" value="kinematics"/>
-    <!-- Wait a bit until all the subparameters under kinematics have been loaded to the parameter server,
-    but not too much that the arm driver will have tried to read the kinematics/hash parameter.
-    TODO get rid of this potential race condition by making the ur_arm_robot driver node wait for /robot_description or
-    for $(arg arm_prefix)_sr_ur_robot_hw/kinematics/hash -->
+    <!-- Wait a bit until all the subparameters under kinematics have been loaded to the parameter server before 
+    copying them -->
     <param name="seconds_to_wait" value="0.1"/>
   </node>
 
@@ -88,8 +86,19 @@
   </group>
 
   <!-- Start the robot driver node -->
-  <node if="$(arg debug)" name="ur_arm_robot" pkg="ros_control_robot" type="ros_control_robot" args="" output="screen" launch-prefix="gdb -ex run -args"/>
-  <node unless="$(arg debug)" name="ur_arm_robot" pkg="ros_control_robot" type="ros_control_robot" args="" output="screen" launch-prefix="ethercat_grant"/>
+  <!-- Wait for /robot_description to be available before running ur_arm_driver node. This avoids a potential race
+  conidtion where the arm driver attempts to read the kinematics/hash parameter before all the subparameters under
+  kinematics have been loaded to the parameter server-->
+  <arg if="$(arg debug)" name="arm_launch_prefix" value="gdb -ex run -args"/>
+  <arg unless="$(arg debug)" name="arm_launch_prefix" value="ethercat_grant"/>
+
+  <node name="conditional_delayed_rostool_ur_robot_driver" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
+    <param name="package_name" value="ros_control_robot" />
+    <param name="executable_name" value="ros_control_robot" />
+    <rosparam param="params_list" subst_value="True">[^arm_$(arg robot_system_id)/$(arg arm_prefix)_sr_ur_robot_hw/kinematics/hash$]</rosparam>
+    <param name="launch_args_list" value="__name:=ur_robot_driver"/>
+    <param name="launch_prefix" value="$(arg arm_launch_prefix)" />
+  </node>
 
   <!-- Robot state publisher (publishes to /tf in the root namespace) -->
   <node name="conditional_delayed_rostool_robot_state_publisher" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
