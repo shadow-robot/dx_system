@@ -1,0 +1,3 @@
+---
+int16 safe_mode_store_size
+int16 safe_mode_store_max_size

@@ -1,0 +1,4 @@
+string device_to_reset  # Expected to be in the form "Fx_Ax" or "Fx" where x is the finger/actuator id
+---
+bool success
+string message

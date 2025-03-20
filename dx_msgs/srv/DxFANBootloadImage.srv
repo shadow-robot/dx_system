@@ -1,0 +1,8 @@
+uint16 start_row
+uint16 row_count
+uint16 row_length
+uint16 checksum
+uint8[] bytes
+---
+uint8[] bytes   # Apparently sending unsinged int8s from cpp -> python doesn't work properly.
+bool success

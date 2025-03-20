@@ -1,0 +1,6 @@
+bool set_state
+
+string triggering_device_name=DxSetSafeMode service
+string trigger_reason=Service call
+---
+bool success

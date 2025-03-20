@@ -1,0 +1,4 @@
+string triggering_device_name
+string trigger_reason
+bool safe_mode_status
+float64 trigger_time
