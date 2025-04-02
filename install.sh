@@ -1,8 +1,27 @@
-
-# Copyright (C) 2025 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
-# Unauthorized copying of the content in this file, via any medium is strictly prohibited.
-
 #!/bin/bash
+ 
+ # Software License Agreement (BSD License)
+ # Copyright © 2025 belongs to Shadow Robot Company Ltd.
+ # All rights reserved.
+ # Redistribution and use in source and binary forms, with or without modification,
+ # are permitted provided that the following conditions are met:
+ #   1. Redistributions of source code must retain the above copyright notice,
+ #      this list of conditions and the following disclaimer.
+ #   2. Redistributions in binary form must reproduce the above copyright notice,
+ #      this list of conditions and the following disclaimer in the documentation
+ #      and/or other materials provided with the distribution.
+ #   3. Neither the name of Shadow Robot Company Ltd nor the names of its contributors
+ #      may be used to endorse or promote products derived from this software without
+ #      specific prior written permission.
+ # This software is provided by Shadow Robot Company Ltd "as is" and any express
+ # or implied warranties, including, but not limited to, the implied warranties of
+ # merchantability and fitness for a particular purpose are disclaimed. In no event
+ # shall the copyright holder be liable for any direct, indirect, incidental, special,
+ # exemplary, or consequential damages (including, but not limited to, procurement of
+ # substitute goods or services; loss of use, data, or profits; or business interruption)
+ # however caused and on any theory of liability, whether in contract, strict liability,
+ # or tort (including negligence or otherwise) arising in any way out of the use of this
+ # software, even if advised of the possibility of such damage.
 
 set -e
 
@@ -13,11 +32,12 @@ BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 NC='\033[0m' 
 
-# Global variables
 DEVELOPMENT=false
 KERNEL_URL="https://s3.eu-west-2.amazonaws.com/com.shadowrobot.eu-west-2.public/linux-image-6.5.2-rt8_6.5.2-3_amd64.deb"
 KERNEL_LOCATION="/tmp/rtkernel.deb"
 
+
+# Print colour functions
 print_red() {
     echo -e "${RED}$1${NC}"
 }
@@ -59,22 +79,29 @@ install_apps() {
     print_green "Package installation complete"
 }
 
-install_RTkernel() {
-    print_yellow "Installing RT kernel..."
-    
+install_kernel() {
+    print_yellow "Installing RT kernel..."  
     # Check if kernel is already installed
     if dpkg -l | grep -q "linux-image-6.5.2-rt8"; then
         print_yellow "RT kernel is already installed"
         return 0
     fi
 
-    wget -O "$KERNEL_LOCATION" "$KERNEL_URL" >/dev/null || { print_red "Failed to download kernel"; exit 1; }
+    # Install the kernel and set it as the default grub option
+    wget -O "$KERNEL_LOCATION" "$KERNEL_URL" >/dev/null || { print_red "Failed to download kernel"; exit 1; } 
     sudo dpkg -i "$KERNEL_LOCATION" >/dev/null || { print_red "Failed to install kernel"; exit 1; }
     rm -f "$KERNEL_LOCATION" || { print_yellow "Warning: Failed to remove kernel package"; }
+    print_yellow "Updating GRUB configuration..."
+    sudo cp /etc/default/grub /etc/default/grub.bak || { print_red "Failed to backup GRUB configuration"; exit 1; }
+    sudo sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=10/' /etc/default/grub || { print_red "Failed to update GRUB timeout"; exit 1; }
+    sudo sed -i 's/^GRUB_DEFAULT=.*/GRUB_DEFAULT="Advanced options for Ubuntu>Ubuntu, with Linux 6.5.2-rt8"/' /etc/default/grub || { print_red "Failed to update GRUB default kernel"; exit 1; }
+    sudo update-grub || { print_red "Failed to update GRUB"; exit 1; }
     
     print_green "RT kernel installation complete"
+
 }
 
+    # Set up docker groups and add the user to it
 configure_docker() {
     print_yellow "Setting up Docker..."
     if ! getent group docker >/dev/null; then
@@ -84,11 +111,11 @@ configure_docker() {
     if ! groups "$USER" | grep -q docker; then
         sudo usermod -aG docker "$USER" || { print_red "Failed to add user to docker group"; exit 1; }
     fi
-    
     print_green "Docker setup complete"
     print_yellow "Please log out and log back in for Docker group changes to take effect"
 }
 
+    # Download and install the awscli
 install_awscli() {
     print_yellow "Installing AWS CLI..."
     if ! command -v aws &> /dev/null; then
@@ -99,15 +126,14 @@ install_awscli() {
     else
         print_yellow "AWS CLI is already installed"
     fi
-    
     mkdir -p ~/.ros || { print_red "Failed to create .ros directory"; exit 1; }
     print_green "AWS CLI installation complete"
 }
 
+    # Prompt for AWS login
 authenticate_aws() {
     print_yellow "Please sign into AWS..."
     aws configure || { print_red "AWS configuration failed"; exit 1; }
-    
     if [ "$DEVELOPMENT" = true ]; then
         print_yellow "Authenticating with development ECR..."
         aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin 080653068785.dkr.ecr.eu-west-2.amazonaws.com || { print_red "Failed to authenticate with development ECR"; exit 1; }
@@ -117,20 +143,16 @@ authenticate_aws() {
     fi
 }
 
+    # Clone Host Scripts and move to home
 clone_host_scripts() {
     print_yellow "Cloning host scripts..."
-    
-    local home_dir="/home/$USER"
-    local target_dir="$home_dir/host_scripts"
-    
     # Check if host_scripts already exists
-    if [ -d "$target_dir" ]; then
+    if [ -d "/home/$USER/host_scripts" ]; then
         print_yellow "host_scripts directory already exists, skipping clone"
         return 0
     fi
-    
     # Create temporary directory
-    local temp_dir="$home_dir/dx_system"
+    local temp_dir="/home/$USER/dx_system"
     mkdir -p "$temp_dir" || { print_red "Failed to create temporary directory"; exit 1; }
     
     # Clone repository
@@ -141,11 +163,10 @@ clone_host_scripts() {
     git sparse-checkout --no-cone /host_scripts || { print_red "Failed to configure sparse checkout"; exit 1; }
     git checkout || { print_red "Failed to checkout host_scripts"; exit 1; }
     
-    # Move host_scripts to home directory
-    mv host_scripts "$home_dir/" || { print_red "Failed to move host_scripts"; exit 1; }
+    mv host_scripts "/home/$USER/" || { print_red "Failed to move host_scripts"; exit 1; }
     
     # Cleanup
-    cd "$home_dir" || { print_yellow "Warning: Failed to change back to home directory"; }
+    cd "/home/$USER" || { print_yellow "Warning: Failed to change back to home directory"; }
     rm -rf "$temp_dir" || { print_yellow "Warning: Failed to remove temporary directory"; }
     
     print_green "Host scripts cloned successfully"
@@ -172,13 +193,11 @@ for arg in "$@"; do
             ;;
     esac
 done
-
-# Execute installation steps
 install_apps
-install_RTkernel
+install_kernel
 configure_docker
 install_awscli
 authenticate_aws
 clone_host_scripts
 
-print_green "Installation completed successfully!"
+print_green "Installation completed successfully! Please reboot your system to use the new RT kernel."
