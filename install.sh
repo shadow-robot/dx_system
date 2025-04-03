@@ -146,13 +146,8 @@ authenticate_aws() {
     # Clone Host Scripts and move to home
 clone_host_scripts() {
     print_yellow "Cloning host scripts..."
-    # Check if host_scripts already exists
-    if [ -d "/home/$USER/host_scripts" ]; then
-        print_yellow "host_scripts directory already exists, skipping clone"
-        return 0
-    fi
     # Create temporary directory
-    local temp_dir="/home/$USER/dx_system"
+    local temp_dir="/tmp/host_scripts/"
     mkdir -p "$temp_dir" || { print_red "Failed to create temporary directory"; exit 1; }
     
     # Clone repository
@@ -167,11 +162,38 @@ clone_host_scripts() {
     
     # Cleanup
     cd "/home/$USER" || { print_yellow "Warning: Failed to change back to home directory"; }
-    rm -rf "$temp_dir" || { print_yellow "Warning: Failed to remove temporary directory"; }
+    rm -rfd "$temp_dir" || { print_yellow "Warning: Failed to remove temporary directory"; }
     
     print_green "Host scripts cloned successfully"
 }
 
+append_bashrc(){
+    # Append the setup.bash into the bashrc
+    print_yellow "Setting up bashrc"
+    grep -qxF 'source /home/$USER/host_scripts/setup.bash' ~/.bashrc || echo 'source /home/$USER/host_scripts/setup.bash' >> ~/.bashrc
+    source ~/.bashrc
+    print_green "bashrc setup complete"
+}
+
+pull_dx_image() {
+    source /home/$USER/host_scripts/envoirment.sh
+    IMAGE="${IMAGE_REPOSITORY}:${IMAGE_TAG_FLAVOUR}-${IMAGE_TAG_VERSION}"
+    print_yellow "Pulling image: $IMAGE"
+    docker pull "$IMAGE" || { print_red "Failed to pull image"; exit 1; }
+}
+
+clear_credentials(){
+    print_yellow "Removing AWS creds and signing out of docker"
+    unset AWS_ACCESS_KEY_ID
+    unset AWS_SECRET_ACCESS_KEY
+    unset AWS_SESSION_TOKEN
+    unset AWS_PROFILE
+    rm -f ~/.aws/credentials
+    rm -f ~/.aws/config
+    aws ecr get-login-password | docker logout 080653068785.dkr.ecr.eu-west-2.amazonaws.com ||{ print_red "Failed to logout of ECR"; exit 1; }
+    docker logout $(docker info | grep 'Username' | awk '{print $2}')
+    print_green "Credentials cleared"
+}
 # Main script execution
 print_startup_message
 
@@ -193,11 +215,15 @@ for arg in "$@"; do
             ;;
     esac
 done
+
 install_apps
 install_kernel
 configure_docker
 install_awscli
 authenticate_aws
 clone_host_scripts
+append_bashrc
+pull_dx_image
+clear_credentials
 
 print_green "Installation completed successfully! Please reboot your system to use the new RT kernel."
