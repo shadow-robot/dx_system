@@ -176,8 +176,10 @@ append_bashrc(){
 }
 
 pull_dx_image() {
-    source /home/$USER/host_scripts/envoirment.sh
-    IMAGE="${IMAGE_REPOSITORY}:${IMAGE_TAG_FLAVOUR}-${IMAGE_TAG_VERSION}"
+    source /home/$USER/host_scripts/environment.sh
+    IMAGE="080653068785.dkr.ecr.eu-west-2.amazonaws.com/${IMAGE_REPOSITORY}:${IMAGE_TAG_FLAVOUR}-v${IMAGE_TAG_VERSION}
+
+"
     print_yellow "Pulling image: $IMAGE"
     docker pull "$IMAGE" || { print_red "Failed to pull image"; exit 1; }
 }
