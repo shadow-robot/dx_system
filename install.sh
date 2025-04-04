@@ -162,7 +162,7 @@ clone_host_scripts() {
     
     # Cleanup
     cd "/home/$USER" || { print_yellow "Warning: Failed to change back to home directory"; }
-    rm -rfd "$temp_dir" || { print_yellow "Warning: Failed to remove temporary directory"; }
+    rm -rf "$temp_dir" || { print_yellow "Warning: Failed to remove temporary directory"; }
     
     print_green "Host scripts cloned successfully"
 }
