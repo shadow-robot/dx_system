@@ -23,6 +23,8 @@
 # or tort (including negligence or otherwise) arising in any way out of the use of this
 # software, even if advised of the possibility of such damage.
 
+alias dx_cd_host_scripts='cd $HOST_SCRIPTS_PATH'
+
 # Run/start persistent or stateless containers
 alias dx_run_stateless_container='"$HOST_SCRIPTS_PATH"/run_stateless.sh'
 alias dx_run_persistent_container='"$HOST_SCRIPTS_PATH"/run_persistent.sh'
