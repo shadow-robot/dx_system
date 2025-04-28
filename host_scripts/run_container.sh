@@ -64,9 +64,9 @@ do
         -s|--suppress_ws_overlay_checks)
             SUPPRESS_WS_OVERLAY_CHECKS=true
             ;;
-		--stateless)
-		    STATELESS_CONTAINER=true
-	    	;;
+        --stateless)
+            STATELESS_CONTAINER=true
+            ;;
         -h|--help)
             echo "Syntax: run_persistent_container [OPTIONS]"
             echo "OPTIONS:"
