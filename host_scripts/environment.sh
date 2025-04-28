@@ -27,10 +27,10 @@
 
 export ROS_IP=172.17.0.1
 export ROS_MASTER_URI=http://$ROS_IP:11311
-export ETHERCAT_PORT=enp4s0  # Ethercat port where DEX-EE is connected to
+export ETHERCAT_PORT=eno1  # Ethercat port where DEX-EE is connected to
 export IMAGE_TAG_FLAVOUR="noetic"  # Default docker image tag flavour
 export IMAGE_TAG_VERSION="1.0.0"  # Default docker image tag version
-export IMAGE_REPOSITORY="shadow-dx-host"  # Alternativly use "shadow-dx-host"
-export USER_PERSISTENT_WORKSPACE="/home/$USER/projects/shadow_robot/dx_user_ws"  # Path to the user overlay workspace on the host machine
+export IMAGE_REPOSITORY="shadow-dx-host-binary"  # Alternativly use "shadow-dx-host"
+export USER_PERSISTENT_WORKSPACE="/home/$USER/user_ws_code"  # Path to the user overlay workspace on the host machine
 export PERSISTENT_CONTAINER_NAME="dx_persistent"  # Default name for persistent containers
 export STATELESS_CONTAINER_NAME="dx_stateless"  # Default name for stateless containers
