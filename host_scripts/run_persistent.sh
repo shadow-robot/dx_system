@@ -118,20 +118,27 @@ checkValidUserSpaceOverlay $SUPPRESS_WS_OVERLAY_CHECKS
 createDockerVolume
 
 docker create -it \
-    --name "$CONTAINER_NAME" \
-    --env="LOCAL_USER_ID=$(id -u)" \
-    --env="DISPLAY" \
-    --env="QT_X11_NO_MITSHM=1" \
-    --env="XAUTHORITY=$XAUTH_DOCKER" \
-    --env="ETHERCAT_PORT=$ETHERCAT_PORT" \
-    --env="ROS_MASTER_URI=$ROS_MASTER_URI" \
-    --env="ROS_IP=$ROS_IP" \
-    --volume="$XSOCK:$XSOCK:rw" \
-    --volume="$XAUTH:$XAUTH_DOCKER:rw" \
-    --volume="/home/$USER/.ros:/home/user/.ros/:rw" \
-    --volume="$VOLUME_NAME:/home/user/workspace:rw" \
-    --volume="/dev:/dev:rw" \
-    --security-opt seccomp=unconfined --network=host --pid=host --privileged --ipc=host\
+    --name $CONTAINER_NAME \
+    --env LOCAL_USER_ID="$(id -u)" \
+    --env DISPLAY \
+    --env QT_X11_NO_MITSHM=1 \
+    --env XAUTHORITY=$XAUTH_DOCKER \
+    --env ETHERCAT_PORT=$ETHERCAT_PORT \
+    --env ROS_MASTER_URI=$ROS_MASTER_URI \
+    --env ROS_IP=$ROS_IP \
+    --env SSH_AUTH_SOCK=$SSH_AUTH_SOCK \
+    --mount type=bind,src=$XSOCK,target=$XSOCK \
+    --mount type=bind,src=$XAUTH,target=$XAUTH_DOCKER \
+    --mount type=bind,src=$SSH_AUTH_SOCK,target=$SSH_AUTH_SOCK \
+    --mount type=bind,src=/dev,target=/dev \
+    --volume "$HOME/.ros":/home/user/.ros:rw \
+    --volume $VOLUME_NAME:/home/user/workspace:rw \
+    --volume "$HOME/.gitconfig":/home/user/.gitconfig:ro \
+    --security-opt seccomp=unconfined \
+    --network=host \
+    --pid=host \
+    --privileged \
+    --ipc=host\
     $DOCKER_IMAGE bash
 
 docker start $CONTAINER_NAME
