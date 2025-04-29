@@ -130,6 +130,10 @@ then
     chmod a+r $XAUTH
 fi
 
+# List the global git config, showing the origin of all entries. Entries are shown as "file:PATH	ENTRY".
+# Remove the "file:" prefix and everything after the "\t" char. Only read the first line of the output.
+GIT_CONFIG_PATH=$(git config --global --list --show-origin | sed $'s/file://;s/\t.*//;1q')
+
 checkValidUserSpaceOverlay $SUPPRESS_WS_OVERLAY_CHECKS
 
 createDockerVolume
@@ -150,7 +154,7 @@ docker create $run_stateless -it \
     --mount type=bind,src=/dev,target=/dev \
     --volume "$HOME/.ros":/home/user/.ros:rw \
     --volume $VOLUME_NAME:/home/user/workspace:rw \
-    --volume "$HOME/.gitconfig":/home/user/.gitconfig:ro \
+    --volume $GIT_CONFIG_PATH:/home/user/.gitconfig:ro \
     --security-opt seccomp=unconfined \
     --network=host \
     --pid=host \
