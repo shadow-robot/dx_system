@@ -130,8 +130,8 @@ then
     chmod a+r $XAUTH
 fi
 
-# List the global git config, showing the origin of all entries. Entries are shown as "file:PATH	ENTRY".
-# Remove the "file:" prefix and everything after the "\t" char. Only read the first line of the output.
+# List the global git config, showing the origin of all entries. Entries are shown as "file:PATH\tENTRY".
+# Remove the "file:" prefix, the "\t" char, and everything after the "\t" char. Only read the first line of the output.
 GIT_CONFIG_PATH=$(git config --global --list --show-origin | sed $'s/file://;s/\t.*//;1q')
 
 checkValidUserSpaceOverlay $SUPPRESS_WS_OVERLAY_CHECKS
