@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Software License Agreement (BSD License)
-# Copyright © 2024-2025 belongs to Shadow Robot Company Ltd.
+# Copyright © 2024, 2025 belongs to Shadow Robot Company Ltd.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
@@ -30,8 +30,8 @@
 set -euo pipefail
 
 # Arguments:
-CONTAINER_NAME=$STATELESS_CONTAINER_NAME
 SUPPRESS_WS_OVERLAY_CHECKS=false
+STATELESS_CONTAINER=false
 
 while [[ $# > 0 ]]
 do
@@ -64,17 +64,21 @@ do
         -s|--suppress_ws_overlay_checks)
             SUPPRESS_WS_OVERLAY_CHECKS=true
             ;;
+        --stateless)
+            STATELESS_CONTAINER=true
+            ;;
         -h|--help)
-            echo "Syntax: run_stateless_container [-p|-c|-v|-f|-r|-w]"
-            echo "options:"
-            echo "  -p|--ethercat_port:       DEX-EE's EtherCAT port. Defaults to '$ETHERCAT_PORT' (defined in environment.sh)"
-            echo "  -c|--container_name:      New container name. Defaults to '$CONTAINER_NAME'"
-            echo "  -v|--image_tag_version:   Docker image tag version. Defaults to '$IMAGE_TAG_VERSION'"
-            echo "  -f|--image_tag_flavour:   Docker image tag flavour. Defaults to '$IMAGE_TAG_FLAVOUR'"
-            echo "  -r|--image_repository:    Docker image repository. Defaults to '$IMAGE_REPOSITORY'"
-            echo "  -w|--user_workspace:      Path to persistent user workspace overlay (in the host machine). Defaults to '$USER_PERSISTENT_WORKSPACE/'"
-            echo "  -s|--suppress_ws_overlay_checks: Suppress workspace overlay checks. Defaults to '$SUPPRESS_WS_OVERLAY_CHECKS'"
-            exit
+            echo "Syntax: run_persistent_container [OPTIONS]"
+            echo "OPTIONS:"
+            echo "  -p|--ethercat_port [PORT]:          DEX-EE's EtherCAT port. Defaults to '$ETHERCAT_PORT' (defined in environment.sh)"
+            echo "  -c|--container_name [NAME]:         New container name. Defaults to '$PERSISTENT_CONTAINER_NAME' or '$STATELESS_CONTAINER_NAME' (defined in environment.sh)"
+            echo "  -v|--image_tag_version [TAG]:       Docker image tag version. Defaults to '$IMAGE_TAG_VERSION' (defined in environment.sh)"
+            echo "  -f|--image_tag_flavour [FLAVOUR]:   Docker image tag flavour. Defaults to '$IMAGE_TAG_FLAVOUR' (defined in environment.sh)"
+            echo "  -r|--image_repository [REPO]:       Docker image repository. Defaults to '$IMAGE_REPOSITORY' (defined in environment.sh)"
+            echo "  -w|--user_workspace [/path/to/ws]:  Path to persistent user workspace overlay (in the host machine). Defaults to '$USER_PERSISTENT_WORKSPACE/'"
+            echo "  -s|--suppress_ws_overlay_checks:    Suppress workspace overlay checks."
+            echo "  --stateless:                        Create a stateless container. Stateless container is detached and not immediately entered."      	
+	    exit
             ;;
         *)
             # unknown option
@@ -91,15 +95,28 @@ done
 DOCKER_IMAGE=080653068785.dkr.ecr.eu-west-2.amazonaws.com/$IMAGE_REPOSITORY:${IMAGE_TAG_FLAVOUR}-v${IMAGE_TAG_VERSION}
 
 XSOCK=/tmp/.X11-unix
-
 XAUTH=$HOST_SCRIPTS_PATH/.tmp/docker.xauth
+XAUTH_DOCKER=/tmp/.docker.xauth
+
+if [ -z "${CONTAINER_NAME+x}" ] ; then
+	if [ $STATELESS_CONTAINER = true ] ; then
+		CONTAINER_NAME=$STATELESS_CONTAINER_NAME
+	else
+		CONTAINER_NAME=$PERSISTENT_CONTAINER_NAME
+	fi
+fi
+
+if [ $STATELESS_CONTAINER = true ] ; then
+	run_stateless='--rm'
+else
+	run_stateless=''
+fi
 
 if [ ! -d $HOST_SCRIPTS_PATH/.tmp ]
 then
     mkdir $HOST_SCRIPTS_PATH/.tmp
 fi
 
-XAUTH_DOCKER=/tmp/.docker.xauth
 
 if [ ! -f $XAUTH ]
 then
@@ -113,25 +130,41 @@ then
     chmod a+r $XAUTH
 fi
 
+# List the global git config, showing the origin of all entries. Entries are shown as "file:PATH\tENTRY".
+# Remove the "file:" prefix, the "\t" char, and everything after the "\t" char. Only read the first line of the output.
+GIT_CONFIG_PATH=$(git config --global --list --show-origin | sed $'s/file://;s/\t.*//;1q')
+
 checkValidUserSpaceOverlay $SUPPRESS_WS_OVERLAY_CHECKS
 
 createDockerVolume
 
-docker run --rm -itd \
-    --name "$CONTAINER_NAME" \
-    --env="LOCAL_USER_ID=$(id -u)" \
-    --env="DISPLAY" \
-    --env="QT_X11_NO_MITSHM=1" \
-    --env="XAUTHORITY=$XAUTH_DOCKER" \
-    --env="ETHERCAT_PORT=$ETHERCAT_PORT" \
-    --env="ROS_MASTER_URI=$ROS_MASTER_URI" \
-    --env="ROS_IP=$ROS_IP" \
-    --volume="$XSOCK:$XSOCK:rw" \
-    --volume="$XAUTH:$XAUTH_DOCKER:rw" \
-    --volume="/home/$USER/.ros:/home/user/.ros/:rw" \
-    --volume="$VOLUME_NAME:/home/user/workspace:rw" \
-    --volume="/dev:/dev:rw" \
-    --security-opt seccomp=unconfined --network=host --pid=host --privileged --ipc=host\
+docker create $run_stateless -it \
+    --name $CONTAINER_NAME \
+    --env LOCAL_USER_ID="$(id -u)" \
+    --env DISPLAY \
+    --env QT_X11_NO_MITSHM=1 \
+    --env XAUTHORITY=$XAUTH_DOCKER \
+    --env ETHERCAT_PORT=$ETHERCAT_PORT \
+    --env ROS_MASTER_URI=$ROS_MASTER_URI \
+    --env ROS_IP=$ROS_IP \
+    --env SSH_AUTH_SOCK=$SSH_AUTH_SOCK \
+    --mount type=bind,src=$XSOCK,target=$XSOCK \
+    --mount type=bind,src=$XAUTH,target=$XAUTH_DOCKER \
+    --mount type=bind,src=$SSH_AUTH_SOCK,target=$SSH_AUTH_SOCK \
+    --mount type=bind,src=/dev,target=/dev \
+    --volume "$HOME/.ros":/home/user/.ros:rw \
+    --volume $VOLUME_NAME:/home/user/workspace:rw \
+    --volume $GIT_CONFIG_PATH:/home/user/.gitconfig:ro \
+    --security-opt seccomp=unconfined \
+    --network=host \
+    --pid=host \
+    --privileged \
+    --ipc=host\
     $DOCKER_IMAGE bash
 
 docker cp $HOST_SCRIPTS_PATH/.bash_aliases ${CONTAINER_NAME}:/home/user/ > /dev/null
+docker start $CONTAINER_NAME
+
+if [ $STATELESS_CONTAINER = false ] ; then
+	docker exec -it --user user $CONTAINER_NAME terminator
+fi

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Software License Agreement (BSD License)
-# Copyright © 2024-2025 belongs to Shadow Robot Company Ltd.
+# Copyright © 2024, 2025 belongs to Shadow Robot Company Ltd.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
@@ -38,6 +38,6 @@ alias dx_killall_ros="ps aux | grep ros | sed 's/[^0-9]*\([0-9]*\).*/\1/' | xarg
 alias dx_plotjuggler='rosrun plotjuggler plotjuggler'
 alias dx_start_hand_and_arm='roslaunch dx_launch start_arm_and_hand_0.launch'
 alias dx_reactivate_trajectory_control='rosrun dx_user_tools reactivate_trajectory_controller'
-alias dx_roscd_base='cd /home/$MY_USERNAME/projects/shadow_robot/base'
-alias dx_roscd_deps='cd /home/$MY_USERNAME/projects/shadow_robot/base_deps'
-alias dx_roscd_user='cd /home/$MY_USERNAME/workspace'
+alias dx_roscd_base='cd $HOME/projects/shadow_robot/base'
+alias dx_roscd_deps='cd $HOME/projects/shadow_robot/base_deps'
+alias dx_roscd_user='cd $HOME/workspace'

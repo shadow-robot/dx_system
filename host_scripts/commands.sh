@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Software License Agreement (BSD License)
-# Copyright © 2024-2025 belongs to Shadow Robot Company Ltd.
+# Copyright © 2024, 2025 belongs to Shadow Robot Company Ltd.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
@@ -28,8 +28,8 @@
 alias dx_cd_host_scripts='cd $HOST_SCRIPTS_PATH'
 
 # Run/start persistent or stateless containers
-alias dx_run_stateless_container='"$HOST_SCRIPTS_PATH"/run_stateless.sh'
-alias dx_run_persistent_container='"$HOST_SCRIPTS_PATH"/run_persistent.sh'
+alias dx_run_stateless_container='"$HOST_SCRIPTS_PATH"/run_container.sh --stateless'
+alias dx_run_persistent_container='"$HOST_SCRIPTS_PATH"/run_container.sh'
 alias dx_start_persistent_container='"$HOST_SCRIPTS_PATH"/start.sh'
 alias dx_start_remote_container='"$HOST_SCRIPTS_PATH"/start_remote.sh'
 
