@@ -1,5 +1,7 @@
+#!/usr/bin/env bash
+
 # Software License Agreement (BSD License)
-# Copyright © 2024-2025 belongs to Shadow Robot Company Ltd.
+# Copyright © 2024, 2025 belongs to Shadow Robot Company Ltd.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
@@ -23,25 +25,19 @@
 # or tort (including negligence or otherwise) arising in any way out of the use of this
 # software, even if advised of the possibility of such damage.
 
-trajectory_controller:
-  type: "position_controllers/JointTrajectoryController"
-  hardware_interface:
-    joints: &robot_joints
-      - a0_shoulder_pan_joint
-      - a0_shoulder_lift_joint
-      - a0_elbow_joint
-      - a0_wrist_1_joint
-      - a0_wrist_2_joint
-      - a0_wrist_3_joint
-  joints: *robot_joints
-  constraints:
-      goal_time: 0.6
-      stopped_velocity_tolerance: 0.05
-      a0_shoulder_pan_joint: {trajectory: 0.3, goal: 0.1}
-      a0_shoulder_lift_joint: {trajectory: 0.3, goal: 0.1}
-      a0_elbow_joint: {trajectory: 0.3, goal: 0.1}
-      a0_wrist_1_joint: {trajectory: 0.3, goal: 0.1}
-      a0_wrist_2_joint: {trajectory: 0.3, goal: 0.1}
-      a0_wrist_3_joint: {trajectory: 0.3, goal: 0.1}
-  stop_trajectory_duration: 0.5
-  allow_partial_joints_goal: true
+alias dx_integration_test='roslaunch dx_test_controller automated_integration_test.launch'
+alias dx_acceptance_test='roslaunch dx_test_controller automated_acceptance_test.launch'
+alias dx_tactile_test='roslaunch dx_test_controller tactile_test.launch'
+alias dx_start_no_control='roslaunch dx_robot controllers_not_started.launch'
+alias dx_start='roslaunch dx_robot start_dexee.launch'
+alias dx_start_driver_only='roslaunch dx_robot driver_only.launch'
+alias dx_start_distals='roslaunch dx_robot start_distals.launch'
+alias dx_view_distals='roslaunch dx_robot distal_viewer.launch'
+alias dx_clean_logs='rosrun sr_logging_common clean_logs.py'
+alias dx_killall_ros="ps aux | grep ros | sed 's/[^0-9]*\([0-9]*\).*/\1/' | xargs kill -9"
+alias dx_plotjuggler='rosrun plotjuggler plotjuggler'
+alias dx_start_hand_and_arm='roslaunch dx_launch start_arm_and_hand_0.launch'
+alias dx_reactivate_trajectory_control='rosrun dx_user_tools reactivate_trajectory_controller'
+alias dx_roscd_base='cd $HOME/projects/shadow_robot/base'
+alias dx_roscd_deps='cd $HOME/projects/shadow_robot/base_deps'
+alias dx_roscd_user='cd $HOME/workspace'

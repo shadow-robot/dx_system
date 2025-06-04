@@ -1,5 +1,7 @@
+#!/usr/bin/env bash
+
 # Software License Agreement (BSD License)
-# Copyright © 2024-2025 belongs to Shadow Robot Company Ltd.
+# Copyright © 2024, 2025 belongs to Shadow Robot Company Ltd.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
@@ -23,25 +25,12 @@
 # or tort (including negligence or otherwise) arising in any way out of the use of this
 # software, even if advised of the possibility of such damage.
 
-trajectory_controller:
-  type: "position_controllers/JointTrajectoryController"
-  hardware_interface:
-    joints: &robot_joints
-      - a0_shoulder_pan_joint
-      - a0_shoulder_lift_joint
-      - a0_elbow_joint
-      - a0_wrist_1_joint
-      - a0_wrist_2_joint
-      - a0_wrist_3_joint
-  joints: *robot_joints
-  constraints:
-      goal_time: 0.6
-      stopped_velocity_tolerance: 0.05
-      a0_shoulder_pan_joint: {trajectory: 0.3, goal: 0.1}
-      a0_shoulder_lift_joint: {trajectory: 0.3, goal: 0.1}
-      a0_elbow_joint: {trajectory: 0.3, goal: 0.1}
-      a0_wrist_1_joint: {trajectory: 0.3, goal: 0.1}
-      a0_wrist_2_joint: {trajectory: 0.3, goal: 0.1}
-      a0_wrist_3_joint: {trajectory: 0.3, goal: 0.1}
-  stop_trajectory_duration: 0.5
-  allow_partial_joints_goal: true
+export ROS_IP=172.17.0.1
+export ROS_MASTER_URI=http://$ROS_IP:11311
+export ETHERCAT_PORT=eno1  # Ethercat port where DEX-EE is connected to
+export IMAGE_TAG_FLAVOUR="noetic"  # Default docker image tag flavour
+export IMAGE_TAG_VERSION="1.0.0"  # Default docker image tag version
+export IMAGE_REPOSITORY="shadow-dx-host-binary"  # Alternativly use "shadow-dx-host"
+export USER_PERSISTENT_WORKSPACE="$HOME/user_ws_code"  # Path to the user overlay workspace on the host machine
+export PERSISTENT_CONTAINER_NAME="dx_persistent"  # Default name for persistent containers
+export STATELESS_CONTAINER_NAME="dx_stateless"  # Default name for stateless containers

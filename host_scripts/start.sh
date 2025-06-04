@@ -1,5 +1,7 @@
+#!/usr/bin/env bash
+
 # Software License Agreement (BSD License)
-# Copyright © 2024-2025 belongs to Shadow Robot Company Ltd.
+# Copyright © 2024, 2025 belongs to Shadow Robot Company Ltd.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
@@ -23,25 +25,29 @@
 # or tort (including negligence or otherwise) arising in any way out of the use of this
 # software, even if advised of the possibility of such damage.
 
-trajectory_controller:
-  type: "position_controllers/JointTrajectoryController"
-  hardware_interface:
-    joints: &robot_joints
-      - a0_shoulder_pan_joint
-      - a0_shoulder_lift_joint
-      - a0_elbow_joint
-      - a0_wrist_1_joint
-      - a0_wrist_2_joint
-      - a0_wrist_3_joint
-  joints: *robot_joints
-  constraints:
-      goal_time: 0.6
-      stopped_velocity_tolerance: 0.05
-      a0_shoulder_pan_joint: {trajectory: 0.3, goal: 0.1}
-      a0_shoulder_lift_joint: {trajectory: 0.3, goal: 0.1}
-      a0_elbow_joint: {trajectory: 0.3, goal: 0.1}
-      a0_wrist_1_joint: {trajectory: 0.3, goal: 0.1}
-      a0_wrist_2_joint: {trajectory: 0.3, goal: 0.1}
-      a0_wrist_3_joint: {trajectory: 0.3, goal: 0.1}
-  stop_trajectory_duration: 0.5
-  allow_partial_joints_goal: true
+# See http://wiki.ros.org/docker/Tutorials/Hardware%20Acceleration
+
+set -euo pipefail
+
+# See README.md for building this image.
+CONTAINER_NAME="${1:-dx_persistent}"
+
+XAUTH_DOCKER=/tmp/.docker.xauth
+
+XAUTH=$HOST_SCRIPTS_PATH/.tmp/docker.xauth
+
+if [ ! -d $HOST_SCRIPTS_PATH/.tmp ]
+then
+    mkdir $HOST_SCRIPTS_PATH/.tmp
+fi
+
+xauth_list=$(xauth nlist :0 | sed -e 's/^..../ffff/')
+if [ ! -z "$xauth_list" ]
+then
+    echo "$xauth_list" | xauth -f $XAUTH nmerge -
+else
+    touch $XAUTH
+fi
+chmod a+r $XAUTH
+
+docker start $CONTAINER_NAME
