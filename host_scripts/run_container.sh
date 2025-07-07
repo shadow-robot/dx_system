@@ -130,10 +130,6 @@ then
     chmod a+r $XAUTH
 fi
 
-# List the global git config, showing the origin of all entries. Entries are shown as "file:PATH\tENTRY".
-# Remove the "file:" prefix, the "\t" char, and everything after the "\t" char. Only read the first line of the output.
-GIT_CONFIG_PATH=$(git config --global --list --show-origin | sed $'s/file://;s/\t.*//;1q')
-
 checkValidUserSpaceOverlay $SUPPRESS_WS_OVERLAY_CHECKS
 
 createDockerVolume
@@ -147,19 +143,16 @@ docker create $run_stateless -it \
     --env ETHERCAT_PORT=$ETHERCAT_PORT \
     --env ROS_MASTER_URI=$ROS_MASTER_URI \
     --env ROS_IP=$ROS_IP \
-    --env SSH_AUTH_SOCK=$SSH_AUTH_SOCK \
     --mount type=bind,src=$XSOCK,target=$XSOCK \
     --mount type=bind,src=$XAUTH,target=$XAUTH_DOCKER \
-    --mount type=bind,src=$SSH_AUTH_SOCK,target=$SSH_AUTH_SOCK \
     --mount type=bind,src=/dev,target=/dev \
     --volume "$HOME/.ros":/home/user/.ros:rw \
     --volume $VOLUME_NAME:/home/user/workspace:rw \
-    --volume $GIT_CONFIG_PATH:/home/user/.gitconfig:ro \
     --security-opt seccomp=unconfined \
     --network=host \
     --pid=host \
     --privileged \
-    --ipc=host\
+    --ipc=host \
     $DOCKER_IMAGE bash
 
 docker cp $HOST_SCRIPTS_PATH/.bash_aliases ${CONTAINER_NAME}:/home/user/ > /dev/null
