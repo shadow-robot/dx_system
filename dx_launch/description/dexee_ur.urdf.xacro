@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  Software License Agreement (BSD License)
- Copyright © 2024-2025 belongs to Shadow Robot Company Ltd.
+ Copyright © 2024-2026 belongs to Shadow Robot Company Ltd.
  All rights reserved.
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -62,7 +62,7 @@
       <xacro:ur5_robot prefix="$(arg arm_prefix)_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config)"/>
   </xacro:if>
 
-  <xacro:include filename="$(find dx_robot)/description/robot/$(arg hand_type).xacro" />
+  <xacro:include filename="$(find dx_description)/robot/$(arg hand_type).xacro" />
 
   <xacro:e3_r3_hand prefix="$(arg hand_prefix)_" />
 
@@ -70,10 +70,10 @@
       <parent link="world"/>
       <child link="$(arg arm_prefix)_base_link"/>
       <origin xyz="0.0 $(arg initial_y) $(arg initial_z)" rpy="0.0 0.0 $(arg initial_yaw)"/>
-  </joint> 
+  </joint>
 
   <xacro:if value="$(arg mounting_plate)">
-    <xacro:include filename="$(find dx_robot)/description/xacros/mounting_plates/$(arg mounting_plate_name).xacro" />
+    <xacro:include filename="$(find dx_description)/xacros/mounting_plates/$(arg mounting_plate_name).xacro" />
     <xacro:macro_e3r3_mounting_plate prefix="$(arg hand_prefix)_" parent="$(arg arm_prefix)_flange" mounted_tool="$(arg hand_prefix)_hand_base" >
       <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${3.0*pi/4.0} ${pi/2.0}"/>
     </xacro:macro_e3r3_mounting_plate>
