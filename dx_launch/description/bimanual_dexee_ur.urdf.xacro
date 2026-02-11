@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Software License Agreement (BSD License)
+ Copyright © 2024-2026 belongs to Shadow Robot Company Ltd.
+ All rights reserved.
+ Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
+   1. Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimer.
+   2. Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimer in the documentation
+      and/or other materials provided with the distribution.
+   3. Neither the name of Shadow Robot Company Ltd nor the names of its contributors
+      may be used to endorse or promote products derived from this software without
+      specific prior written permission.
+ This software is provided by Shadow Robot Company Ltd "as is" and any express
+ or implied warranties, including, but not limited to, the implied warranties of
+ merchantability and fitness for a particular purpose are disclaimed. In no event
+ shall the copyright holder be liable for any direct, indirect, incidental, special,
+ exemplary, or consequential damages (including, but not limited to, procurement of
+ substitute goods or services; loss of use, data, or profits; or business interruption)
+ however caused and on any theory of liability, whether in contract, strict liability,
+ or tort (including negligence or otherwise) arising in any way out of the use of this
+ software, even if advised of the possibility of such damage.
+-->
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"
+       xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor"
+       xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller"
+       xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface" name="bimanual_ur_dex">
+
+  <link name="world"/>
+  
+  <!-- Robot 0 arguments -->
+  <xacro:arg name="initial_y_0" default="-1.0"/>
+  <xacro:arg name="initial_z_0" default="0.1"/>
+  <xacro:arg name="initial_yaw_0" default="0.0"/>
+  <xacro:arg name="arm_model_0" default="ur10e"/>
+  <xacro:arg name="kinematics_config_0" default="$(find ur_description)/config/$(arg arm_model_0)/default_kinematics.yaml"/>
+  
+  <!-- Robot 1 arguments -->
+  <xacro:arg name="initial_y_1" default="1.0"/>
+  <xacro:arg name="initial_z_1" default="0.1"/>
+  <xacro:arg name="initial_yaw_1" default="0.0"/>
+  <xacro:arg name="arm_model_1" default="ur10e"/>
+  <xacro:arg name="kinematics_config_1" default="$(find ur_description)/config/$(arg arm_model_1)/default_kinematics.yaml"/>
+  
+  <!-- Common arguments -->
+  <xacro:arg name="transmission_hw_interface" default="hardware_interface/PositionJointInterface"/>
+  <xacro:arg name="hand_type" default="0x02000105"/>
+  <xacro:arg name="mounting_plate" default="true" />
+  <xacro:arg name="mounting_plate_name" default="G-SHW063_Tool_change_plate" />
+
+  <!-- Include UR descriptions -->
+  <xacro:include filename="$(find ur_description)/urdf/inc/$(arg arm_model_0)_macro.xacro"/>
+  <xacro:include filename="$(find ur_description)/urdf/inc/$(arg arm_model_1)_macro.xacro"/>
+  
+  <!-- Include hand description -->
+  <xacro:include filename="$(find dx_description)/robot/$(arg hand_type).xacro" />
+
+  <!-- ==================== ROBOT SYSTEM 0 ==================== -->
+  
+  <xacro:if value="${'$(arg arm_model_0)' == 'ur10e'}">
+      <xacro:ur10e_robot prefix="a0_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config_0)"/>
+  </xacro:if>
+  <xacro:if value="${'$(arg arm_model_0)' == 'ur10'}">
+      <xacro:ur10_robot prefix="a0_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config_0)"/>
+  </xacro:if>
+  <xacro:if value="${'$(arg arm_model_0)' == 'ur5e'}">
+      <xacro:ur5e_robot prefix="a0_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config_0)"/>
+  </xacro:if>
+  <xacro:if value="${'$(arg arm_model_0)' == 'ur5'}">
+      <xacro:ur5_robot prefix="a0_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config_0)"/>
+  </xacro:if>
+
+  <xacro:e3_r3_hand prefix="h0_" />
+
+  <joint name="world_joint_0" type="fixed">
+      <parent link="world"/>
+      <child link="a0_base_link"/>
+      <origin xyz="0.0 $(arg initial_y_0) $(arg initial_z_0)" rpy="0.0 0.0 $(arg initial_yaw_0)"/>
+  </joint>
+
+  <xacro:if value="$(arg mounting_plate)">
+    <xacro:include filename="$(find dx_description)/xacros/mounting_plates/$(arg mounting_plate_name).xacro" />
+    <xacro:macro_e3r3_mounting_plate prefix="h0_" parent="a0_flange" mounted_tool="h0_hand_base" >
+      <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${3.0*pi/4.0} ${pi/2.0}"/>
+    </xacro:macro_e3r3_mounting_plate>
+  </xacro:if>
+  <xacro:unless value="$(arg mounting_plate)">
+    <joint name="a0_arm_to_hand" type="fixed">
+      <parent link="a0_flange"/>
+      <child link="h0_hand_base"/>
+      <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${3.0*pi/4.0} ${pi/2.0}"/>
+    </joint>
+  </xacro:unless>
+
+  <!-- ==================== ROBOT SYSTEM 1 ==================== -->
+  
+  <xacro:if value="${'$(arg arm_model_1)' == 'ur10e'}">
+      <xacro:ur10e_robot prefix="a1_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config_1)"/>
+  </xacro:if>
+  <xacro:if value="${'$(arg arm_model_1)' == 'ur10'}">
+      <xacro:ur10_robot prefix="a1_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config_1)"/>
+  </xacro:if>
+  <xacro:if value="${'$(arg arm_model_1)' == 'ur5e'}">
+      <xacro:ur5e_robot prefix="a1_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config_1)"/>
+  </xacro:if>
+  <xacro:if value="${'$(arg arm_model_1)' == 'ur5'}">
+      <xacro:ur5_robot prefix="a1_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config_1)"/>
+  </xacro:if>
+
+  <xacro:e3_r3_hand prefix="h1_" />
+
+  <joint name="world_joint_1" type="fixed">
+      <parent link="world"/>
+      <child link="a1_base_link"/>
+      <origin xyz="0.0 $(arg initial_y_1) $(arg initial_z_1)" rpy="0.0 0.0 ${$(arg initial_yaw_1) + pi}"/>
+  </joint>
+
+  <xacro:if value="$(arg mounting_plate)">
+    <xacro:macro_e3r3_mounting_plate prefix="h1_" parent="a1_flange" mounted_tool="h1_hand_base" >
+      <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${-3.0*pi/4.0} ${pi/2.0}"/>
+    </xacro:macro_e3r3_mounting_plate>
+  </xacro:if>
+  <xacro:unless value="$(arg mounting_plate)">
+    <joint name="a1_arm_to_hand" type="fixed">
+      <parent link="a1_flange"/>
+      <child link="h1_hand_base"/>
+      <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${-3.0*pi/4.0} ${pi/2.0}"/>
+    </joint>
+  </xacro:unless>
+
+  <!-- ==================== GAZEBO PLUGINS ==================== -->
+  
+  <!-- Robot 0 Gazebo plugins -->
+  <gazebo>
+    <plugin name="gazebo_ros_control_0_arm" filename="libgazebo_ros_control.so">
+      <robotNamespace>arm_0</robotNamespace>
+      <robotParam>a0_robot_description</robotParam>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin name="gazebo_ros_control_0_hand" filename="libgazebo_ros_control.so">
+      <robotNamespace>hand_0</robotNamespace>
+      <robotParam>h0_robot_description</robotParam>
+    </plugin>
+  </gazebo>
+
+  <!-- Robot 1 Gazebo plugins -->
+  <gazebo>
+    <plugin name="gazebo_ros_control_1_arm" filename="libgazebo_ros_control.so">
+      <robotNamespace>arm_1</robotNamespace>
+      <robotParam>a1_robot_description</robotParam>
+    </plugin>
+  </gazebo>
+
+  <gazebo>
+    <plugin name="gazebo_ros_control_1_hand" filename="libgazebo_ros_control.so">
+      <robotNamespace>hand_1</robotNamespace>
+      <robotParam>h1_robot_description</robotParam>
+    </plugin>
+  </gazebo>
+</robot>

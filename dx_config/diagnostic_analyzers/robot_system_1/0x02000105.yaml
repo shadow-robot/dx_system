@@ -1,0 +1,188 @@
+# Software License Agreement (BSD License)
+# Copyright © 2024-2025 belongs to Shadow Robot Company Ltd.
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without modification,
+# are permitted provided that the following conditions are met:
+#   1. Redistributions of source code must retain the above copyright notice,
+#      this list of conditions and the following disclaimer.
+#   2. Redistributions in binary form must reproduce the above copyright notice,
+#      this list of conditions and the following disclaimer in the documentation
+#      and/or other materials provided with the distribution.
+#   3. Neither the name of Shadow Robot Company Ltd nor the names of its contributors
+#      may be used to endorse or promote products derived from this software without
+#      specific prior written permission.
+#
+# This software is provided by Shadow Robot Company Ltd "as is" and any express
+# or implied warranties, including, but not limited to, the implied warranties of
+# merchantability and fitness for a particular purpose are disclaimed. In no event
+# shall the copyright holder be liable for any direct, indirect, incidental, special,
+# exemplary, or consequential damages (including, but not limited to, procurement of
+# substitute goods or services; loss of use, data, or profits; or business interruption)
+# however caused and on any theory of liability, whether in contract, strict liability,
+# or tort (including negligence or otherwise) arising in any way out of the use of this
+# software, even if advised of the possibility of such damage.
+
+analyzers:
+  h1FanSlaves:
+    type: diagnostic_aggregator/AnalyzerGroup
+    path: h1 FAN Sub-devices
+    analyzers:
+      Actuators:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: Actuators
+        regex: ['h1_F[0-9]_A[0-9]']
+        timeout: 5.0
+        num_items: 15
+      Joints:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: Joints
+        regex: ['h1_F[0-9]_J[0-9]']
+        timeout: 5.0
+        num_items: 12
+      IMUs:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: IMUs
+        regex: ['h1_F[0-9]_I[0-9]']
+        timeout: 5.0
+        num_items: 9
+      MagTacs:
+        type: diagnostic_aggregator/AnalyzerGroup
+        path: Magtacs
+        analyzers:
+          Mid_MT:
+            type: diagnostic_aggregator/GenericAnalyzer
+            path: MT_Mid
+            regex: ['h1_F[0-9]_MTMID']
+            timeout: 5.0
+            num_items: 3
+          Prox_MT:
+            type: diagnostic_aggregator/GenericAnalyzer
+            path: MT_Prox
+            regex: ['h1_F[0-9]_MTPROX']
+            timeout: 5.0
+            num_items: 3
+
+  h1Fingers:
+    type: diagnostic_aggregator/AnalyzerGroup
+    path: h1 Fingers
+    analyzers:
+      F0:
+        type: diagnostic_aggregator/AnalyzerGroup
+        path: F0
+        analyzers:
+          Actuators:
+            type: diagnostic_aggregator/GenericAnalyzer
+            path: Actuators
+            regex: ['h1_F0_A[0-9]']
+            timeout: 5.0
+            num_items: 5
+          Joints:
+            type: diagnostic_aggregator/GenericAnalyzer
+            path: Joints
+            regex: ['h1_F0_J[0-9]']
+            timeout: 5.0
+            num_items: 4
+          IMUs:
+            type: diagnostic_aggregator/GenericAnalyzer
+            path: IMUs
+            regex: ['h1_F0_I[0-9]']
+            timeout: 5.0
+            num_items: 3
+          Slaves:
+            type: diagnostic_aggregator/GenericAnalyzer
+            path: Slaves
+            regex: ['h1_B[0-9]_F0: Slave [0-9]']
+            timeout: 5.0
+
+
+      F1:
+        type: diagnostic_aggregator/AnalyzerGroup
+        path: F1
+        analyzers:
+          Actuators:
+            type: diagnostic_aggregator/GenericAnalyzer
+            path: Actuators
+            regex: ['h1_F1_A[0-9]']
+            timeout: 5.0
+            num_items: 5
+          Joints:
+            type: diagnostic_aggregator/GenericAnalyzer
+            path: Joints
+            regex: ['h1_F1_J[0-9]']
+            timeout: 5.0
+            num_items: 4
+          IMUs:
+            type: diagnostic_aggregator/GenericAnalyzer
+            path: IMUs
+            regex: ['h1_F1_I[0-9]']
+            timeout: 5.0
+            num_items: 3
+          Slaves:
+            type: diagnostic_aggregator/GenericAnalyzer
+            path: Slaves
+            regex: ['h1_B[0-9]_F1: Slave [0-9]']
+            timeout: 5.0
+
+
+      F2:
+        type: diagnostic_aggregator/AnalyzerGroup
+        path: F2
+        analyzers:
+          Actuators:
+            type: diagnostic_aggregator/GenericAnalyzer
+            path: Actuators
+            regex: ['h1_F2_A[0-9]']
+            timeout: 5.0
+            num_items: 5
+          Joints:
+            type: diagnostic_aggregator/GenericAnalyzer
+            path: Joints
+            regex: ['h1_F2_J[0-9]']
+            timeout: 5.0
+            num_items: 4
+          IMUs:
+            type: diagnostic_aggregator/GenericAnalyzer
+            path: IMUs
+            regex: ['h1_F2_I[0-9]']
+            timeout: 5.0
+            num_items: 3
+
+          Slaves:
+            type: diagnostic_aggregator/GenericAnalyzer
+            path: Slaves
+            regex: ['h1_B[0-9]_F2: Slave [0-9]']
+            timeout: 5.0
+
+
+  Discard:
+    type: diagnostic_aggregator/DiscardAnalyzer
+    regex: ''
+    path: ''
+
+
+  h1Ethercat:
+    type: diagnostic_aggregator/AnalyzerGroup
+    path: h1 EtherCat
+    analyzers:
+      EtherCAT_Slaves:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: EtherCAT Slaves
+        timeout: 5.0
+        regex: ['h1_Palm', 'h1_F[0-9]: *h1_B[0-9]_F[0-9]_FAN_Over_Ethercat']
+        num_items: 7
+      EtherCAT_Master:
+        type: diagnostic_aggregator/GenericAnalyzer
+        path: EtherCAT Master
+        timeout: 5.0
+        regex: 'hand_1 EtherCAT Master'
+        num_items: 1
+
+  control_loop:
+    type: diagnostic_aggregator/GenericAnalyzer
+    path: Realtime Control Loop
+    timeout: 5.0
+    regex: '^((\w)+ )*Realtime Control Loop'
+    # This value is updated in the launchfile if we have more robots (whether arms or hands)
+    num_items: 1
+
