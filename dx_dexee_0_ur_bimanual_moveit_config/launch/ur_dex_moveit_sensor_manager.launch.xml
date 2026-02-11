@@ -1,3 +1,15 @@
 <launch>
+  <!--
+    No sensors are configured for this MoveIt setup.
+    Explicitly disable the MoveIt sensor manager by setting an empty plugin
+    name and providing an empty sensors list.
+  -->
 
+  <!-- Disable MoveIt sensor manager plugin -->
+  <param name="moveit_sensor_manager" value=""/>
+
+  <!-- Provide an explicit empty sensors list -->
+  <rosparam command="load">
+sensors: []
+  </rosparam>
 </launch>

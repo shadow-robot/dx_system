@@ -115,7 +115,7 @@
   <joint name="world_joint_1" type="fixed">
       <parent link="world"/>
       <child link="a1_base_link"/>
-      <origin xyz="0.0 $(arg initial_y_1) $(arg initial_z_1)" rpy="0.0 0.0 ${$(arg initial_yaw_1) + pi}"/>
+      <origin xyz="0.0 $(arg initial_y_1) $(arg initial_z_1)" rpy="0.0 0.0 $(arg initial_yaw_1)"/>
   </joint>
 
   <xacro:if value="$(arg mounting_plate)">

@@ -138,10 +138,10 @@
 
     <group if="$(arg hand)" ns="hand_$(arg robot_system_id)">
       <include file="$(find dx_launch)/launch/dexee_sim.launch.xml">
-        <arg name="robot_state_pub_frequency" default="$(arg robot_state_pub_frequency)"/>
-        <arg name="joint_state_pub_frequency" default="$(arg joint_state_pub_frequency)"/>
-        <arg name="moveit" default="$(arg moveit)"/>
-        <arg name="robot_system_id" default="$(arg robot_system_id)"/>
+        <arg name="robot_state_pub_frequency" value="$(arg robot_state_pub_frequency)"/>
+        <arg name="joint_state_pub_frequency" value="$(arg joint_state_pub_frequency)"/>
+        <arg name="moveit" value="$(arg moveit)"/>
+        <arg name="robot_system_id" value="$(arg robot_system_id)"/>
       </include>
     </group>
 
