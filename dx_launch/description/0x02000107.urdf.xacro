@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  Software License Agreement (BSD License)
- Copyright © 2024-2026 belongs to Shadow Robot Company Ltd.
+ Copyright © 2026 belongs to Shadow Robot Company Ltd.
  All rights reserved.
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -24,8 +24,8 @@
  software, even if advised of the possibility of such damage.
 -->
 
-<robot name="dexee_config_1_hand" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:include filename="$(find dx_description)/robot/0x02000105.xacro" />
+<robot name="dexee_config_2_right_hand" xmlns:xacro="http://www.ros.org/wiki/xacro">
+  <xacro:include filename="$(find dx_description)/robot/0x02000107.xacro" />
   <xacro:arg name="prefix" default="" />
   <xacro:arg name="robot_system_id" default="" />
   <link name="world" />
@@ -33,7 +33,7 @@
     <parent link="world" />
     <child link="$(arg prefix)hand_base" />
   </joint>
-  <xacro:dexee_config_1_hand prefix="$(arg prefix)" />
+  <xacro:dexee_config_2_right_hand prefix="$(arg prefix)" />
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
       <!--robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType-->

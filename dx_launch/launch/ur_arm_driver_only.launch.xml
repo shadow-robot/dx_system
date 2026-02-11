@@ -47,7 +47,7 @@
   <arg name="arm_speed_scale" default="0.5"/>
 
   <!-- Set arm payload mass and center of gravity -->
-  <group if="$(eval hand and arg('hand_type') == '0x02000105')">
+  <group if="$(arg hand)">
     <!-- Get correct mass -->
     <arg name="hand_mass" value="4.16453837"/>
     <arg if="$(eval arg('mounting_plate') and arg('mounting_plate_name') == 'G-SHW063_Tool_change_plate')"
@@ -95,7 +95,7 @@
     <param name="from_ns" value="/$(arg arm_prefix)_sr_ur_robot_hw"/>
     <param name="to_ns" value="$(arg arm_prefix)_sr_ur_robot_hw"/>
     <param name="param_name" value="kinematics"/>
-    <!-- Wait a bit until all the subparameters under kinematics have been loaded to the parameter server before 
+    <!-- Wait a bit until all the subparameters under kinematics have been loaded to the parameter server before
     copying them -->
     <param name="seconds_to_wait" value="0.1"/>
   </node>

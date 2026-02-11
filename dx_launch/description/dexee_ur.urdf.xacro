@@ -64,7 +64,15 @@
 
   <xacro:include filename="$(find dx_description)/robot/$(arg hand_type).xacro" />
 
-  <xacro:e3_r3_hand prefix="$(arg hand_prefix)_" />
+  <xacro:if value="${'$(arg hand_type)' == '0x02000105'}">
+      <xacro:dexee_config_1_hand prefix="$(arg hand_prefix)_" />
+  </xacro:if>
+  <xacro:if value="${'$(arg hand_type)' == '0x02000107'}">
+      <xacro:dexee_config_2_right_hand prefix="$(arg hand_prefix)_" />
+  </xacro:if>
+  <xacro:if value="${'$(arg hand_type)' == '0x02000109'}">
+      <xacro:dexee_config_2_left_hand prefix="$(arg hand_prefix)_" />
+  </xacro:if>
 
   <joint name="world_joint" type="fixed">
       <parent link="world"/>
