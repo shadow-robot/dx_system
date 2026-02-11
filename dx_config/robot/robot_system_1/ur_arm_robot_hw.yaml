@@ -23,7 +23,7 @@
 # or tort (including negligence or otherwise) arising in any way out of the use of this
 # software, even if advised of the possibility of such damage.
 
-# We keep the prefixed name because this file is loaded twice (in the roo namespace and in the arm namespace)
+# We keep the prefixed name because this file is loaded twice (in the root namespace and in the arm namespace)
 a1_sr_ur_robot_hw:
   joints: &robot_joints
     - a1_shoulder_pan_joint
