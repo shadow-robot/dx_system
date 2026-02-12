@@ -1,8 +1,9 @@
 #!/bin/bash
  
 # Software License Agreement (BSD License)
-# Copyright © 2025 belongs to Shadow Robot Company Ltd.
+# Copyright © 2025-2026 belongs to Shadow Robot Company Ltd.
 # All rights reserved.
+#
 # Redistribution and use in source and binary forms, with or without modification,
 # are permitted provided that the following conditions are met:
 #   1. Redistributions of source code must retain the above copyright notice,
@@ -13,6 +14,7 @@
 #   3. Neither the name of Shadow Robot Company Ltd nor the names of its contributors
 #      may be used to endorse or promote products derived from this software without
 #      specific prior written permission.
+#
 # This software is provided by Shadow Robot Company Ltd "as is" and any express
 # or implied warranties, including, but not limited to, the implied warranties of
 # merchantability and fitness for a particular purpose are disclaimed. In no event
