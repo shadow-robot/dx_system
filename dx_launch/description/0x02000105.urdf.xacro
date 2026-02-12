@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  Software License Agreement (BSD License)
- Copyright © 2024-2025 belongs to Shadow Robot Company Ltd.
+ Copyright © 2024-2026 belongs to Shadow Robot Company Ltd.
  All rights reserved.
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -25,7 +25,7 @@
 -->
 
 <robot name="e3_r3_hand" xmlns:xacro="http://www.ros.org/wiki/xacro">
-  <xacro:include filename="$(find dx_robot)/description/robot/0x02000105.xacro" />
+  <xacro:include filename="$(find dx_description)/robot/0x02000105.xacro" />
   <xacro:arg name="prefix" default="" />
   <xacro:arg name="robot_system_id" default="" />
   <link name="world" />

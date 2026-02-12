@@ -4,7 +4,7 @@
 <!-- |    EDITING THIS FILE BY HAND IS NOT RECOMMENDED                                 | -->
 <!-- =================================================================================== -->
 <!--
- Copyright (C) 2024-2025 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
+ Copyright (C) 2024-2026 Shadow Robot Company Ltd - All Rights Reserved. Proprietary and Confidential.
  Unauthorized copying of the content in this file, via any medium is strictly prohibited.
 -->
 <robot name="ur_dex" xmlns:controller="http://playerstage.sourceforge.net/gazebo/xmlschema/#controller" xmlns:interface="http://playerstage.sourceforge.net/gazebo/xmlschema/#interface" xmlns:sensor="http://playerstage.sourceforge.net/gazebo/xmlschema/#sensor">
@@ -376,7 +376,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/H_Base.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/H_Base.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
@@ -385,7 +385,7 @@
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/Hand_Base.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/Hand_Base.STL" />
             </geometry>
         </collision>
     </link>
@@ -403,7 +403,7 @@
         <visual>
             <origin rpy="1.5707 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_base.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_base.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -412,7 +412,7 @@
         <collision>
             <origin rpy="1.5707 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_base.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_base.STL" />
             </geometry>
         </collision>
     </link>
@@ -425,7 +425,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0.077 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_J0_link.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_J0_link.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -434,7 +434,7 @@
         <collision>
             <origin rpy="0 0 0" xyz="0 0.077 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_J0_link.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_J0_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -454,7 +454,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_proximal.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_proximal.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -463,7 +463,7 @@
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_proximal.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_proximal.STL" />
             </geometry>
         </collision>
     </link>
@@ -483,7 +483,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_middle.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_middle.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -492,7 +492,7 @@
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_middle.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_middle.STL" />
             </geometry>
         </collision>
     </link>
@@ -512,7 +512,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_distal.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_distal.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -521,7 +521,7 @@
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_distal.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_distal.STL" />
             </geometry>
         </collision>
     </link>
@@ -594,7 +594,7 @@
         <visual>
             <origin rpy="1.5707 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_base.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_base.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -603,7 +603,7 @@
         <collision>
             <origin rpy="1.5707 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_base.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_base.STL" />
             </geometry>
         </collision>
     </link>
@@ -616,7 +616,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0.077 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_J0_link.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_J0_link.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -625,7 +625,7 @@
         <collision>
             <origin rpy="0 0 0" xyz="0 0.077 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_J0_link.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_J0_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -645,7 +645,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_proximal.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_proximal.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -654,7 +654,7 @@
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_proximal.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_proximal.STL" />
             </geometry>
         </collision>
     </link>
@@ -674,7 +674,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_middle.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_middle.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -683,7 +683,7 @@
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_middle.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_middle.STL" />
             </geometry>
         </collision>
     </link>
@@ -703,7 +703,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_distal.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_distal.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -712,7 +712,7 @@
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_distal.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_distal.STL" />
             </geometry>
         </collision>
     </link>
@@ -785,7 +785,7 @@
         <visual>
             <origin rpy="1.5707 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_base.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_base.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -794,7 +794,7 @@
         <collision>
             <origin rpy="1.5707 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_base.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_base.STL" />
             </geometry>
         </collision>
     </link>
@@ -807,7 +807,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0.077 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_J0_link.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_J0_link.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -816,7 +816,7 @@
         <collision>
             <origin rpy="0 0 0" xyz="0 0.077 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_J0_link.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_J0_link.STL" />
             </geometry>
         </collision>
     </link>
@@ -836,7 +836,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_proximal.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_proximal.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -845,7 +845,7 @@
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_proximal.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_proximal.STL" />
             </geometry>
         </collision>
     </link>
@@ -865,7 +865,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_middle.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_middle.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -874,7 +874,7 @@
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_middle.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_middle.STL" />
             </geometry>
         </collision>
     </link>
@@ -894,7 +894,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/F0_distal.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/F0_distal.STL" />
             </geometry>
             <material name="">
                 <color rgba="0.75294 0.75294 0.75294 1" />
@@ -903,7 +903,7 @@
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_robot/description/meshes/dx_e3r3_finger/collision/F0_distal.STL" />
+                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/F0_distal.STL" />
             </geometry>
         </collision>
     </link>
