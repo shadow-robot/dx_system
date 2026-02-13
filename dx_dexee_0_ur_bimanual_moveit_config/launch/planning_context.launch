@@ -6,24 +6,23 @@
   <arg name="robot_description" default="robot_description"/>
 
   <!-- Path to the universal robot description format (URDF) file -->
-  <arg name="robot_description_urdf" default="$(find dx_dexee_0_ur_moveit_config)/config/dexee_0_ur10e.urdf"/>
+  <arg name="robot_description_urdf" default="$(find dx_dexee_0_ur_bimanual_moveit_config)/config/bimanual_dexee_ur.urdf"/>
 
   <!-- Load universal robot description format (URDF) -->
   <param if="$(arg load_robot_description)" name="$(arg robot_description)" textfile="$(arg robot_description_urdf)"/>
 
   <!-- The semantic description that corresponds to the URDF -->
-  <param name="$(arg robot_description)_semantic" textfile="$(find dx_dexee_0_ur_moveit_config)/config/ur_dex.srdf" />
+  <param name="$(arg robot_description)_semantic" textfile="$(find dx_dexee_0_ur_bimanual_moveit_config)/config/bimanual_ur_dex.srdf" />
 
   <!-- Load updated joint limits (override information from URDF) -->
   <group ns="$(arg robot_description)_planning">
-    <rosparam command="load" file="$(find dx_dexee_0_ur_moveit_config)/config/joint_limits.yaml"/>
-    <rosparam command="load" file="$(find dx_dexee_0_ur_moveit_config)/config/cartesian_limits.yaml"/>
+    <rosparam command="load" file="$(find dx_dexee_0_ur_bimanual_moveit_config)/config/joint_limits.yaml"/>
+    <rosparam command="load" file="$(find dx_dexee_0_ur_bimanual_moveit_config)/config/cartesian_limits.yaml"/>
   </group>
 
   <!-- Load default settings for kinematics; these settings are overridden by settings in a node's namespace -->
   <group ns="$(arg robot_description)_kinematics">
-    <rosparam command="load" file="$(find dx_dexee_0_ur_moveit_config)/config/kinematics.yaml"/>
-
+    <rosparam command="load" file="$(find dx_dexee_0_ur_bimanual_moveit_config)/config/kinematics.yaml"/>
   </group>
 
 </launch>

@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+ Software License Agreement (BSD License)
+ Copyright © 2026 belongs to Shadow Robot Company Ltd.
+ All rights reserved.
+ Redistribution and use in source and binary forms, with or without modification,
+ are permitted provided that the following conditions are met:
+   1. Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimer.
+   2. Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimer in the documentation
+      and/or other materials provided with the distribution.
+   3. Neither the name of Shadow Robot Company Ltd nor the names of its contributors
+      may be used to endorse or promote products derived from this software without
+      specific prior written permission.
+ This software is provided by Shadow Robot Company Ltd "as is" and any express
+ or implied warranties, including, but not limited to, the implied warranties of
+ merchantability and fitness for a particular purpose are disclaimed. In no event
+ shall the copyright holder be liable for any direct, indirect, incidental, special,
+ exemplary, or consequential damages (including, but not limited to, procurement of
+ substitute goods or services; loss of use, data, or profits; or business interruption)
+ however caused and on any theory of liability, whether in contract, strict liability,
+ or tort (including negligence or otherwise) arising in any way out of the use of this
+ software, even if advised of the possibility of such damage.
+-->
+<launch>
+
+  <arg name="debug" default="false"/>
+  <arg name="debug_log_level" default="false"/>
+  <arg name="verbose" default="true"/>
+  <arg name="bootload_mode" default="false"/>
+  <arg name="robot_state_pub_frequency" default="250"/>
+  <arg name="joint_state_pub_frequency" default="125"/>
+  <arg name="hand_type" default="0x02000105"/>
+  <arg name="ethercat_port_0" default="$(optenv ETHERCAT_PORT_0 enp1s0)"/>
+  <arg name="ethercat_port_1" default="$(optenv ETHERCAT_PORT_1 enp2s0)"/>
+  <arg name="log_user" default="user"/>
+  <arg name="controller_output" default="log"/>
+  <arg name="controller_start_delay" default="5"/>
+  <arg name="state_controller_start_delay" default="2"/>
+  <arg name="snapshot_group" default="snapshot_groups/robot_finger_states_group"/>
+
+  <arg name="start_control" default="true"/>
+  <arg name="control_mode" default="trajectory"/>
+  <!-- allowed values are trajectory, actuator_pwm, actuator_effort, joint_effort, position -->
+  <arg name="moveit" default="true"/>
+
+  <arg name="gui" default="true"/>
+  <arg name="sim" default="false"/>
+
+  <!-- Distal cameras and video stream arguments -->
+  <arg name="distals_0" default="[F0, F1, F2]"/>
+  <arg name="distals_1" default="[F0, F1, F2]"/>
+  <arg name="start_distal_cameras" default="false"/>
+  <arg name="view_distal_cameras" default="false"/>
+
+  <arg name="arm" default="true"/>
+  <arg name="hand" default="true"/>
+  <arg name="arm_model_0" default="ur10e"/>
+  <arg name="arm_model_1" default="ur10e"/>
+
+  <arg name="mounting_plate" default="true"/>
+  <arg name="mounting_plate_name" default="G-SHW063_Tool_change_plate" />
+
+  <!-- Robot configs -->
+  <arg name="hand_robot_config_0" default="$(find dx_config)/robot/robot_system_0/$(arg hand_type).yaml" />
+  <arg name="arm_robot_config_0" default="$(find dx_config)/robot/robot_system_0/ur_arm_robot_hw.yaml" />
+  <arg name="hand_robot_config_1" default="$(find dx_config)/robot/robot_system_1/$(arg hand_type).yaml" />
+  <arg name="arm_robot_config_1" default="$(find dx_config)/robot/robot_system_1/ur_arm_robot_hw.yaml" />
+
+  <arg if="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_dexee_0_ur_moveit_config)/launch/moveit.rviz"/>
+  <arg unless="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_robot)/config/dx_robot.rviz"/>
+
+  <!-- Robot description related config-->
+  <arg name="initial_z" default="0.1"/>
+  <arg name="initial_yaw" default="0.0"/>
+
+  <!-- Positioning for bimanual setup - separate arms on Y axis -->
+  <arg name="initial_y_0" default="-1"/>
+  <arg name="initial_y_1" default="1"/>
+
+  <!-- Args for simulation -->
+  <!-- Set to true if you want the robot to start in the "home" positions -->
+  <arg name="start_home" default="true"/>
+  <!-- home_angles for both robots -->
+  <arg name="home_angles_0" value="-J a0_shoulder_pan_joint 0.0 -J a0_elbow_joint 2.0 -J a0_wrist_1_joint -1 -J a0_wrist_2_joint 1.5708 -J a0_shoulder_lift_joint -1.25 -J a0_wrist_3_joint 0.7853982 -J h0_F0_J1 -0.5 -J h0_F1_J1 -0.5 -J h0_F2_J1 -0.5"/>
+  <arg name="home_angles_1" value="-J a1_shoulder_pan_joint 0.0 -J a1_elbow_joint -2.0 -J a1_wrist_1_joint -2.1 -J a1_wrist_2_joint -1.5708 -J a1_shoulder_lift_joint -1.89 -J a1_wrist_3_joint -2.356194 -J h1_F0_J1 -0.5 -J h1_F1_J1 -0.5 -J h1_F2_J1 -0.5"/>
+  <arg name="paused" value="$(arg start_home)"/>
+
+  <arg name="world" default="$(find dx_moveit_config)/config/demo.world"/>
+  <arg name="gazebo_gui" default="$(arg gui)"/>
+
+  <!-- Load custom rosconsole config file to enable debug log level for desired components
+       (e.g used to debug plugin loading issues) -->
+  <env if="$(arg debug_log_level)" name="ROSCONSOLE_CONFIG_FILE"
+       value="$(find dx_config)/debug/custom_rosconsole.conf"/>
+
+  <!-- Load arm robot_hw parameters for both arms in root namespace -->
+  <rosparam command="load" file="$(arg arm_robot_config_0)"/>
+  <rosparam command="load" file="$(arg arm_robot_config_1)"/>
+
+  <!-- ==================== BIMANUAL ROBOT DESCRIPTION ==================== -->
+  
+  <!-- Load combined bimanual robot description -->
+  <param name="robot_description" command="xacro '$(find dx_launch)/description/bimanual_dexee_ur.urdf.xacro'
+                                            arm_model_0:=$(arg arm_model_0)
+                                            arm_model_1:=$(arg arm_model_1)
+                                            hand_type:=$(arg hand_type)
+                                            initial_y_0:=$(arg initial_y_0)
+                                            initial_z_0:=$(arg initial_z)
+                                            initial_yaw_0:=$(arg initial_yaw)
+                                            initial_y_1:=$(arg initial_y_1)
+                                            initial_z_1:=$(arg initial_z)
+                                            initial_yaw_1:=3.14159
+                                            mounting_plate:=$(arg mounting_plate)
+                                            mounting_plate_name:=$(arg mounting_plate_name)"/>
+  
+  <!-- Load individual hand descriptions for each system -->
+  <param name="hand_0_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h0_ robot_system_id:=0"/>
+  <param name="hand_1_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h1_ robot_system_id:=1"/>
+  <param name="hand_0_type" value="$(arg hand_type)" />
+  <param name="hand_1_type" value="$(arg hand_type)" />
+  
+  <!-- Load arm descriptions for Gazebo -->
+  <param if="$(arg sim)" name="a0_robot_description" command="xacro '$(find dx_launch)/description/ur.urdf.xacro'
+                                                                arm_model:=$(arg arm_model_0)
+                                                                hand_type:=$(arg hand_type)
+                                                                robot_system_id:=0
+                                                                initial_z:=$(arg initial_z)
+                                                                initial_y:=$(arg initial_y_0)
+                                                                initial_yaw:=$(arg initial_yaw)"/>
+  <param if="$(arg sim)" name="a1_robot_description" command="xacro '$(find dx_launch)/description/ur.urdf.xacro'
+                                                                arm_model:=$(arg arm_model_1)
+                                                                hand_type:=$(arg hand_type)
+                                                                robot_system_id:=1
+                                                                initial_z:=$(arg initial_z)
+                                                                initial_y:=$(arg initial_y_1)
+                                                                initial_yaw:=$(arg initial_yaw)"/>
+  <param if="$(arg sim)" name="h0_robot_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h0_ robot_system_id:=0"/>
+  <param if="$(arg sim)" name="h1_robot_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h1_ robot_system_id:=1"/>
+
+  <!-- ==================== SIMULATION ==================== -->
+  
+  <group if="$(arg sim)">
+    <param name="/use_sim_time" value="true"/>
+
+    <!-- Start Gazebo once for both robots -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+      <arg name="world_name" default="$(arg world)"/>
+      <arg name="gui" default="$(arg gui)"/>
+      <arg name="paused" value="$(arg paused)"/>
+      <arg name="debug" value="$(arg debug)"/>
+      <arg name="verbose" value="$(arg verbose)" />
+    </include>
+
+    <!-- Spawn the bimanual robot description (contains both robots already positioned) -->
+    <node name="spawn_gazebo_bimanual" pkg="gazebo_ros" type="spawn_model" 
+          args="-urdf -param robot_description -model bimanual_dexee -unpause $(arg home_angles_0) $(arg home_angles_1)" 
+          respawn="false" output="screen"/>
+
+    <!-- Robot system 0 controllers -->
+    <group ns="hand_0">
+      <include file="$(find dx_launch)/launch/dexee_sim.launch.xml">
+        <arg name="robot_state_pub_frequency" value="$(arg robot_state_pub_frequency)"/>
+        <arg name="joint_state_pub_frequency" value="$(arg joint_state_pub_frequency)"/>
+        <arg name="moveit" value="$(arg moveit)"/>
+        <arg name="robot_system_id" value="0"/>
+      </include>
+    </group>
+
+    <group ns="arm_0">
+      <include file="$(find ros_ethercat_model)/launch/joint_state_publisher.launch" >
+        <arg name="publish_rate" value="$(arg joint_state_pub_frequency)"/>
+      </include>
+
+      <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+        <param name="publish_frequency" type="double" value="$(arg robot_state_pub_frequency)"/>
+        <param name="tf_prefix" type="string" value="" />
+      </node>
+
+      <rosparam file="$(find dx_config)/gazebo/a0_trajectory_controller.yaml" command="load"/>
+      <node name="arm_trajectory_controller_spawner" pkg="controller_manager" type="spawner" output="screen" args="a0_trajectory_controller"/>
+    </group>
+
+    <!-- Robot system 1 controllers -->
+    <group ns="hand_1">
+      <include file="$(find dx_launch)/launch/dexee_sim.launch.xml">
+        <arg name="robot_state_pub_frequency" value="$(arg robot_state_pub_frequency)"/>
+        <arg name="joint_state_pub_frequency" value="$(arg joint_state_pub_frequency)"/>
+        <arg name="moveit" value="$(arg moveit)"/>
+        <arg name="robot_system_id" value="1"/>
+      </include>
+    </group>
+
+    <group ns="arm_1">
+      <include file="$(find ros_ethercat_model)/launch/joint_state_publisher.launch" >
+        <arg name="publish_rate" value="$(arg joint_state_pub_frequency)"/>
+      </include>
+
+      <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+        <param name="publish_frequency" type="double" value="$(arg robot_state_pub_frequency)"/>
+        <param name="tf_prefix" type="string" value="" />
+      </node>
+
+      <rosparam file="$(find dx_config)/gazebo/a1_trajectory_controller.yaml" command="load"/>
+      <node name="arm_trajectory_controller_spawner" pkg="controller_manager" type="spawner" output="screen" args="a1_trajectory_controller"/>
+    </group>
+  </group>
+
+  <!-- ==================== REAL ROBOTS ==================== -->
+  
+  <group unless="$(arg sim)">
+    <!-- Robot system 0 - Real hardware -->
+    <group ns="arm_0">
+      <param name="/robot_namespaces/arm_0" value="$(arg arm_model_0)"/>
+      <include file="$(find dx_launch)/launch/ur_arm_real.launch.xml">
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="hand_type" value="$(arg hand_type)"/>
+        <arg name="mounting_plate" value="$(arg mounting_plate)"/>
+        <arg name="mounting_plate_name" value="$(arg mounting_plate_name)" />
+        <arg name="robot_config" value="$(arg arm_robot_config_0)"/>
+        <arg name="log_user" value="$(arg log_user)"/>
+        <arg name="controller_output" value="$(arg controller_output)"/>
+        <arg name="controller_start_delay" value="$(arg controller_start_delay)"/>
+        <arg name="state_controller_start_delay" value="$(arg state_controller_start_delay)"/>
+        <arg name="start_control" value="$(arg start_control)"/>
+        <arg name="control_mode" value="$(arg control_mode)"/>
+        <arg name="arm_model" value="$(arg arm_model_0)"/>
+        <arg name="robot_system_id" value="0"/>
+      </include>
+    </group>
+
+    <group ns="hand_0">
+      <param name="/robot_namespaces/hand_0" value="r3_standard"/>
+      <include if="$(arg start_distal_cameras)" file="$(find usb_cam)/launch/all.launch">
+        <arg name="viewer" value="$(arg view_distal_cameras)"/>
+        <arg name="zero" value="$(eval 'F0' in arg('distals_0'))"/>
+        <arg name="one" value="$(eval 'F1' in arg('distals_0'))"/>
+        <arg name="two" value="$(eval 'F2' in arg('distals_0'))"/>
+      </include>
+
+      <include file="$(find dx_launch)/launch/dexee_real.launch.xml">
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="hand_type" value="$(arg hand_type)"/>
+        <arg name="ethercat_port" value="$(arg ethercat_port_0)"/>
+        <arg name="bootload_mode" value="$(arg bootload_mode)"/>
+        <arg name="robot_config" value="$(arg hand_robot_config_0)"/>
+        <arg name="log_user" value="$(arg log_user)"/>
+        <arg name="controller_output" value="$(arg controller_output)"/>
+        <arg name="controller_start_delay" value="$(arg controller_start_delay)"/>
+        <arg name="state_controller_start_delay" value="$(arg state_controller_start_delay)"/>
+        <arg name="start_control" value="$(arg start_control)"/>
+        <arg name="control_mode" value="$(arg control_mode)"/>
+      </include>
+
+      <include file="$(find dx_robot)/launch/snapshot_recorder.launch.xml">
+        <arg name="snapshot_group" value="$(arg snapshot_group)"/>
+      </include>
+    </group>
+
+    <!-- Robot system 1 - Real hardware -->
+    <group ns="arm_1">
+      <param name="/robot_namespaces/arm_1" value="$(arg arm_model_1)"/>
+      <include file="$(find dx_launch)/launch/ur_arm_real.launch.xml">
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="hand_type" value="$(arg hand_type)"/>
+        <arg name="mounting_plate" value="$(arg mounting_plate)"/>
+        <arg name="mounting_plate_name" value="$(arg mounting_plate_name)" />
+        <arg name="robot_config" value="$(arg arm_robot_config_1)"/>
+        <arg name="log_user" value="$(arg log_user)"/>
+        <arg name="controller_output" value="$(arg controller_output)"/>
+        <arg name="controller_start_delay" value="$(arg controller_start_delay)"/>
+        <arg name="state_controller_start_delay" value="$(arg state_controller_start_delay)"/>
+        <arg name="start_control" value="$(arg start_control)"/>
+        <arg name="control_mode" value="$(arg control_mode)"/>
+        <arg name="arm_model" value="$(arg arm_model_1)"/>
+        <arg name="robot_system_id" value="1"/>
+      </include>
+    </group>
+
+    <group ns="hand_1">
+      <param name="/robot_namespaces/hand_1" value="r3_standard"/>
+      <include if="$(arg start_distal_cameras)" file="$(find usb_cam)/launch/all.launch">
+        <arg name="viewer" value="$(arg view_distal_cameras)"/>
+        <arg name="zero" value="$(eval 'F0' in arg('distals_1'))"/>
+        <arg name="one" value="$(eval 'F1' in arg('distals_1'))"/>
+        <arg name="two" value="$(eval 'F2' in arg('distals_1'))"/>
+      </include>
+
+      <include file="$(find dx_launch)/launch/dexee_real.launch.xml">
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="hand_type" value="$(arg hand_type)"/>
+        <arg name="ethercat_port" value="$(arg ethercat_port_1)"/>
+        <arg name="bootload_mode" value="$(arg bootload_mode)"/>
+        <arg name="robot_config" value="$(arg hand_robot_config_1)"/>
+        <arg name="log_user" value="$(arg log_user)"/>
+        <arg name="controller_output" value="$(arg controller_output)"/>
+        <arg name="controller_start_delay" value="$(arg controller_start_delay)"/>
+        <arg name="state_controller_start_delay" value="$(arg state_controller_start_delay)"/>
+        <arg name="start_control" value="$(arg start_control)"/>
+        <arg name="control_mode" value="$(arg control_mode)"/>
+      </include>
+
+      <include file="$(find dx_robot)/launch/snapshot_recorder.launch.xml">
+        <arg name="snapshot_group" value="$(arg snapshot_group)"/>
+      </include>
+    </group>
+
+    <!-- Diagnostic aggregators for both systems -->
+    <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator_0" >
+      <rosparam command="load" file="$(find dx_config)/diagnostic_analyzers/robot_system_0/$(arg hand_type).yaml"/>
+      <param name="analyzers/control_loop/num_items" value="2"/>
+    </node>
+
+    <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator_1" >
+      <rosparam command="load" file="$(find dx_config)/diagnostic_analyzers/robot_system_1/$(arg hand_type).yaml"/>
+      <param name="analyzers/control_loop/num_items" value="2"/>
+    </node>
+  </group>
+
+  <!-- ==================== MOVEIT ==================== -->
+  
+  <!-- Load bimanual SRDF -->
+  <param name="robot_description_semantic" textfile="$(find dx_dexee_0_ur_bimanual_moveit_config)/config/bimanual_ur_dex.srdf"/>
+  
+  <!-- Start move_group for bimanual setup -->
+  <node name="conditional_delayed_rostool_move_group" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
+    <param name="package_name" value="dx_dexee_0_ur_bimanual_moveit_config" />
+    <param name="executable_name" value="move_group.launch" />
+    <rosparam param="params_list">[^robot_description$]</rosparam>
+    <param name="launch_args_list" value="moveit_controller_manager:=ros_control load_robot_description:=false"/>
+  </node>
+
+  <!-- RViz -->
+  <node if="$(arg gui)" name="$(anon rviz)" pkg="rviz" type="rviz" respawn="true"
+    args="-d $(arg rviz_config_file)" output="screen">
+    <rosparam command="load" file="$(find dx_dexee_0_ur_bimanual_moveit_config)/config/kinematics.yaml"/>
+  </node>
+
+  <!-- Joint state publisher that merges all joint_states from both robots -->
+  <node name="conditional_delayed_rostool_joint_state_publisher" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
+    <param name="package_name" value="joint_state_publisher" />
+    <param name="executable_name" value="joint_state_publisher" />
+    <rosparam param="params_list">[^robot_description$]</rosparam>
+    <param name="launch_args_list" value="_rate:=$(arg joint_state_pub_frequency) _source_list:=[hand_0/joint_states,arm_0/joint_states,hand_1/joint_states,arm_1/joint_states]" />
+  </node>
+
+  <node pkg="sr_logging_common" name="check_log_size" type="check_log_size.py" output="screen" required="True"/>
+
+</launch>
