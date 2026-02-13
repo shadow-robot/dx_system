@@ -173,7 +173,7 @@
         <joint name="a0_shoulder_pan_joint" value="0"/>
         <joint name="a0_wrist_1_joint" value="-0.733"/>
         <joint name="a0_wrist_2_joint" value="1.573"/>
-        <joint name="a0_wrist_3_joint" value="-2.35619449019"/>
+        <joint name="a0_wrist_3_joint" value="-3.1416"/>
     </group_state>
 <group_state name="hand_change" group="arm_0">
         <joint name="a0_elbow_joint" value="1.8135"/>
