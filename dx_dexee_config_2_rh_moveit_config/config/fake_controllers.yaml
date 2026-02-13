@@ -1,0 +1,57 @@
+controller_list:
+  - name: fake_f0_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - F0_J0
+      - F0_J1
+      - F0_J2
+      - F0_J3
+  - name: fake_f1_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - F1_J0
+      - F1_J1
+      - F1_J2
+      - F1_J3
+  - name: fake_f2_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - F2_J0
+      - F2_J1
+      - F2_J2
+      - F2_J3
+  - name: fake_dx_fingers_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - F0_J0
+      - F0_J1
+      - F0_J2
+      - F0_J3
+      - F1_J0
+      - F1_J1
+      - F1_J2
+      - F1_J3
+      - F2_J0
+      - F2_J1
+      - F2_J2
+      - F2_J3
+  - name: fake_hand_controller
+    type: $(arg fake_execution_type)
+    joints:
+      - F0_J0
+      - F0_J1
+      - F0_J2
+      - F0_J3
+      - F1_J0
+      - F1_J1
+      - F1_J2
+      - F1_J3
+      - F2_J0
+      - F2_J1
+      - F2_J2
+      - F2_J3
+initial:  # Define initial robot poses per group
+#  - group: f0
+#    pose: home
+
+  []
