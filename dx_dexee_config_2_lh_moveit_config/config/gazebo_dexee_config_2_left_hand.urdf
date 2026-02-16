@@ -22,7 +22,7 @@
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/H_Base.STL" />
+                <mesh filename="package://dx_description/meshes/hand_bases/Config_2_Left_Hand_Base.dae" />
             </geometry>
             <material name="">
                 <color rgba="0.898039215686275 0.917647058823529 0.929411764705882 1" />
@@ -31,7 +31,7 @@
         <collision>
             <origin rpy="0 0 0" xyz="0 0 0" />
             <geometry>
-                <mesh filename="package://dx_description/meshes/dx_e3r3_finger/collision/Hand_Base.STL" />
+                <mesh filename="package://dx_description/meshes/hand_bases/collision/Config_2_Left_Hand_Base.stl" />
             </geometry>
         </collision>
     </link>

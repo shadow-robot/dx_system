@@ -56,7 +56,10 @@
   <xacro:include filename="$(find ur_description)/urdf/inc/$(arg arm_model_1)_macro.xacro"/>
   
   <!-- Include hand description -->
-  <xacro:include filename="$(find dx_description)/robot/$(arg hand_type).xacro" />
+  <xacro:if value="${'$(arg hand_type)' == 'chiral'}">
+    <xacro:include filename="$(find dx_description)/robot/0x02000107.xacro" />
+    <xacro:include filename="$(find dx_description)/robot/0x02000109.xacro" />
+  </xacro:if>
 
   <!-- ==================== ROBOT SYSTEM 0 ==================== -->
   
@@ -73,7 +76,12 @@
       <xacro:ur5_robot prefix="a0_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config_0)"/>
   </xacro:if>
 
-  <xacro:e3_r3_hand prefix="h0_" />
+  <xacro:if value="${'$(arg hand_type)' == '0x02000105'}">
+      <xacro:dexee_config_1_hand prefix="h0_" />
+  </xacro:if>
+  <xacro:if value="${'$(arg hand_type)' == 'chiral'}">
+      <xacro:dexee_config_2_right_hand prefix="h0_" />
+  </xacro:if>
 
   <joint name="world_joint_0" type="fixed">
       <parent link="world"/>
@@ -110,7 +118,12 @@
       <xacro:ur5_robot prefix="a1_" transmission_hw_interface="$(arg transmission_hw_interface)" kinematics_parameters_file="$(arg kinematics_config_1)"/>
   </xacro:if>
 
-  <xacro:e3_r3_hand prefix="h1_" />
+  <xacro:if value="${'$(arg hand_type)' == '0x02000105'}">
+      <xacro:dexee_config_1_hand prefix="h1_" />
+  </xacro:if>
+  <xacro:if value="${'$(arg hand_type)' == 'chiral'}">
+      <xacro:dexee_config_2_left_hand prefix="h1_" />
+  </xacro:if>
 
   <joint name="world_joint_1" type="fixed">
       <parent link="world"/>
