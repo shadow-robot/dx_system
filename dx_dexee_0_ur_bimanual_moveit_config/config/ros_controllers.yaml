@@ -1,0 +1,111 @@
+controller_list:
+  - name: /arm_0/arm_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - a0_shoulder_pan_joint
+      - a0_shoulder_lift_joint
+      - a0_elbow_joint
+      - a0_wrist_1_joint
+      - a0_wrist_2_joint
+      - a0_wrist_3_joint
+  - name: /hand_0/h0_f0_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - h0_F0J1
+      - h0_F0J2
+      - h0_F0J3
+      - h0_F0J4
+  - name: /hand_0/h0_f1_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - h0_F1J1
+      - h0_F1J2
+      - h0_F1J3
+      - h0_F1J4
+  - name: /hand_0/h0_f2_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - h0_F2J1
+      - h0_F2J2
+      - h0_F2J3
+      - h0_F2J4
+  - name: /hand_0/h0_dx_fingers_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - h0_F0J1
+      - h0_F0J2
+      - h0_F0J3
+      - h0_F0J4
+      - h0_F1J1
+      - h0_F1J2
+      - h0_F1J3
+      - h0_F1J4
+      - h0_F2J1
+      - h0_F2J2
+      - h0_F2J3
+      - h0_F2J4
+  - name: /arm_1/arm_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - a1_shoulder_pan_joint
+      - a1_shoulder_lift_joint
+      - a1_elbow_joint
+      - a1_wrist_1_joint
+      - a1_wrist_2_joint
+      - a1_wrist_3_joint
+  - name: /hand_1/h1_f0_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - h1_F0J1
+      - h1_F0J2
+      - h1_F0J3
+      - h1_F0J4
+  - name: /hand_1/h1_f1_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - h1_F1J1
+      - h1_F1J2
+      - h1_F1J3
+      - h1_F1J4
+  - name: /hand_1/h1_f2_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - h1_F2J1
+      - h1_F2J2
+      - h1_F2J3
+      - h1_F2J4
+  - name: /hand_1/h1_dx_fingers_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: true
+    joints:
+      - h1_F0J1
+      - h1_F0J2
+      - h1_F0J3
+      - h1_F0J4
+      - h1_F1J1
+      - h1_F1J2
+      - h1_F1J3
+      - h1_F1J4
+      - h1_F2J1
+      - h1_F2J2
+      - h1_F2J3
+      - h1_F2J4
