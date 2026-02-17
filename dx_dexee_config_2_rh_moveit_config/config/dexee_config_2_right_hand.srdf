@@ -10,13 +10,13 @@
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
     <group name="h0_f0">
-        <chain base_link="hand_base" tip_link="F0_tip"/>
+        <chain base_link="h0_hand_base" tip_link="h0_F0_tip"/>
     </group>
     <group name="h0_f1">
-        <chain base_link="hand_base" tip_link="F1_tip"/>
+        <chain base_link="h0_hand_base" tip_link="h0_F1_tip"/>
     </group>
     <group name="h0_f2">
-        <chain base_link="hand_base" tip_link="F2_tip"/>
+        <chain base_link="h0_hand_base" tip_link="h0_F2_tip"/>
     </group>
     <group name="h0_dx_fingers">
         <group name="h0_f0"/>
