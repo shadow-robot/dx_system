@@ -63,9 +63,12 @@
   <arg name="mounting_plate_name" default="G-SHW063_Tool_change_plate" />
 
   <!-- Robot configs -->
-  <arg name="hand_robot_config_0" default="$(find dx_config)/robot/robot_system_0/$(arg hand_type).yaml" />
+  <arg if="$(eval arg('hand_type') == '0x02000105')" name="hand_robot_config_0" default="$(find dx_config)/robot/robot_system_0/0x02000105.yaml" />
+  <arg if="$(eval arg('hand_type') == '0x02000105')" name="hand_robot_config_1" default="$(find dx_config)/robot/robot_system_1/0x02000105.yaml" />
+  <arg if="$(eval arg('hand_type') == 'chiral')" name="hand_robot_config_0" default="$(find dx_config)/robot/robot_system_0/0x02000107.yaml" />
+  <arg if="$(eval arg('hand_type') == 'chiral')" name="hand_robot_config_1" default="$(find dx_config)/robot/robot_system_1/0x02000109.yaml" />
+
   <arg name="arm_robot_config_0" default="$(find dx_config)/robot/robot_system_0/ur_arm_robot_hw.yaml" />
-  <arg name="hand_robot_config_1" default="$(find dx_config)/robot/robot_system_1/$(arg hand_type).yaml" />
   <arg name="arm_robot_config_1" default="$(find dx_config)/robot/robot_system_1/ur_arm_robot_hw.yaml" />
 
   <arg if="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_dexee_0_ur_moveit_config)/launch/moveit.rviz"/>
@@ -83,8 +86,10 @@
   <!-- Set to true if you want the robot to start in the "home" positions -->
   <arg name="start_home" default="true"/>
   <!-- home_angles for both robots -->
-  <arg name="home_angles_0" value="-J a0_shoulder_pan_joint 0.0 -J a0_elbow_joint 2.0 -J a0_wrist_1_joint -1 -J a0_wrist_2_joint 1.5708 -J a0_shoulder_lift_joint -1.25 -J a0_wrist_3_joint 0.7853982 -J h0_F0_J1 -0.5 -J h0_F1_J1 -0.5 -J h0_F2_J1 -0.5"/>
-  <arg name="home_angles_1" value="-J a1_shoulder_pan_joint 0.0 -J a1_elbow_joint -2.0 -J a1_wrist_1_joint -2.1 -J a1_wrist_2_joint -1.5708 -J a1_shoulder_lift_joint -1.89 -J a1_wrist_3_joint -2.356194 -J h1_F0_J1 -0.5 -J h1_F1_J1 -0.5 -J h1_F2_J1 -0.5"/>
+  <arg if="$(eval arg('hand_type') == 'chiral')" name="home_angles_0" value="-J a0_shoulder_pan_joint 0.0 -J a0_elbow_joint 2.0 -J a0_wrist_1_joint -1 -J a0_wrist_2_joint 0.7853982 -J a0_shoulder_lift_joint -1.25 -J a0_wrist_3_joint 1.74533 -J h0_F0_J1 -0.5 -J h0_F1_J1 -0.5 -J h0_F2_J1 -0.5"/>
+  <arg if="$(eval arg('hand_type') == 'chiral')" name="home_angles_1" value="-J a1_shoulder_pan_joint 0.0 -J a1_elbow_joint -2.0 -J a1_wrist_1_joint -2.1 -J a1_wrist_2_joint -0.7853982 -J a1_shoulder_lift_joint -1.89 -J a1_wrist_3_joint -0.17453 -J h1_F0_J1 -0.5 -J h1_F1_J1 -0.5 -J h1_F2_J1 -0.5"/>
+  <arg if="$(eval arg('hand_type') == '0x02000105')" name="home_angles_0" value="-J a0_shoulder_pan_joint 0.0 -J a0_elbow_joint 2.0 -J a0_wrist_1_joint -1 -J a0_wrist_2_joint 1.5708 -J a0_shoulder_lift_joint -1.25 -J a0_wrist_3_joint 0.7853982 -J h0_F0_J1 -0.5 -J h0_F1_J1 -0.5 -J h0_F2_J1 -0.5"/>
+  <arg if="$(eval arg('hand_type') == '0x02000105')" name="home_angles_1" value="-J a1_shoulder_pan_joint 0.0 -J a1_elbow_joint -2.0 -J a1_wrist_1_joint -2.1 -J a1_wrist_2_joint -1.5708 -J a1_shoulder_lift_joint -1.89 -J a1_wrist_3_joint -2.356194 -J h1_F0_J1 -0.5 -J h1_F1_J1 -0.5 -J h1_F2_J1 -0.5"/>
   <arg name="paused" value="$(arg start_home)"/>
 
   <arg name="world" default="$(find dx_moveit_config)/config/demo.world"/>
@@ -116,8 +121,14 @@
                                             mounting_plate_name:=$(arg mounting_plate_name)"/>
   
   <!-- Load individual hand descriptions for each system -->
-  <param name="hand_0_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h0_ robot_system_id:=0"/>
-  <param name="hand_1_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h1_ robot_system_id:=1"/>
+  <group if="$(eval arg('hand_type') == '0x02000105')">
+    <param name="hand_0_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h0_ robot_system_id:=0"/>
+    <param name="hand_1_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h1_ robot_system_id:=1"/>
+  </group>
+  <group if="$(eval arg('hand_type') == 'chiral')">
+    <param name="hand_0_description" command="xacro '$(find dx_launch)/description/0x02000107.urdf.xacro' prefix:=h0_ robot_system_id:=0"/>
+    <param name="hand_1_description" command="xacro '$(find dx_launch)/description/0x02000109.urdf.xacro' prefix:=h1_ robot_system_id:=1"/>
+  </group>
   <param name="hand_0_type" value="$(arg hand_type)" />
   <param name="hand_1_type" value="$(arg hand_type)" />
   
@@ -136,8 +147,14 @@
                                                                 initial_z:=$(arg initial_z)
                                                                 initial_y:=$(arg initial_y_1)
                                                                 initial_yaw:=$(arg initial_yaw)"/>
-  <param if="$(arg sim)" name="h0_robot_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h0_ robot_system_id:=0"/>
-  <param if="$(arg sim)" name="h1_robot_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h1_ robot_system_id:=1"/>
+  <group if="$(eval arg('hand_type') == '0x02000105')">                                          
+    <param if="$(arg sim)" name="h0_robot_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h0_ robot_system_id:=0"/>
+    <param if="$(arg sim)" name="h1_robot_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h1_ robot_system_id:=1"/>
+  </group>
+  <group if="$(eval arg('hand_type') == 'chiral')">
+    <param if="$(arg sim)" name="h0_robot_description" command="xacro '$(find dx_launch)/description/0x02000107.urdf.xacro' prefix:=h0_ robot_system_id:=0"/>
+    <param if="$(arg sim)" name="h1_robot_description" command="xacro '$(find dx_launch)/description/0x02000109.urdf.xacro' prefix:=h1_ robot_system_id:=1"/>
+  </group>
 
   <!-- ==================== SIMULATION ==================== -->
   
