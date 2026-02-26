@@ -5,8 +5,11 @@
   <!-- The name of the parameter under which the URDF is loaded -->
   <arg name="robot_description" default="robot_description"/>
 
+  <!-- Path to the universal robot description format (URDF) file -->
+  <arg name="robot_description_urdf" default="$(find dx_dexee_0_ur_moveit_config)/config/dexee_0_ur10e.urdf"/>
+
   <!-- Load universal robot description format (URDF) -->
-  <param if="$(arg load_robot_description)" name="$(arg robot_description)" textfile="/home/user/dexee_0_ur10e.urdf"/>
+  <param if="$(arg load_robot_description)" name="$(arg robot_description)" textfile="$(arg robot_description_urdf)"/>
 
   <!-- The semantic description that corresponds to the URDF -->
   <param name="$(arg robot_description)_semantic" textfile="$(find dx_dexee_0_ur_moveit_config)/config/ur_dex.srdf" />

@@ -24,7 +24,7 @@
  software, even if advised of the possibility of such damage.
 -->
 
-<robot name="e3_r3_hand" xmlns:xacro="http://www.ros.org/wiki/xacro">
+<robot name="dexee_config_1_hand" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:include filename="$(find dx_description)/robot/0x02000105.xacro" />
   <xacro:arg name="prefix" default="" />
   <xacro:arg name="robot_system_id" default="" />
@@ -33,7 +33,7 @@
     <parent link="world" />
     <child link="$(arg prefix)hand_base" />
   </joint>
-  <xacro:e3_r3_hand prefix="$(arg prefix)" />
+  <xacro:dexee_config_1_hand prefix="$(arg prefix)" />
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
       <!--robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType-->
