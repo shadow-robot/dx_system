@@ -48,6 +48,11 @@
   <arg name="gui" default="true"/>
   <arg name="sim" default="false"/>
 
+  <!-- Scene and world loading -->
+  <arg name="load_scene" default="false"/>
+  <arg name="scene_file" default="$(find sr_description_common)/scenes/demo_space_large_bimanual.scene"/>
+  <arg name="world_file" default="$(find sr_description_common)/worlds/demo_space_large_bimanual.world"/>
+
   <!-- Distal cameras and video stream arguments -->
   <arg name="distals_0" default="[F0, F1, F2]"/>
   <arg name="distals_1" default="[F0, F1, F2]"/>
@@ -75,12 +80,13 @@
   <arg unless="$(eval arg('moveit') and arg('start_control'))" name="rviz_config_file" default="$(find dx_robot)/config/dx_robot.rviz"/>
 
   <!-- Robot description related config-->
-  <arg name="initial_z" default="0.1"/>
   <arg name="initial_yaw" default="0.0"/>
+  <arg name="initial_z" default="0.7521" if="$(arg load_scene)"/>
+  <arg name="initial_z" default="0.01" unless="$(arg load_scene)"/>
 
   <!-- Positioning for bimanual setup - separate arms on Y axis -->
-  <arg name="initial_y_0" default="-1"/>
-  <arg name="initial_y_1" default="1"/>
+  <arg name="initial_y_0" default="0"/>
+  <arg name="initial_y_1" default="1.5"/>
 
   <!-- Args for simulation -->
   <!-- Set to true if you want the robot to start in the "home" positions -->
@@ -92,7 +98,8 @@
   <arg if="$(eval arg('hand_type') == '0x02000105')" name="home_angles_1" value="-J a1_shoulder_pan_joint 0.0 -J a1_elbow_joint -2.0 -J a1_wrist_1_joint -2.1 -J a1_wrist_2_joint -1.5708 -J a1_shoulder_lift_joint -1.89 -J a1_wrist_3_joint -2.356194 -J h1_F0_J1 -0.5 -J h1_F1_J1 -0.5 -J h1_F2_J1 -0.5"/>
   <arg name="paused" value="$(arg start_home)"/>
 
-  <arg name="world" default="$(find dx_moveit_config)/config/demo.world"/>
+  <arg if="$(arg load_scene)" name="world" default="$(arg world_file)"/>
+  <arg unless="$(arg load_scene)" name="world" default="$(find dx_moveit_config)/config/demo.world"/>
   <arg name="gazebo_gui" default="$(arg gui)"/>
 
   <!-- Load custom rosconsole config file to enable debug log level for desired components
@@ -161,10 +168,14 @@
   <group if="$(arg sim)">
     <param name="/use_sim_time" value="true"/>
 
+    <!-- Set Gazebo model path so world file models (ground, stands, etc.) can be found -->
+    <env if="$(arg load_scene)" name="GAZEBO_MODEL_PATH"
+         value="$(find sr_description_common)/models:$(optenv GAZEBO_MODEL_PATH)"/>
+
     <!-- Start Gazebo once for both robots -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-      <arg name="world_name" default="$(arg world)"/>
-      <arg name="gui" default="$(arg gui)"/>
+      <arg name="world_name" value="$(arg world)"/>
+      <arg name="gui" value="$(arg gazebo_gui)"/>
       <arg name="paused" value="$(arg paused)"/>
       <arg name="debug" value="$(arg debug)"/>
       <arg name="verbose" value="$(arg verbose)" />
@@ -361,6 +372,12 @@
     <rosparam param="params_list">[^robot_description$]</rosparam>
     <param name="launch_args_list" value="_rate:=$(arg joint_state_pub_frequency) _source_list:=[hand_0/joint_states,arm_0/joint_states,hand_1/joint_states,arm_1/joint_states]" />
   </node>
+
+  <!-- ==================== SCENE LOADING ==================== -->
+
+  <!-- Load the MoveIt planning scene from file -->
+  <node if="$(arg load_scene)" name="moveit_publish_scene_from_text" pkg="moveit_ros_planning"
+        type="moveit_publish_scene_from_text" args="$(arg scene_file)" output="screen"/>
 
   <node pkg="sr_logging_common" name="check_log_size" type="check_log_size.py" output="screen" required="True"/>
 
