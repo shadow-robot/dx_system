@@ -23,7 +23,7 @@
 # or tort (including negligence or otherwise) arising in any way out of the use of this
 # software, even if advised of the possibility of such damage.
 
-a0_trajectory_controller:
+trajectory_controller:
   type: "position_controllers/JointTrajectoryController"
   joints:
     - a0_shoulder_pan_joint
