@@ -175,6 +175,22 @@
         <joint name="a0_wrist_2_joint" value="1.573"/>
         <joint name="a0_wrist_3_joint" value="-3.1416"/>
     </group_state>
+<group_state name="a0_teleop_config_1_start" group="arm_0">
+        <joint name="a0_elbow_joint" value="2"/>
+        <joint name="a0_shoulder_lift_joint" value="-1.25"/>
+        <joint name="a0_shoulder_pan_joint" value="0"/>
+        <joint name="a0_wrist_1_joint" value="0"/>
+        <joint name="a0_wrist_2_joint" value="1.573"/>
+        <joint name="a0_wrist_3_joint" value="-0.733"/>
+    </group_state>
+<group_state name="a0_teleop_config_2_start" group="arm_0">
+        <joint name="a0_elbow_joint" value="2"/>
+        <joint name="a0_shoulder_lift_joint" value="-1.25"/>
+        <joint name="a0_shoulder_pan_joint" value="0"/>
+        <joint name="a0_wrist_1_joint" value="-3.145"/>
+        <joint name="a0_wrist_2_joint" value="-1.745"/>
+        <joint name="a0_wrist_3_joint" value="3.316"/>
+    </group_state>
 <group_state name="hand_change" group="arm_0">
         <joint name="a0_elbow_joint" value="1.8135"/>
         <joint name="a0_shoulder_lift_joint" value="-0.8813"/>
@@ -265,19 +281,35 @@
         <joint name="a1_wrist_3_joint" value="0"/>
     </group_state>
 <group_state name="a1_start" group="arm_1">
-        <joint name="a1_elbow_joint" value="2"/>
-        <joint name="a1_shoulder_lift_joint" value="-1.25"/>
+        <joint name="a1_elbow_joint" value="-2"/>
+        <joint name="a1_shoulder_lift_joint" value="-1.881"/>
         <joint name="a1_shoulder_pan_joint" value="0"/>
-        <joint name="a1_wrist_1_joint" value="-0.733"/>
-        <joint name="a1_wrist_2_joint" value="1.573"/>
-        <joint name="a1_wrist_3_joint" value="-3.1416"/>
+        <joint name="a1_wrist_1_joint" value="-2.147"/>
+        <joint name="a1_wrist_2_joint" value="4.712"/>
+        <joint name="a1_wrist_3_joint" value="-2.356"/>
+    </group_state>
+<group_state name="a1_teleop_config_1_start" group="arm_1">
+        <joint name="a1_elbow_joint" value="-2"/>
+        <joint name="a1_shoulder_lift_joint" value="-1.881"/>
+        <joint name="a1_shoulder_pan_joint" value="0"/>
+        <joint name="a1_wrist_1_joint" value="-3.1416"/>
+        <joint name="a1_wrist_2_joint" value="4.712"/>
+        <joint name="a1_wrist_3_joint" value="-0.733"/>
+    </group_state>
+<group_state name="a1_teleop_config_2_start" group="arm_1">
+        <joint name="a1_elbow_joint" value="-2"/>
+        <joint name="a1_shoulder_lift_joint" value="-1.881"/>
+        <joint name="a1_shoulder_pan_joint" value="0"/>
+        <joint name="a1_wrist_1_joint" value="0"/>
+        <joint name="a1_wrist_2_joint" value="1.745"/>
+        <joint name="a1_wrist_3_joint" value="-1.745"/>
     </group_state>
 <group_state name="hand_change" group="arm_1">
-        <joint name="a1_elbow_joint" value="1.8135"/>
-        <joint name="a1_shoulder_lift_joint" value="-0.8813"/>
+        <joint name="a1_elbow_joint" value="-1.815"/>
+        <joint name="a1_shoulder_lift_joint" value="-2.269"/>
         <joint name="a1_shoulder_pan_joint" value="0"/>
-        <joint name="a1_wrist_1_joint" value="-2.484"/>
-        <joint name="a1_wrist_2_joint" value="1.573"/>
+        <joint name="a1_wrist_1_joint" value="-0.611"/>
+        <joint name="a1_wrist_2_joint" value="-1.573"/>
         <joint name="a1_wrist_3_joint" value="-3.1416"/>
     </group_state>
 <group_state name="safe_store" group="arm_1">
