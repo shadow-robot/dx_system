@@ -71,6 +71,7 @@
     </node>
   </group>
 
+  <!-- Only launch for 1 robot system since these services operate globally. -->
   <group if="$(eval arg('robot_system_id') == 0)">
     <node pkg="dx_robot" type="hand_info_server.py" name="hand_info_server" ns="/" output="screen"/>
     <node pkg="dx_robot" type="safe_mode_monitor.py" name="safe_mode_monitor" ns="/"/>
