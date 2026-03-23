@@ -164,7 +164,7 @@
   </group>
 
     <!-- Loading robot description for system 0-->
-  <group ns="a0">
+  <group ns="arm_0">
   <include file="$(find dx_launch)/launch/load_robot_description.launch.xml">
     <arg name="sim" value="$(arg sim)"/>
     <arg name="robot_system_id" value="0"/>
@@ -181,7 +181,7 @@
   </group>
 
     <!-- Loading robot description for system 1-->
-  <group ns="a1">
+  <group ns="arm_1">
   <include file="$(find dx_launch)/launch/load_robot_description.launch.xml">
     <arg name="sim" value="$(arg sim)"/>
     <arg name="robot_system_id" value="1"/>
