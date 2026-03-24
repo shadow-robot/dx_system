@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
  Software License Agreement (BSD License)
- Copyright © 2024-2025 belongs to Shadow Robot Company Ltd.
+ Copyright © 2024-2026 belongs to Shadow Robot Company Ltd.
  All rights reserved.
  Redistribution and use in source and binary forms, with or without modification,
  are permitted provided that the following conditions are met:
@@ -71,8 +71,12 @@
     </node>
   </group>
 
-  <node pkg="dx_robot" type="hand_info_server.py" name="hand_info_server" ns="/" output="screen"/>
-  <node pkg="dx_robot" type="safe_mode_monitor.py" name="safe_mode_monitor" ns="/"/>
+  <!-- Only launch for 1 robot system since these services operate globally. -->
+  <group if="$(eval arg('robot_system_id') == 0)">
+    <node pkg="dx_robot" type="hand_info_server.py" name="hand_info_server" ns="/" output="screen"/>
+    <node pkg="dx_robot" type="safe_mode_monitor.py" name="safe_mode_monitor" ns="/"/>
+  </group>
+
   <node pkg="dx_robot" type="dump_finger_configs_on_startup" name="dump_finger_configs_on_startup" />
 
   <!-- Robot state publisher (publishes to /tf in the root namespace) -->

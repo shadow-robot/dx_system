@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 # Software License Agreement (BSD License)
-# Copyright © 2024-2025 belongs to Shadow Robot Company Ltd.
+# Copyright © 2024-2026 belongs to Shadow Robot Company Ltd.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
@@ -51,19 +51,36 @@ class DxConstructRobotDescription:
         self._robot_system_ids = self._parse_robot_system_id()
         self._robot_description_params = {}
         self._sr_ur_load_calibration = ''
-        arm_type = rospy.get_param("~arm_type")
+        
+        # For bimanual, we might have separate arm types, otherwise use single arm_type
+        arm_types = {}
+        if len(self._robot_system_ids) > 1:
+            for arm_id in self._robot_system_ids:
+                param_name = f"~arm_type_{arm_id}"
+                if rospy.has_param(param_name):
+                    arm_types[arm_id] = rospy.get_param(param_name)
+                else:
+                    # Fall back to single arm_type if separate ones not provided
+                    arm_types[arm_id] = rospy.get_param("~arm_type")
+        else:
+            arm_types[self._robot_system_ids[0]] = rospy.get_param("~arm_type")
 
-        arm_ips = [f'10.8.{arm_id+1}.1' for arm_id in self._robot_system_ids]
+        # Create dictionary for arm IPs indexed by arm_id
+        arm_ips = {arm_id: f'10.8.{arm_id+1}.1' for arm_id in self._robot_system_ids}
 
         if self._arm_ip_params_loaded_before_timeout(self.TIMEOUT_IN_SECS):
             arm_ips = self._get_arm_ip_params(arm_ips)
         else:
             rospy.logwarn("No arm ip param was found on param server, using the following default arm ips:\n\t" +
-                          "\n\t".join(arm_ips))
+                          "\n\t".join([f"a{arm_id}: {ip}" for arm_id, ip in arm_ips.items()]))
 
         self._arm_params_list = []
         for arm_id in self._robot_system_ids:
-            self._arm_params_list.append({'prefix': f'a{arm_id}', 'ip_address': arm_ips[arm_id], 'arm_type': arm_type})
+            self._arm_params_list.append({
+                'prefix': f'a{arm_id}', 
+                'ip_address': arm_ips[arm_id], 
+                'arm_type': arm_types[arm_id]
+            })
 
         self._process_parameters()
         urdf = self._parse_xacro()
@@ -79,7 +96,7 @@ class DxConstructRobotDescription:
                 return False
         return True
 
-    def _get_arm_ip_params(self, arm_ips: list) -> List[str]:
+    def _get_arm_ip_params(self, arm_ips: dict) -> dict:
         for arm_id in self._robot_system_ids:
             if rospy.has_param(f"/a{arm_id}_sr_ur_robot_hw/robot_ip"):
                 arm_ips[arm_id] = rospy.get_param(f"/a{arm_id}_sr_ur_robot_hw/robot_ip")
@@ -89,7 +106,7 @@ class DxConstructRobotDescription:
         kinematics_configs = self._get_kinematics_config()
         if len(self._robot_system_ids) > 1:
             for index, arm_id in enumerate(self._robot_system_ids):
-                self._robot_description_params[f'kinematics_config_robot_system_{arm_id}'] = kinematics_configs[index]
+                self._robot_description_params[f'kinematics_config_{arm_id}'] = kinematics_configs[index]
         else:
             self._robot_description_params[f'kinematics_config'] = kinematics_configs[0]
 
