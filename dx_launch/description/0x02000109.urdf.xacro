@@ -27,13 +27,14 @@
 <robot name="dexee_config_2_left_hand" xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:include filename="$(find dx_description)/robot/0x02000109.xacro" />
   <xacro:arg name="prefix" default="" />
+  <xacro:arg name="distal_type" default="sparkle" />  <!-- "sparkle" or "magtac" -->
   <xacro:arg name="robot_system_id" default="" />
   <link name="world" />
   <joint name="$(arg prefix)world_joint" type="fixed">
     <parent link="world" />
     <child link="$(arg prefix)hand_base" />
   </joint>
-  <xacro:dexee_config_2_left_hand prefix="$(arg prefix)" />
+  <xacro:dexee_config_2_left_hand prefix="$(arg prefix)" distal_type="$(arg distal_type)"/>
   <gazebo>
     <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
       <!--robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType-->

@@ -45,6 +45,8 @@
   <xacro:arg name="arm_prefix" default="a$(arg robot_system_id)" />
   <xacro:arg name="hand_prefix" default="h$(arg robot_system_id)" />
 
+  <xacro:arg name="distal_type" default="sparkle" />  <!-- "sparkle" or "magtac" -->
+
   <xacro:arg name="mounting_plate" default="true" />
   <!-- Name of the mounting plate xacro file: E.g. G-SHW063_Tool_change_plate -->
   <xacro:arg name="mounting_plate_name" default="G-SHW063_Tool_change_plate" />
@@ -65,13 +67,13 @@
   <xacro:include filename="$(find dx_description)/robot/$(arg hand_type).xacro" />
 
   <xacro:if value="${'$(arg hand_type)' == '0x02000105'}">
-      <xacro:dexee_config_1_hand prefix="$(arg hand_prefix)_" />
+      <xacro:dexee_config_1_hand prefix="$(arg hand_prefix)_" distal_type="$(arg distal_type)"/>
   </xacro:if>
   <xacro:if value="${'$(arg hand_type)' == '0x02000107'}">
-      <xacro:dexee_config_2_right_hand prefix="$(arg hand_prefix)_" />
+      <xacro:dexee_config_2_right_hand prefix="$(arg hand_prefix)_" distal_type="$(arg distal_type)"/>
   </xacro:if>
   <xacro:if value="${'$(arg hand_type)' == '0x02000109'}">
-      <xacro:dexee_config_2_left_hand prefix="$(arg hand_prefix)_" />
+      <xacro:dexee_config_2_left_hand prefix="$(arg hand_prefix)_" distal_type="$(arg distal_type)"/>
   </xacro:if>
 
   <joint name="world_joint" type="fixed">
