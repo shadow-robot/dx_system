@@ -32,6 +32,7 @@
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
   <arg name="hand_type" default="0x02000105"/>
+  <arg name="distal_type" default="sparkle"/>   <!-- "sparkle" or "magtac" -->
   <arg name="ethercat_port" default="$(optenv ETHERCAT_PORT enp1s0)"/>
   <arg name="log_user" default="user"/>
   <arg name="controller_output" default="log"/>
@@ -120,6 +121,7 @@
     <arg name="hand" value="$(arg hand)"/>
     <arg name="arm_model" value="$(arg arm_model)"/>
     <arg name="hand_type" value="$(arg hand_type)"/>
+    <arg name="distal_type" value="$(arg distal_type)"/>
     <arg name="mounting_plate" value="$(arg mounting_plate)"/>
     <arg name="mounting_plate_name" value="$(arg mounting_plate_name)" />
     <arg name="initial_z" value="$(arg initial_z)"/>

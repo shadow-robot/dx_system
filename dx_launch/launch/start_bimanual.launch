@@ -32,6 +32,8 @@
   <arg name="robot_state_pub_frequency" default="250"/>
   <arg name="joint_state_pub_frequency" default="125"/>
   <arg name="hand_type" default="0x02000105"/>
+  <arg name="distal_type_0" default="sparkle"/>   <!-- "sparkle" or "magtac" -->
+  <arg name="distal_type_1" default="sparkle"/>   <!-- "sparkle" or "magtac" -->
   <arg name="ethercat_port_0" default="$(optenv ETHERCAT_PORT_0 enp1s0)"/>
   <arg name="ethercat_port_1" default="$(optenv ETHERCAT_PORT_1 enp2s0)"/>
   <arg name="log_user" default="user"/>
@@ -112,12 +114,14 @@
   <rosparam command="load" file="$(arg arm_robot_config_1)"/>
 
   <!-- ==================== BIMANUAL ROBOT DESCRIPTION ==================== -->
-  
+
   <!-- Load combined bimanual robot description -->
   <param name="robot_description" command="xacro '$(find dx_launch)/description/bimanual_dexee_ur.urdf.xacro'
                                             arm_model_0:=$(arg arm_model_0)
                                             arm_model_1:=$(arg arm_model_1)
                                             hand_type:=$(arg hand_type)
+                                            distal_type_0:=$(arg distal_type_0)
+                                            distal_type_1:=$(arg distal_type_1)
                                             initial_y_0:=$(arg initial_y_0)
                                             initial_z_0:=$(arg initial_z)
                                             initial_yaw_0:=$(arg initial_yaw)
@@ -126,19 +130,19 @@
                                             initial_yaw_1:=3.14159
                                             mounting_plate:=$(arg mounting_plate)
                                             mounting_plate_name:=$(arg mounting_plate_name)"/>
-  
+
   <!-- Load individual hand descriptions for each system -->
   <group if="$(eval arg('hand_type') == '0x02000105')">
-    <param name="hand_0_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h0_ robot_system_id:=0"/>
-    <param name="hand_1_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h1_ robot_system_id:=1"/>
+    <param name="hand_0_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h0_ robot_system_id:=0 distal_type:=$(arg distal_type_0)"/>
+    <param name="hand_1_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h1_ robot_system_id:=1 distal_type:=$(arg distal_type_1)"/>
   </group>
   <group if="$(eval arg('hand_type') == 'chiral')">
-    <param name="hand_0_description" command="xacro '$(find dx_launch)/description/0x02000107.urdf.xacro' prefix:=h0_ robot_system_id:=0"/>
-    <param name="hand_1_description" command="xacro '$(find dx_launch)/description/0x02000109.urdf.xacro' prefix:=h1_ robot_system_id:=1"/>
+    <param name="hand_0_description" command="xacro '$(find dx_launch)/description/0x02000107.urdf.xacro' prefix:=h0_ robot_system_id:=0 distal_type:=$(arg distal_type_0)"/>
+    <param name="hand_1_description" command="xacro '$(find dx_launch)/description/0x02000109.urdf.xacro' prefix:=h1_ robot_system_id:=1 distal_type:=$(arg distal_type_1)"/>
   </group>
   <param name="hand_0_type" value="$(arg hand_type)" />
   <param name="hand_1_type" value="$(arg hand_type)" />
-  
+
   <!-- Load arm descriptions for Gazebo -->
   <param if="$(arg sim)" name="a0_robot_description" command="xacro '$(find dx_launch)/description/ur.urdf.xacro'
                                                                 arm_model:=$(arg arm_model_0)
@@ -154,13 +158,13 @@
                                                                 initial_z:=$(arg initial_z)
                                                                 initial_y:=$(arg initial_y_1)
                                                                 initial_yaw:=$(arg initial_yaw)"/>
-  <group if="$(eval arg('hand_type') == '0x02000105')">                                          
-    <param if="$(arg sim)" name="h0_robot_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h0_ robot_system_id:=0"/>
-    <param if="$(arg sim)" name="h1_robot_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h1_ robot_system_id:=1"/>
+  <group if="$(eval arg('hand_type') == '0x02000105')">
+    <param if="$(arg sim)" name="h0_robot_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h0_ robot_system_id:=0 distal_type:=$(arg distal_type_0)"/>
+    <param if="$(arg sim)" name="h1_robot_description" command="xacro '$(find dx_launch)/description/$(arg hand_type).urdf.xacro' prefix:=h1_ robot_system_id:=1 distal_type:=$(arg distal_type_1)"/>
   </group>
   <group if="$(eval arg('hand_type') == 'chiral')">
-    <param if="$(arg sim)" name="h0_robot_description" command="xacro '$(find dx_launch)/description/0x02000107.urdf.xacro' prefix:=h0_ robot_system_id:=0"/>
-    <param if="$(arg sim)" name="h1_robot_description" command="xacro '$(find dx_launch)/description/0x02000109.urdf.xacro' prefix:=h1_ robot_system_id:=1"/>
+    <param if="$(arg sim)" name="h0_robot_description" command="xacro '$(find dx_launch)/description/0x02000107.urdf.xacro' prefix:=h0_ robot_system_id:=0 distal_type:=$(arg distal_type_0)"/>
+    <param if="$(arg sim)" name="h1_robot_description" command="xacro '$(find dx_launch)/description/0x02000109.urdf.xacro' prefix:=h1_ robot_system_id:=1 distal_type:=$(arg distal_type_1)"/>
   </group>
 
     <!-- Loading robot description for system 0-->
@@ -172,6 +176,7 @@
     <arg name="hand" value="$(arg hand)"/>
     <arg name="arm_model" value="$(arg arm_model_0)"/>
     <arg name="hand_type" value="$(arg hand_type)"/>
+    <arg name="distal_type" value="$(arg distal_type_0)"/>
     <arg name="mounting_plate" value="$(arg mounting_plate)"/>
     <arg name="mounting_plate_name" value="$(arg mounting_plate_name)" />
     <arg name="initial_z" value="$(arg initial_z)"/>
@@ -189,6 +194,7 @@
     <arg name="hand" value="$(arg hand)"/>
     <arg name="arm_model" value="$(arg arm_model_1)"/>
     <arg name="hand_type" value="$(arg hand_type)"/>
+    <arg name="distal_type" value="$(arg distal_type_1)"/>
     <arg name="mounting_plate" value="$(arg mounting_plate)"/>
     <arg name="mounting_plate_name" value="$(arg mounting_plate_name)" />
     <arg name="initial_z" value="$(arg initial_z)"/>
@@ -198,7 +204,7 @@
   </group>
 
   <!-- ==================== SIMULATION ==================== -->
-  
+
   <group if="$(arg sim)">
     <param name="/use_sim_time" value="true"/>
 
@@ -216,8 +222,8 @@
     </include>
 
     <!-- Spawn the bimanual robot description (contains both robots already positioned) -->
-    <node name="spawn_gazebo_bimanual" pkg="gazebo_ros" type="spawn_model" 
-          args="-urdf -param robot_description -model bimanual_dexee -unpause $(arg home_angles_0) $(arg home_angles_1)" 
+    <node name="spawn_gazebo_bimanual" pkg="gazebo_ros" type="spawn_model"
+          args="-urdf -param robot_description -model bimanual_dexee -unpause $(arg home_angles_0) $(arg home_angles_1)"
           respawn="false" output="screen"/>
 
     <!-- Robot system 0 controllers -->
@@ -270,7 +276,7 @@
   </group>
 
   <!-- ==================== REAL ROBOTS ==================== -->
-  
+
   <group unless="$(arg sim)">
     <!-- Robot system 0 - Real hardware -->
     <group ns="arm_0">
@@ -383,10 +389,10 @@
   </group>
 
   <!-- ==================== MOVEIT ==================== -->
-  
+
   <!-- Load bimanual SRDF -->
   <param name="robot_description_semantic" textfile="$(find dx_dexee_0_ur_bimanual_moveit_config)/config/bimanual_ur_dex.srdf"/>
-  
+
   <!-- Start move_group for bimanual setup -->
   <node name="conditional_delayed_rostool_move_group" pkg="sr_utilities_common" type="conditional_delayed_rostool.py" output="screen">
     <param name="package_name" value="dx_dexee_0_ur_bimanual_moveit_config" />
