@@ -24,26 +24,26 @@
 # software, even if advised of the possibility of such damage.
 
 analyzers:
-  h0FanSlaves:
+  h1FanSlaves:
     type: diagnostic_aggregator/AnalyzerGroup
-    path: h0 FAN Sub-devices
+    path: h1 FAN Sub-devices
     analyzers:
       Actuators:
         type: diagnostic_aggregator/GenericAnalyzer
         path: Actuators
-        regex: ['h0_F[0-9]_A[0-9]']
+        regex: ['h1_F[0-9]_A[0-9]']
         timeout: 5.0
         num_items: 15
       Joints:
         type: diagnostic_aggregator/GenericAnalyzer
         path: Joints
-        regex: ['h0_F[0-9]_J[0-9]']
+        regex: ['h1_F[0-9]_J[0-9]']
         timeout: 5.0
         num_items: 12
       IMUs:
         type: diagnostic_aggregator/GenericAnalyzer
         path: IMUs
-        regex: ['h0_F[0-9]_I[0-9]']
+        regex: ['h1_F[0-9]_I[0-9]']
         timeout: 5.0
         num_items: 9
       MagTacs:
@@ -53,19 +53,19 @@ analyzers:
           Mid_MT:
             type: diagnostic_aggregator/GenericAnalyzer
             path: MT_Mid
-            regex: ['h0_F[0-9]_MTMID']
+            regex: ['h1_F[0-9]_MTMID']
             timeout: 5.0
             num_items: 3
           Prox_MT:
             type: diagnostic_aggregator/GenericAnalyzer
             path: MT_Prox
-            regex: ['h0_F[0-9]_MTPROX']
+            regex: ['h1_F[0-9]_MTPROX']
             timeout: 5.0
             num_items: 3
 
-  h0Fingers:
+  h1Fingers:
     type: diagnostic_aggregator/AnalyzerGroup
-    path: h0 Fingers
+    path: h1 Fingers
     analyzers:
       F0:
         type: diagnostic_aggregator/AnalyzerGroup
@@ -74,25 +74,25 @@ analyzers:
           Actuators:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Actuators
-            regex: ['h0_F0_A[0-9]']
+            regex: ['h1_F0_A[0-9]']
             timeout: 5.0
             num_items: 5
           Joints:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Joints
-            regex: ['h0_F0_J[0-9]']
+            regex: ['h1_F0_J[0-9]']
             timeout: 5.0
             num_items: 4
           IMUs:
             type: diagnostic_aggregator/GenericAnalyzer
             path: IMUs
-            regex: ['h0_F0_I[0-9]']
+            regex: ['h1_F0_I[0-9]']
             timeout: 5.0
             num_items: 3
           Slaves:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Slaves
-            regex: ['h0_B[0-9]_F0: Slave [0-9]']
+            regex: ['h1_B[0-9]_F0: Slave [0-9]']
             timeout: 5.0
 
 
@@ -103,25 +103,25 @@ analyzers:
           Actuators:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Actuators
-            regex: ['h0_F1_A[0-9]']
+            regex: ['h1_F1_A[0-9]']
             timeout: 5.0
             num_items: 5
           Joints:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Joints
-            regex: ['h0_F1_J[0-9]']
+            regex: ['h1_F1_J[0-9]']
             timeout: 5.0
             num_items: 4
           IMUs:
             type: diagnostic_aggregator/GenericAnalyzer
             path: IMUs
-            regex: ['h0_F1_I[0-9]']
+            regex: ['h1_F1_I[0-9]']
             timeout: 5.0
             num_items: 3
           Slaves:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Slaves
-            regex: ['h0_B[0-9]_F1: Slave [0-9]']
+            regex: ['h1_B[0-9]_F1: Slave [0-9]']
             timeout: 5.0
 
 
@@ -132,26 +132,26 @@ analyzers:
           Actuators:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Actuators
-            regex: ['h0_F2_A[0-9]']
+            regex: ['h1_F2_A[0-9]']
             timeout: 5.0
             num_items: 5
           Joints:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Joints
-            regex: ['h0_F2_J[0-9]']
+            regex: ['h1_F2_J[0-9]']
             timeout: 5.0
             num_items: 4
           IMUs:
             type: diagnostic_aggregator/GenericAnalyzer
             path: IMUs
-            regex: ['h0_F2_I[0-9]']
+            regex: ['h1_F2_I[0-9]']
             timeout: 5.0
             num_items: 3
 
           Slaves:
             type: diagnostic_aggregator/GenericAnalyzer
             path: Slaves
-            regex: ['h0_B[0-9]_F2: Slave [0-9]']
+            regex: ['h1_B[0-9]_F2: Slave [0-9]']
             timeout: 5.0
 
 
@@ -161,15 +161,15 @@ analyzers:
     path: ''
 
 
-  h0Ethercat:
+  h1Ethercat:
     type: diagnostic_aggregator/AnalyzerGroup
-    path: h0 EtherCat
+    path: h1 EtherCat
     analyzers:
       EtherCAT_Slaves:
         type: diagnostic_aggregator/GenericAnalyzer
         path: EtherCAT Slaves
         timeout: 5.0
-        regex: ['h0_Palm', 'h0_F[0-9]: *h0_B[0-9]_F[0-9]_FAN_Over_Ethercat']
+        regex: ['h1_Palm', 'h1_F[0-9]: *h1_B[0-9]_F[0-9]_FAN_Over_Ethercat']
         num_items: 7
       EtherCAT_Master:
         type: diagnostic_aggregator/GenericAnalyzer
