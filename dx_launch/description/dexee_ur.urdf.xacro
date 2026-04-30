@@ -96,7 +96,7 @@
         <xacro:macro_e3r3_mounting_plate prefix="$(arg hand_prefix)_"
                 parent="$(arg arm_prefix)_flange"
                 mounted_tool="$(arg hand_prefix)_hand_base"
-                mounted_tool_origin_rpy="0 0 ${pi/2.0}" >
+                mounted_tool_origin_rpy="0 0 ${3.0*pi/4.0}" >
             <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${3.0*pi/4.0} ${pi/2.0}"/>
         </xacro:macro_e3r3_mounting_plate>
     </xacro:if>
@@ -104,7 +104,7 @@
         <xacro:macro_e3r3_mounting_plate prefix="$(arg hand_prefix)_"
                 parent="$(arg arm_prefix)_flange"
                 mounted_tool="$(arg hand_prefix)_hand_base"
-                mounted_tool_origin_rpy="0 0 ${pi/2.0}" >
+                mounted_tool_origin_rpy="0 0 ${pi/4.0}" >
             <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${3.0*pi/4.0} ${pi/2.0}"/>
         </xacro:macro_e3r3_mounting_plate>
     </xacro:if>

@@ -83,11 +83,13 @@
 
   <xacro:if value="${'$(arg hand_type)' == '0x02000105'}">
       <xacro:dexee_config_1_hand prefix="h0_" distal_type="$(arg distal_type_0)"/>
-      <xacro:arg name="tool_change_rpy" default="0 0 0" />
+      <xacro:arg name="tool_change_rpy_0" default="0 0 0" />
+      <xacro:arg name="tool_change_rpy_1" default="0 0 0" />
   </xacro:if>
   <xacro:if value="${'$(arg hand_type)' == 'chiral'}">
       <xacro:dexee_config_2_right_hand prefix="h0_" distal_type="$(arg distal_type_0)"/>
-      <xacro:arg name="tool_change_rpy" default="0 0 ${pi/2.0}" />
+      <xacro:arg name="tool_change_rpy_0" default="0 0 ${3.0*pi/4.0}" />
+      <xacro:arg name="tool_change_rpy_1" default="0 0 ${pi/4.0}" />
   </xacro:if>
 
   <joint name="world_joint_0" type="fixed">
@@ -98,7 +100,7 @@
 
   <xacro:if value="$(arg mounting_plate)">
     <xacro:include filename="$(find dx_description)/xacros/mounting_plates/$(arg mounting_plate_name).xacro" />
-    <xacro:macro_e3r3_mounting_plate prefix="h0_" parent="a0_flange" mounted_tool="h0_hand_base" mounted_tool_origin_rpy="$(arg tool_change_rpy)" >
+    <xacro:macro_e3r3_mounting_plate prefix="h0_" parent="a0_flange" mounted_tool="h0_hand_base" mounted_tool_origin_rpy="$(arg tool_change_rpy_0)" >
       <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${3.0*pi/4.0} ${pi/2.0}"/>
     </xacro:macro_e3r3_mounting_plate>
   </xacro:if>
@@ -139,7 +141,7 @@
   </joint>
 
   <xacro:if value="$(arg mounting_plate)">
-    <xacro:macro_e3r3_mounting_plate prefix="h1_" parent="a1_flange" mounted_tool="h1_hand_base" mounted_tool_origin_rpy="$(arg tool_change_rpy)" >
+    <xacro:macro_e3r3_mounting_plate prefix="h1_" parent="a1_flange" mounted_tool="h1_hand_base" mounted_tool_origin_rpy="$(arg tool_change_rpy_1)" >
       <origin xyz="0.0 0.0 0.0" rpy="${pi/2.0} ${3.0*pi/4.0} ${pi/2.0}"/>
     </xacro:macro_e3r3_mounting_plate>
   </xacro:if>
