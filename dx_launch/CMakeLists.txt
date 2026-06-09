@@ -2,8 +2,8 @@ cmake_minimum_required(VERSION 3.0.2)
 project(dx_launch)
 
 find_package(catkin REQUIRED COMPONENTS
-  dx_controllers
-  dx_robot
+#  dx_controllers
+#  dx_robot
 )
 
 

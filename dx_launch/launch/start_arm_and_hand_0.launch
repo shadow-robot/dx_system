@@ -94,7 +94,7 @@
   <arg unless="$(arg start_home)" name="spawn_model_extra_args" value="" />
 
   <arg if="$(arg load_scene)" name="world" default="$(arg world_file)"/>
-  <arg unless="$(arg load_scene)" name="world" default="$(find dx_moveit_config)/config/demo.world"/>
+  <arg unless="$(arg load_scene)" name="world" default="$(find dx_dexee_0_moveit_config)/config/demo.world"/>
   <arg name="gazebo_gui" default="$(arg gui)"/>
 
   <!-- Load custom rosconsole config file to enable debug log level for desired components
