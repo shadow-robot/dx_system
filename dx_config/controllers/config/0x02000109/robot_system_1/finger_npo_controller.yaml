@@ -1,5 +1,5 @@
 # Software License Agreement (BSD License)
-# Copyright © 2026 belongs to Shadow Robot Company Ltd.
+# Copyright © 2024-2026 belongs to Shadow Robot Company Ltd.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
@@ -23,50 +23,47 @@
 # or tort (including negligence or otherwise) arising in any way out of the use of this
 # software, even if advised of the possibility of such damage.
 
-# We keep the prefixed name because this file is loaded twice (in the root namespace and in the arm namespace)
-a1_sr_ur_robot_hw:
-  joints: &robot_joints
-    - a1_shoulder_pan_joint
-    - a1_shoulder_lift_joint
-    - a1_elbow_joint
-    - a1_wrist_1_joint
-    - a1_wrist_2_joint
-    - a1_wrist_3_joint
+F0_npo_controller:
+  type: dx_controllers/FingerNpoController
+  finger: h1_F0
+  actuators:
+    - h1_F0_A0
+    - h1_F0_A1
+    - h1_F0_A2
+    - h1_F0_A3
+    - h1_F0_A4
+  joints:
+    - h1_F0_J0
+    - h1_F0_J1
+    - h1_F0_J2
+    - h1_F0_J3
 
-  type: ur_driver/HardwareInterface
-  
-  # a0 for arm 0, a1 for arm 1, etc.
-  robot_id: a1
+F1_npo_controller:
+  type: dx_controllers/FingerNpoController
+  finger: h1_F1
+  actuators:
+    - h1_F1_A0
+    - h1_F1_A1
+    - h1_F1_A2
+    - h1_F1_A3
+    - h1_F1_A4
+  joints:
+    - h1_F1_J0
+    - h1_F1_J1
+    - h1_F1_J2
+    - h1_F1_J3
 
-  tf_prefix: a1_
-  
-  # for sending robot programs
-  # When using aurora (https://github.com/shadow-robot/aurora) it uses sed to replace this IP with the user-defined IP
-  robot_ip: 10.8.2.1
-  
-  # for the server that moves the robot
-  # When using aurora (https://github.com/shadow-robot/aurora) it uses sed to replace this IP with the user-defined IP
-  control_pc_ip_address: 10.8.2.2 #10.8.2.100
-  
-  use_tool_communication: false
-  
-  headless_mode: true
-  
-  servoj_gain: 250
-  
-  servoj_lookahead_time: 0.1
-
-  reverse_port: 50011
-
-  script_sender_port: 50012
-
-  trajectory_port: 50013
-
-  script_command_port: 50014
-
-  use_local_hardware_interface_param: true
-  
-  non_blocking_read: true
-
-  wrench_prefix: a1_
-  
+F2_npo_controller:
+  type: dx_controllers/FingerNpoController
+  finger: h1_F2
+  actuators:
+    - h1_F2_A0
+    - h1_F2_A1
+    - h1_F2_A2
+    - h1_F2_A3
+    - h1_F2_A4
+  joints:
+    - h1_F2_J0
+    - h1_F2_J1
+    - h1_F2_J2
+    - h1_F2_J3
