@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # Software License Agreement (BSD License)
-# Copyright © 2024, 2025 belongs to Shadow Robot Company Ltd.
+# Copyright © 2024-2026 belongs to Shadow Robot Company Ltd.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without modification,
@@ -29,7 +29,7 @@ export ROS_IP=172.17.0.1
 export ROS_MASTER_URI=http://$ROS_IP:11311
 export ETHERCAT_PORT=eno1  # Ethercat port where DEX-EE is connected to
 export IMAGE_TAG_FLAVOUR="noetic"  # Default docker image tag flavour
-export IMAGE_TAG_VERSION="1.0.0"  # Default docker image tag version
+export IMAGE_TAG_VERSION="1.1.0"  # Default docker image tag version
 export IMAGE_REPOSITORY="shadow-dx-host-binary"  # Alternativly use "shadow-dx-host"
 export USER_PERSISTENT_WORKSPACE="$HOME/user_ws_code"  # Path to the user overlay workspace on the host machine
 export PERSISTENT_CONTAINER_NAME="dx_persistent"  # Default name for persistent containers
